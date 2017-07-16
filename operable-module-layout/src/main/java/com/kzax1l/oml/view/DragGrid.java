@@ -257,7 +257,7 @@ public class DragGrid extends GridView {
 
                 startPosition = position;// 第一次点击的postion
                 dragPosition = position;
-                if (startPosition <= 1) {
+                if (startPosition < 0) {
                     return false;
                 }
                 ViewGroup dragViewGroup = (ViewGroup) getChildAt(dragPosition - getFirstVisiblePosition());
