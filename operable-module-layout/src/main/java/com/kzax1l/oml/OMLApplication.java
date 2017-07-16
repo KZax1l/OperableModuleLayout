@@ -2,6 +2,7 @@ package com.kzax1l.oml;
 
 import android.app.Application;
 
+import com.kzax1l.oml.dao.ChannelManage;
 import com.kzax1l.oml.db.SQLHelper;
 
 public class OMLApplication extends Application implements OMLInitialization {
@@ -29,5 +30,10 @@ public class OMLApplication extends Application implements OMLInitialization {
             sqlHelper.close();
         }
         //整体摧毁的时候调用这个方法
+    }
+
+    @Override
+    public ChannelManage getChannelManage() {
+        return ChannelManage.getManage(getSQLHelper());
     }
 }
