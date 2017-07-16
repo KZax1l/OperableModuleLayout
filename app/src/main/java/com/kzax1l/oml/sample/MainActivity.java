@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kzax1l.oml.AppApplication;
+import com.kzax1l.oml.OMLApplication;
 import com.kzax1l.oml.Utils;
 import com.kzax1l.oml.dao.ChannelItem;
 import com.kzax1l.oml.dao.ChannelManage;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
      * 获取Column栏目 数据
      */
     private void initColumnData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(AppApplication.getApp().getSQLHelper()).getUserChannel());
+        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(((OMLApplication)getApplication()).getSQLHelper()).getUserChannel());
     }
 
     /**

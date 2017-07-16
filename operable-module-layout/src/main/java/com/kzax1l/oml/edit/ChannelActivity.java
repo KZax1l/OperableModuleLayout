@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kzax1l.oml.AppApplication;
+import com.kzax1l.oml.OMLApplication;
 import com.kzax1l.oml.R;
 import com.kzax1l.oml.adapter.DragAdapter;
 import com.kzax1l.oml.adapter.OtherAdapter;
@@ -68,8 +68,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 初始化数据
      */
     private void initData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(AppApplication.getApp().getSQLHelper()).getUserChannel());
-        otherChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(AppApplication.getApp().getSQLHelper()).getOtherChannel());
+        userChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(((OMLApplication)getApplication()).getSQLHelper()).getUserChannel());
+        otherChannelList = ((ArrayList<ChannelItem>) ChannelManage.getManage(((OMLApplication)getApplication()).getSQLHelper()).getOtherChannel());
         userAdapter = new DragAdapter(this, userChannelList);
         userGridView.setAdapter(userAdapter);
         otherAdapter = new OtherAdapter(this, otherChannelList);
@@ -253,9 +253,9 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 退出时候保存选择后数据库的设置
      */
     private void saveChannel() {
-        ChannelManage.getManage(AppApplication.getApp().getSQLHelper()).deleteAllChannel();
-        ChannelManage.getManage(AppApplication.getApp().getSQLHelper()).saveUserChannel(userAdapter.getChannnelLst());
-        ChannelManage.getManage(AppApplication.getApp().getSQLHelper()).saveOtherChannel(otherAdapter.getChannnelLst());
+        ChannelManage.getManage(((OMLApplication)getApplication()).getSQLHelper()).deleteAllChannel();
+        ChannelManage.getManage(((OMLApplication)getApplication()).getSQLHelper()).saveUserChannel(userAdapter.getChannnelLst());
+        ChannelManage.getManage(((OMLApplication)getApplication()).getSQLHelper()).saveOtherChannel(otherAdapter.getChannnelLst());
     }
 
     @Override
