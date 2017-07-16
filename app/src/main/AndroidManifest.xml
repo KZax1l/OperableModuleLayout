@@ -26,6 +26,9 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
         <activity android:name="com.kzax1l.oml.sample.MainActivity">
+
+        </activity>
+        <activity android:name=".RecyclerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

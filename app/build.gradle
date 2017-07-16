@@ -28,4 +28,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:10.2.4'
     testCompile 'junit:junit:4.12'
     compile project(':operable-module-layout')
+    compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
 }
