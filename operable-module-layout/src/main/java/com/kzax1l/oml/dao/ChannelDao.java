@@ -33,10 +33,10 @@ public class ChannelDao implements ChannelDaoInface {
         try {
             database = helper.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put("name", item.getName());
-            values.put("id", item.getId());
-            values.put("orderId", item.getOrderId());
-            values.put("selected", item.getSelected());
+            values.put("name", item.name);
+            values.put("id", item.id);
+            values.put("orderId", item.orderId);
+            values.put("selected", item.selected);
             id = database.insert(SQLHelper.TABLE_CHANNEL, null, values);
             flag = (id != -1 ? true : false);
         } catch (Exception e) {

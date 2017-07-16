@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             columnTextView.setGravity(Gravity.CENTER);
             columnTextView.setPadding(5, 5, 5, 5);
             columnTextView.setId(i);
-            columnTextView.setText(userChannelList.get(i).getName());
+            columnTextView.setText(userChannelList.get(i).name);
             columnTextView.setTextColor(getResources().getColorStateList(R.color.top_category_scroll_text_color_day));
             if (columnSelectIndex == i) {
                 columnTextView.setSelected(true);
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                             mViewPager.setCurrentItem(i);
                         }
                     }
-                    Toast.makeText(getApplicationContext(), userChannelList.get(v.getId()).getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), userChannelList.get(v.getId()).name, Toast.LENGTH_SHORT).show();
                 }
             });
             mRadioGroup_content.addView(columnTextView, i, params);

@@ -19,11 +19,6 @@ import java.util.List;
  */
 
 public class DragAdapter extends BaseAdapter {
-
-    /**
-     * TAG
-     */
-    private final static String TAG = "DragAdapter";
     /**
      * 是否显示底部的ITEM
      */
@@ -83,10 +78,10 @@ public class DragAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.channel_item, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.channel_item, parent, false);
         item_text = (TextView) view.findViewById(R.id.text_item);
         ChannelItem channel = getItem(position);
-        item_text.setText(channel.getName());
+        item_text.setText(channel.name);
 //        if ((position == 0) || (position == 1)) {
         if (position == 0) {
             item_text.setEnabled(false);
