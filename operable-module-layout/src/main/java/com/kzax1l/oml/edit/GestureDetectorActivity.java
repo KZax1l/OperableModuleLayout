@@ -1,7 +1,7 @@
 package com.kzax1l.oml.edit;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +12,7 @@ import android.view.View;
  * Created by Mjj on 2016/11/18.
  */
 
-public class GestureDetectorActivity extends Activity {
+public class GestureDetectorActivity extends AppCompatActivity {
 
     /**
      * 手势监听

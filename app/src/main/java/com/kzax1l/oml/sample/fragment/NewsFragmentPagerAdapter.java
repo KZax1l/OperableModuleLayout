@@ -1,4 +1,4 @@
-package com.kzax1l.oml.fragment;
+package com.kzax1l.oml.sample.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

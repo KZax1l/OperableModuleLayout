@@ -1,6 +1,5 @@
 package com.kzax1l.oml.edit;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kzax1l.oml.AppApplication;
-import com.kzax1l.oml.MainActivity;
 import com.kzax1l.oml.R;
 import com.kzax1l.oml.adapter.DragAdapter;
 import com.kzax1l.oml.adapter.OtherAdapter;
@@ -54,6 +52,9 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 是否在移动，由于是动画结束后才进行的数据更替，设置这个限制为了避免操作太频繁造成的数据错乱。
      */
     boolean isMove = false;
+
+    public final static int CODE_REQUEST_CHANNEL = 0x98; // 请求码
+    public final static int CODE_RESULT_CHANNEL = 0x99; // 返回码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,8 +264,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
     public void onBackPressed() {
         saveChannel();
         if (userAdapter.isListChanged()) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            setResult(MainActivity.CHANNELRESULT, intent);
+            setResult(CODE_RESULT_CHANNEL);
             finish();
         } else {
             super.onBackPressed();

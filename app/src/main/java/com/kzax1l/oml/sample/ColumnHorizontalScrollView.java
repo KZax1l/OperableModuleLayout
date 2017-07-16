@@ -1,4 +1,4 @@
-package com.kzax1l.oml.view;
+package com.kzax1l.oml.sample;
 
 import android.app.Activity;
 import android.content.Context;

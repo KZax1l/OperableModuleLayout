@@ -1,4 +1,4 @@
-package com.kzax1l.oml;
+package com.kzax1l.oml.sample;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,14 +14,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kzax1l.oml.AppApplication;
+import com.kzax1l.oml.Utils;
 import com.kzax1l.oml.dao.ChannelItem;
 import com.kzax1l.oml.dao.ChannelManage;
 import com.kzax1l.oml.edit.ChannelActivity;
-import com.kzax1l.oml.fragment.NewsFragment;
-import com.kzax1l.oml.fragment.NewsFragmentPagerAdapter;
-import com.kzax1l.oml.view.ColumnHorizontalScrollView;
+import com.kzax1l.oml.sample.fragment.NewsFragment;
+import com.kzax1l.oml.sample.fragment.NewsFragmentPagerAdapter;
 
 import java.util.ArrayList;
+
+import static com.kzax1l.oml.edit.ChannelActivity.CODE_REQUEST_CHANNEL;
+import static com.kzax1l.oml.edit.ChannelActivity.CODE_RESULT_CHANNEL;
 
 /**
  * Description：仿今日头条首页tab动态添加和删除
@@ -45,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
     private int mItemWidth = 0; // Item宽度：每个标题的宽度
 
     private int mScreenWidth = 0; // 屏幕宽度
-
-    public final static int CHANNELREQUEST = 1; // 请求码
-    public final static int CHANNELRESULT = 10; // 返回码
 
     // tab集合：HorizontalScrollView的数据源
     private ArrayList<ChannelItem> userChannelList = new ArrayList<ChannelItem>();
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent_channel = new Intent(getApplicationContext(), ChannelActivity.class);
-                startActivityForResult(intent_channel, CHANNELREQUEST);
+                startActivityForResult(intent_channel, CODE_REQUEST_CHANNEL);
             }
         });
 
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         View localView = mRadioGroup_content.getChildAt(i);
                         if (localView != v) {
                             localView.setSelected(false);
-                        }else{
+                        } else {
                             localView.setSelected(true);
                             mViewPager.setCurrentItem(i);
                         }
@@ -209,8 +210,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case CHANNELREQUEST:
-                if (resultCode == CHANNELRESULT) {
+            case CODE_REQUEST_CHANNEL:
+                if (resultCode == CODE_RESULT_CHANNEL) {
                     setChangelView();
                 }
                 break;
