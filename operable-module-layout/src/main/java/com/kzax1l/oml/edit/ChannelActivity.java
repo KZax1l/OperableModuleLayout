@@ -262,8 +262,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
 
     @Override
     public void onBackPressed() {
-        saveChannel();
         if (userAdapter.isListChanged()) {
+            saveChannel();
             setResult(CODE_RESULT_CHANNEL);
             finish();
         } else {
