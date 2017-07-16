@@ -82,8 +82,7 @@ public class DragAdapter extends BaseAdapter {
         item_text = (TextView) view.findViewById(R.id.text_item);
         ChannelItem channel = getItem(position);
         item_text.setText(channel.name);
-//        if ((position == 0) || (position == 1)) {
-        if (position == 0) {
+        if (!channel.deletable) {
             item_text.setEnabled(false);
         }
         if (isChanged && (position == holdPosition) && !isItemShow) {

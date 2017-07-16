@@ -97,30 +97,28 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             return;
         }
         if (parent.getId() == R.id.userGridView) {
-            //position为 0 的不进行任何操作
-            if (position != 0) {
-                final ImageView moveImageView = getView(view);
-                if (moveImageView != null) {
-                    TextView newTextView = (TextView) view.findViewById(R.id.text_item);
-                    final int[] startLocation = new int[2];
-                    newTextView.getLocationInWindow(startLocation);
-                    final ChannelItem channel = ((DragAdapter) parent.getAdapter()).getItem(position);//获取点击的频道内容
-                    otherAdapter.setVisible(false);
-                    //添加到最后一个
-                    otherAdapter.addItem(channel);
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            try {
-                                int[] endLocation = new int[2];
-                                //获取终点的坐标
-                                otherGridView.getChildAt(otherGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                                MoveAnim(moveImageView, startLocation, endLocation, channel, userGridView);
-                                userAdapter.setRemove(position);
-                            } catch (Exception localException) {
-                            }
+            final ChannelItem channel = ((DragAdapter) parent.getAdapter()).getItem(position);
+            if (!channel.deletable) return;
+            final ImageView moveImageView = getView(view);
+            if (moveImageView != null) {
+                TextView newTextView = (TextView) view.findViewById(R.id.text_item);
+                final int[] startLocation = new int[2];
+                newTextView.getLocationInWindow(startLocation);
+                otherAdapter.setVisible(false);
+                //添加到最后一个
+                otherAdapter.addItem(channel);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        try {
+                            int[] endLocation = new int[2];
+                            //获取终点的坐标
+                            otherGridView.getChildAt(otherGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
+                            MoveAnim(moveImageView, startLocation, endLocation, channel, userGridView);
+                            userAdapter.setRemove(position);
+                        } catch (Exception localException) {
                         }
-                    }, 50L);
-                }
+                    }
+                }, 50L);
             }
         } else if (parent.getId() == R.id.otherGridView) {
             // 其它GridView
