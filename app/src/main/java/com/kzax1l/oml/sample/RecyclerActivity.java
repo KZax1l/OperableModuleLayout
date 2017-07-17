@@ -10,14 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.kzax1l.oml.OMLApplication;
+import com.kzax1l.oml.OMLInitializer;
 
 /**
  * Created by Zsago on 2017/7/16.
  *
  * @author Zsago
  */
-
 public class RecyclerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,12 +37,12 @@ public class RecyclerActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.textView.setText(((OMLApplication) getApplication()).getChannelManage().getUserChannel().get(position).name);
+            holder.textView.setText(OMLInitializer.initialization().getChannelManage().getUserChannel().get(position).name);
         }
 
         @Override
         public int getItemCount() {
-            return ((OMLApplication) getApplication()).getChannelManage().getUserChannel().size();
+            return OMLInitializer.initialization().getChannelManage().getUserChannel().size();
         }
     }
 

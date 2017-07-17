@@ -5,12 +5,14 @@ import android.app.Application;
 import com.kzax1l.oml.dao.ChannelManage;
 import com.kzax1l.oml.db.SQLHelper;
 
+@Deprecated
 public class OMLApplication extends Application implements OMLInitialization {
     private SQLHelper sqlHelper;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        OMLInitializer.initialize(this);
     }
 
     /**
