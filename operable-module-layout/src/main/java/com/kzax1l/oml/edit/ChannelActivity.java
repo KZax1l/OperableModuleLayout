@@ -19,7 +19,6 @@ import com.kzax1l.oml.R;
 import com.kzax1l.oml.adapter.DragAdapter;
 import com.kzax1l.oml.adapter.OtherAdapter;
 import com.kzax1l.oml.dao.ChannelItem;
-import com.kzax1l.oml.dao.ChannelManager;
 import com.kzax1l.oml.view.DragGrid;
 import com.kzax1l.oml.view.OtherGridView;
 
@@ -68,10 +67,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 初始化数据
      */
     private void initData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManager
-                .getManage(OMLInitializer.initialization().getSQLHelper()).getUserChannel());
-        otherChannelList = ((ArrayList<ChannelItem>) ChannelManager
-                .getManage(OMLInitializer.initialization().getSQLHelper()).getOtherChannel());
+        userChannelList = (ArrayList<ChannelItem>) OMLInitializer.available();
+        otherChannelList = (ArrayList<ChannelItem>) OMLInitializer.unavailable();
         userAdapter = new DragAdapter(this, userChannelList);
         userGridView.setAdapter(userAdapter);
         otherAdapter = new OtherAdapter(this, otherChannelList);
@@ -255,9 +252,9 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 退出时候保存选择后数据库的设置
      */
     private void saveChannel() {
-        ChannelManager.getManage(OMLInitializer.initialization().getSQLHelper()).deleteAllChannel();
-        ChannelManager.getManage(OMLInitializer.initialization().getSQLHelper()).saveUserChannel(userAdapter.getChannnelLst());
-        ChannelManager.getManage(OMLInitializer.initialization().getSQLHelper()).saveOtherChannel(otherAdapter.getChannnelLst());
+        OMLInitializer.manager().deleteAllChannel();
+        OMLInitializer.manager().saveUserChannel(userAdapter.getChannnelLst());
+        OMLInitializer.manager().saveOtherChannel(otherAdapter.getChannnelLst());
     }
 
     @Override

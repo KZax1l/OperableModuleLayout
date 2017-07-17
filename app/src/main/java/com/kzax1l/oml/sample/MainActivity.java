@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.kzax1l.oml.OMLInitializer;
 import com.kzax1l.oml.Utils;
 import com.kzax1l.oml.dao.ChannelItem;
-import com.kzax1l.oml.dao.ChannelManager;
 import com.kzax1l.oml.edit.ChannelActivity;
 import com.kzax1l.oml.sample.fragment.NewsFragment;
 import com.kzax1l.oml.sample.fragment.NewsFragmentPagerAdapter;
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
      * 获取Column栏目 数据
      */
     private void initColumnData() {
-        userChannelList = ((ArrayList<ChannelItem>) ChannelManager.getManage(OMLInitializer.initialization().getSQLHelper()).getUserChannel());
+        userChannelList = ((ArrayList<ChannelItem>) OMLInitializer.available());
     }
 
     /**

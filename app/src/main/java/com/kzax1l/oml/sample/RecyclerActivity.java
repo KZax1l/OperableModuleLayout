@@ -37,12 +37,12 @@ public class RecyclerActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.textView.setText(OMLInitializer.initialization().getChannelManage().getUserChannel().get(position).name);
+            holder.textView.setText(OMLInitializer.available().get(position).name);
         }
 
         @Override
         public int getItemCount() {
-            return OMLInitializer.initialization().getChannelManage().getUserChannel().size();
+            return OMLInitializer.available().size();
         }
     }
 
