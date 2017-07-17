@@ -69,7 +69,7 @@ public class ChannelManager {
      * @param dbHelper
      * @throws SQLException
      */
-    public static ChannelManager getManage(SQLHelper dbHelper) throws SQLException {
+    public static ChannelManager getManager(SQLHelper dbHelper) throws SQLException {
         if (channelManager == null)
             channelManager = new ChannelManager(dbHelper);
         return channelManager;
@@ -127,6 +127,8 @@ public class ChannelManager {
                 navigate.setName(maplist.get(i).get(SQLHelper.NAME));
                 navigate.setOrderId(Integer.valueOf(maplist.get(i).get(SQLHelper.ORDERID)));
                 navigate.setSelected(Integer.valueOf(maplist.get(i).get(SQLHelper.SELECTED)));
+                // 由于SQLite中获取到的Boolean对象是一个数字，1表示true
+                navigate.setDeletable(maplist.get(i).get(SQLHelper.DELETABLE).equals("1"));
                 list.add(navigate);
             }
             return list;

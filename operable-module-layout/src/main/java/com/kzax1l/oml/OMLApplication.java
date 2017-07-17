@@ -36,6 +36,6 @@ public class OMLApplication extends Application implements OMLInitialization {
 
     @Override
     public ChannelManager getChannelManage() {
-        return ChannelManager.getManage(getSQLHelper());
+        return ChannelManager.getManager(getSQLHelper());
     }
 }
