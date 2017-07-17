@@ -2,6 +2,7 @@ package com.kzax1l.oml.dao;
 
 import android.database.SQLException;
 
+import com.kzax1l.oml.OMLDataProvider;
 import com.kzax1l.oml.db.SQLHelper;
 
 import java.util.ArrayList;
@@ -13,18 +14,17 @@ import java.util.Map;
  * <p>
  * Created by Mjj on 2016/11/18.
  */
-
 public class ChannelManager {
 
-    public static ChannelManager channelManager;
+    private static ChannelManager channelManager;
     /**
      * 默认的用户选择频道列表
      */
-    public static List<ChannelItem> defaultUserChannels;
+    private final List<ChannelItem> defaultUserChannels;
     /**
      * 默认的其他频道列表
      */
-    public static List<ChannelItem> defaultOtherChannels;
+    private final List<ChannelItem> defaultOtherChannels;
 
     private ChannelDao channelDao;
 
@@ -33,45 +33,29 @@ public class ChannelManager {
      */
     private boolean userExist = false;
 
-    static {
-        defaultUserChannels = new ArrayList<ChannelItem>();
-        defaultOtherChannels = new ArrayList<ChannelItem>();
-        defaultUserChannels.add(new ChannelItem(1, "推荐", 1, 1));
-        defaultUserChannels.add(new ChannelItem(2, "热点", 2, 1));
-        defaultUserChannels.add(new ChannelItem(3, "杭州", 3, 1));
-        defaultUserChannels.add(new ChannelItem(4, "时尚", 4, 1));
-        defaultUserChannels.add(new ChannelItem(5, "科技", 5, 1));
-        defaultUserChannels.add(new ChannelItem(6, "体育", 6, 1));
-        defaultUserChannels.add(new ChannelItem(7, "军事", 7, 1));
-        defaultOtherChannels.add(new ChannelItem(8, "财经", 1, 0));
-        defaultOtherChannels.add(new ChannelItem(9, "汽车", 2, 0));
-        defaultOtherChannels.add(new ChannelItem(10, "房产", 3, 0));
-        defaultOtherChannels.add(new ChannelItem(11, "社会", 4, 0));
-        defaultOtherChannels.add(new ChannelItem(12, "情感", 5, 0));
-        defaultOtherChannels.add(new ChannelItem(13, "女人", 6, 0));
-        defaultOtherChannels.add(new ChannelItem(14, "旅游", 7, 0));
-        defaultOtherChannels.add(new ChannelItem(15, "健康", 8, 0));
-        defaultOtherChannels.add(new ChannelItem(16, "美女", 9, 0));
-        defaultOtherChannels.add(new ChannelItem(17, "游戏", 10, 0));
-        defaultOtherChannels.add(new ChannelItem(18, "数码", 11, 0));
-        defaultUserChannels.add(new ChannelItem(19, "娱乐", 12, 0));
-    }
-
-    private ChannelManager(SQLHelper paramDBHelper) throws SQLException {
+    private ChannelManager(SQLHelper paramDBHelper, OMLDataProvider provider) throws SQLException {
+        if (provider == null)
+            throw new NullPointerException("OMLDataProvider can not be null!");
         if (channelDao == null)
             channelDao = new ChannelDao(paramDBHelper.getContext());
-        return;
+        if (provider.available() != null) {
+            defaultUserChannels = provider.available();
+        } else {
+            defaultUserChannels = new ArrayList<>();
+        }
+        if (provider.unavailable() != null) {
+            defaultOtherChannels = provider.unavailable();
+        } else {
+            defaultOtherChannels = new ArrayList<>();
+        }
     }
 
     /**
      * 初始化频道管理类
-     *
-     * @param dbHelper
-     * @throws SQLException
      */
-    public static ChannelManager getManager(SQLHelper dbHelper) throws SQLException {
+    public static ChannelManager getManager(SQLHelper dbHelper, OMLDataProvider provider) throws SQLException {
         if (channelManager == null)
-            channelManager = new ChannelManager(dbHelper);
+            channelManager = new ChannelManager(dbHelper, provider);
         return channelManager;
     }
 
@@ -142,28 +126,24 @@ public class ChannelManager {
 
     /**
      * 保存用户频道到数据库
-     *
-     * @param userList
      */
     public void saveUserChannel(List<ChannelItem> userList) {
         for (int i = 0; i < userList.size(); i++) {
-            ChannelItem channelItem = (ChannelItem) userList.get(i);
+            ChannelItem channelItem = userList.get(i);
             channelItem.setOrderId(i);
-            channelItem.setSelected(Integer.valueOf(1));
+            channelItem.setSelected(1);
             channelDao.addCache(channelItem);
         }
     }
 
     /**
      * 保存其他频道到数据库
-     *
-     * @param otherList
      */
     public void saveOtherChannel(List<ChannelItem> otherList) {
         for (int i = 0; i < otherList.size(); i++) {
-            ChannelItem channelItem = (ChannelItem) otherList.get(i);
+            ChannelItem channelItem = otherList.get(i);
             channelItem.setOrderId(i);
-            channelItem.setSelected(Integer.valueOf(0));
+            channelItem.setSelected(0);
             channelDao.addCache(channelItem);
         }
     }
