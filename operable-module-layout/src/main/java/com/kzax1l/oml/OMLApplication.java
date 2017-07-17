@@ -2,7 +2,7 @@ package com.kzax1l.oml;
 
 import android.app.Application;
 
-import com.kzax1l.oml.dao.ChannelManage;
+import com.kzax1l.oml.dao.ChannelManager;
 import com.kzax1l.oml.db.SQLHelper;
 
 @Deprecated
@@ -35,7 +35,7 @@ public class OMLApplication extends Application implements OMLInitialization {
     }
 
     @Override
-    public ChannelManage getChannelManage() {
-        return ChannelManage.getManage(getSQLHelper());
+    public ChannelManager getChannelManage() {
+        return ChannelManager.getManage(getSQLHelper());
     }
 }

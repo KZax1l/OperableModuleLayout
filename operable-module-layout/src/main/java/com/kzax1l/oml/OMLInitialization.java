@@ -1,6 +1,6 @@
 package com.kzax1l.oml;
 
-import com.kzax1l.oml.dao.ChannelManage;
+import com.kzax1l.oml.dao.ChannelManager;
 import com.kzax1l.oml.db.SQLHelper;
 
 /**
@@ -14,5 +14,5 @@ public interface OMLInitialization {
 
     void onTerminate(SQLHelper sqlHelper);
 
-    ChannelManage getChannelManage();
+    ChannelManager getChannelManage();
 }

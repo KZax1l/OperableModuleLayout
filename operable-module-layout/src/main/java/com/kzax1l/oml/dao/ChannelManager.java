@@ -14,9 +14,9 @@ import java.util.Map;
  * Created by Mjj on 2016/11/18.
  */
 
-public class ChannelManage {
+public class ChannelManager {
 
-    public static ChannelManage channelManage;
+    public static ChannelManager channelManager;
     /**
      * 默认的用户选择频道列表
      */
@@ -57,7 +57,7 @@ public class ChannelManage {
         defaultUserChannels.add(new ChannelItem(19, "娱乐", 12, 0));
     }
 
-    private ChannelManage(SQLHelper paramDBHelper) throws SQLException {
+    private ChannelManager(SQLHelper paramDBHelper) throws SQLException {
         if (channelDao == null)
             channelDao = new ChannelDao(paramDBHelper.getContext());
         return;
@@ -69,10 +69,10 @@ public class ChannelManage {
      * @param dbHelper
      * @throws SQLException
      */
-    public static ChannelManage getManage(SQLHelper dbHelper) throws SQLException {
-        if (channelManage == null)
-            channelManage = new ChannelManage(dbHelper);
-        return channelManage;
+    public static ChannelManager getManage(SQLHelper dbHelper) throws SQLException {
+        if (channelManager == null)
+            channelManager = new ChannelManager(dbHelper);
+        return channelManager;
     }
 
     /**
