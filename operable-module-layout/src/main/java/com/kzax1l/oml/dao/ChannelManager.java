@@ -73,11 +73,11 @@ public class ChannelManager {
      */
     public List<ChannelItem> getUserChannel() {
         Object cacheList = channelDao.listCache(SQLHelper.SELECTED + "= ?", new String[]{"1"});
+        List<ChannelItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             userExist = true;
             List<Map<String, String>> maplist = (List) cacheList;
             int count = maplist.size();
-            List<ChannelItem> list = new ArrayList<ChannelItem>();
             for (int i = 0; i < count; i++) {
                 ChannelItem navigate = new ChannelItem();
                 navigate.setId(Integer.valueOf(maplist.get(i).get(SQLHelper.ID)));
@@ -88,6 +88,9 @@ public class ChannelManager {
                 navigate.setDeletable(maplist.get(i).get(SQLHelper.DELETABLE).equals("1"));
                 list.add(navigate);
             }
+            return list;
+        }
+        if (userExist) {
             return list;
         }
         initDefaultChannel();
@@ -101,7 +104,7 @@ public class ChannelManager {
      */
     public List<ChannelItem> getOtherChannel() {
         Object cacheList = channelDao.listCache(SQLHelper.SELECTED + "= ?", new String[]{"0"});
-        List<ChannelItem> list = new ArrayList<ChannelItem>();
+        List<ChannelItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             List<Map<String, String>> maplist = (List) cacheList;
             int count = maplist.size();
