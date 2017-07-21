@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         mScreenWidth = Utils.getWindowsWidth(this);
         mItemWidth = mScreenWidth / 7; // 一个Item宽度为屏幕的1/7
         initView();
+
+        new MyDialog().show(getSupportFragmentManager(), "");
     }
 
     private void initView() {
