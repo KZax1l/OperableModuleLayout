@@ -23,12 +23,6 @@ import com.kzax1l.oml.R;
 import com.kzax1l.oml.Utils;
 import com.kzax1l.oml.adapter.DragAdapter;
 
-/**
- * Description：实现触摸、震动、计算坐标
- * <p>
- * Created by Mjj on 2016/11/18.
- */
-
 public class DragGrid extends GridView {
 
     /**

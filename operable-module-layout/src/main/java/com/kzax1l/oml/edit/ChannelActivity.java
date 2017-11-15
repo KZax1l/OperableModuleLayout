@@ -24,13 +24,6 @@ import com.kzax1l.oml.view.OtherGridView;
 
 import java.util.ArrayList;
 
-/**
- * Description：对tab进行添加删除排序操作
- * ScrollView嵌套两个GridView
- * <p>
- * Created by Mjj on 2016/11/18.
- */
-
 public class ChannelActivity extends GestureDetectorActivity implements AdapterView.OnItemClickListener {
 
     /**

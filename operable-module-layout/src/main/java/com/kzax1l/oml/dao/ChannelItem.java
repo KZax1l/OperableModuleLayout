@@ -2,9 +2,6 @@ package com.kzax1l.oml.dao;
 
 import java.io.Serializable;
 
-/**
- * tab的对应可序化队列属性
- */
 public class ChannelItem implements Serializable {
     private static final long serialVersionUID = -6465237897027410019L;
     /**

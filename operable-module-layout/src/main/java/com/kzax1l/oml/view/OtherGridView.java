@@ -4,12 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
-/**
- * Description：解决嵌套显示不全问题
- * <p>
- * Created by Mjj on 2016/11/18.
- */
-
 public class OtherGridView extends GridView {
 
     public OtherGridView(Context paramContext, AttributeSet paramAttributeSet) {

@@ -12,11 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Description：本地管理tab
- * <p>
- * Created by Mjj on 2016/11/19.
- */
 class ChannelDao implements ChannelDaoInface {
 
     private SQLHelper helper = null;

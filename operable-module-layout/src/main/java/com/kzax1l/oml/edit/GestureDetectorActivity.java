@@ -6,12 +6,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-/**
- * Description：手势处理
- * <p>
- * Created by Mjj on 2016/11/18.
- */
-
 public class GestureDetectorActivity extends AppCompatActivity {
 
     /**

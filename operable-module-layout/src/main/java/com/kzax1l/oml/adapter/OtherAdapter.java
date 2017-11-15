@@ -12,12 +12,6 @@ import com.kzax1l.oml.dao.ChannelItem;
 
 import java.util.List;
 
-/**
- * Description：其它栏目适配器
- * <p>
- * Created by Mjj on 2016/11/19.
- */
-
 public class OtherAdapter extends BaseAdapter {
 
     private Context context;

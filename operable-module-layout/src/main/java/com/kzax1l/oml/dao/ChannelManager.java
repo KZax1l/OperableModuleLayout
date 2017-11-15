@@ -9,11 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Description：频道管理
- * <p>
- * Created by Mjj on 2016/11/18.
- */
 public class ChannelManager {
 
     private static ChannelManager channelManager;

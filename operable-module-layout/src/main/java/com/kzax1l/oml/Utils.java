@@ -4,12 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
-/**
- * Description：工具类
- * <p>
- * Created by Mjj on 2016/11/18.
- */
-
 public class Utils {
 
     /** 获取屏幕的宽度 */

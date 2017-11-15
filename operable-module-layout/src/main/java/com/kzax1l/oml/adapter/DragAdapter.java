@@ -12,12 +12,6 @@ import com.kzax1l.oml.dao.ChannelItem;
 
 import java.util.List;
 
-/**
- * Description：用户栏目适配器
- * <p>
- * Created by Mjj on 2016/11/19.
- */
-
 public class DragAdapter extends BaseAdapter {
     /**
      * 是否显示底部的ITEM
