@@ -4,10 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <!--  <include
-          android:id="@+id/title_bar"
-          layout="@layout/title_bar" />-->
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -54,7 +50,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/colorAccent" />
 
-            <com.kzax1l.oml.view.DragGrid
+            <com.kzax1l.oml.view.CheckedGridView
                 android:id="@+id/userGridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -84,7 +80,7 @@
                 android:layout_marginLeft="10.0dip"
                 android:textSize="14sp" />
 
-            <com.kzax1l.oml.view.OtherGridView
+            <com.kzax1l.oml.view.UncheckedGridView
                 android:id="@+id/otherGridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

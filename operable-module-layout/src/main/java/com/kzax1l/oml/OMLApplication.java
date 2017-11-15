@@ -4,14 +4,14 @@ import android.app.Application;
 
 import com.kzax1l.oml.dao.ChannelItem;
 import com.kzax1l.oml.dao.ChannelManager;
-import com.kzax1l.oml.db.SQLHelper;
+import com.kzax1l.oml.db.OMLSqlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Deprecated
 public class OMLApplication extends Application implements OMLInitialization, OMLDataProvider {
-    private SQLHelper sqlHelper;
+    private OMLSqlHelper sqlHelper;
 
     @Override
     public void onCreate() {
@@ -23,14 +23,14 @@ public class OMLApplication extends Application implements OMLInitialization, OM
      * 获取数据库Helper
      */
     @Override
-    public SQLHelper getSQLHelper() {
+    public OMLSqlHelper getSQLHelper() {
         if (sqlHelper == null)
-            sqlHelper = new SQLHelper(this);
+            sqlHelper = new OMLSqlHelper(this);
         return sqlHelper;
     }
 
     @Override
-    public void onTerminate(SQLHelper sqlHelper) {
+    public void onTerminate(OMLSqlHelper sqlHelper) {
         super.onTerminate();
         if (sqlHelper != null) {
             sqlHelper.close();

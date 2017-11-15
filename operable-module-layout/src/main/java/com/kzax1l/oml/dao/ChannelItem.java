@@ -2,6 +2,9 @@ package com.kzax1l.oml.dao;
 
 import java.io.Serializable;
 
+/**
+ * 后续可换成{@link android.os.Parcelable}
+ */
 public class ChannelItem implements Serializable {
     private static final long serialVersionUID = -6465237897027410019L;
     /**

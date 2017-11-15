@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.kzax1l.oml.db.SQLHelper;
+import com.kzax1l.oml.db.OMLSqlHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,10 +14,10 @@ import java.util.Map;
 
 class ChannelDao implements ChannelDaoInface {
 
-    private SQLHelper helper = null;
+    private OMLSqlHelper helper = null;
 
     ChannelDao(Context context) {
-        helper = new SQLHelper(context);
+        helper = new OMLSqlHelper(context);
     }
 
     @Override
@@ -28,12 +28,12 @@ class ChannelDao implements ChannelDaoInface {
         try {
             database = helper.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(SQLHelper.ID, item.id);
-            values.put(SQLHelper.NAME, item.name);
-            values.put(SQLHelper.ORDERID, item.orderId);
-            values.put(SQLHelper.SELECTED, item.selected);
-            values.put(SQLHelper.DELETABLE, item.deletable);
-            id = database.insert(SQLHelper.TABLE_CHANNEL, null, values);
+            values.put(OMLSqlHelper.OML_MODULE_ID, item.id);
+            values.put(OMLSqlHelper.OML_MODULE_NAME, item.name);
+            values.put(OMLSqlHelper.OML_MODULE_ORDER_ID, item.orderId);
+            values.put(OMLSqlHelper.OML_MODULE_CHECK_STATE, item.selected);
+            values.put(OMLSqlHelper.OML_MODULE_OPERABLE, item.deletable);
+            id = database.insert(OMLSqlHelper.OML_MODULE_TABLE_NAME, null, values);
             flag = id != -1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ class ChannelDao implements ChannelDaoInface {
         int count;
         try {
             database = helper.getWritableDatabase();
-            count = database.delete(SQLHelper.TABLE_CHANNEL, whereClause, whereArgs);
+            count = database.delete(OMLSqlHelper.OML_MODULE_TABLE_NAME, whereClause, whereArgs);
             flag = count > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +72,7 @@ class ChannelDao implements ChannelDaoInface {
         int count;
         try {
             database = helper.getWritableDatabase();
-            count = database.update(SQLHelper.TABLE_CHANNEL, values, whereClause, whereArgs);
+            count = database.update(OMLSqlHelper.OML_MODULE_TABLE_NAME, values, whereClause, whereArgs);
             flag = count > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,7 +91,7 @@ class ChannelDao implements ChannelDaoInface {
         Map<String, String> map = new HashMap<>();
         try {
             database = helper.getReadableDatabase();
-            cursor = database.query(true, SQLHelper.TABLE_CHANNEL, null, selection,
+            cursor = database.query(true, OMLSqlHelper.OML_MODULE_TABLE_NAME, null, selection,
                     selectionArgs, null, null, null, null);
             int cols_len = cursor.getColumnCount();
             while (cursor.moveToNext()) {
@@ -125,7 +125,7 @@ class ChannelDao implements ChannelDaoInface {
         Cursor cursor = null;
         try {
             database = helper.getReadableDatabase();
-            cursor = database.query(false, SQLHelper.TABLE_CHANNEL, null, selection, selectionArgs, null, null, null, null);
+            cursor = database.query(false, OMLSqlHelper.OML_MODULE_TABLE_NAME, null, selection, selectionArgs, null, null, null, null);
             int cols_len = cursor.getColumnCount();
             while (cursor.moveToNext()) {
                 Map<String, String> map = new HashMap<>();
@@ -154,7 +154,7 @@ class ChannelDao implements ChannelDaoInface {
     }
 
     public void clearFeedTable() {
-        String sql = "DELETE FROM " + SQLHelper.TABLE_CHANNEL + ";";
+        String sql = "DELETE FROM " + OMLSqlHelper.OML_MODULE_TABLE_NAME + ";";
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL(sql);
         revertSeq();
@@ -162,7 +162,7 @@ class ChannelDao implements ChannelDaoInface {
 
     private void revertSeq() {
         String sql = "update sqlite_sequence set seq=0 where name='"
-                + SQLHelper.TABLE_CHANNEL + "'";
+                + OMLSqlHelper.OML_MODULE_TABLE_NAME + "'";
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL(sql);
     }

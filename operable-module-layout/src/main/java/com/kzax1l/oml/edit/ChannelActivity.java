@@ -16,29 +16,22 @@ import android.widget.TextView;
 
 import com.kzax1l.oml.OMLInitializer;
 import com.kzax1l.oml.R;
-import com.kzax1l.oml.adapter.DragAdapter;
-import com.kzax1l.oml.adapter.OtherAdapter;
+import com.kzax1l.oml.adapter.CheckedAdapter;
+import com.kzax1l.oml.adapter.UncheckedAdapter;
 import com.kzax1l.oml.dao.ChannelItem;
-import com.kzax1l.oml.view.DragGrid;
-import com.kzax1l.oml.view.OtherGridView;
+import com.kzax1l.oml.view.CheckedGridView;
+import com.kzax1l.oml.view.UncheckedGridView;
 
 import java.util.ArrayList;
 
 public class ChannelActivity extends GestureDetectorActivity implements AdapterView.OnItemClickListener {
+    private CheckedGridView mCheckedGridView; // GridView
+    CheckedAdapter mCheckedAdapter; // 适配器
+    ArrayList<ChannelItem> mCheckedModules = new ArrayList<>();
 
-    /**
-     * 用户栏目
-     */
-    private DragGrid userGridView; // GridView
-    DragAdapter userAdapter; // 适配器
-    ArrayList<ChannelItem> userChannelList = new ArrayList<>();
-
-    /**
-     * 其它栏目
-     */
-    private OtherGridView otherGridView; // GridView
-    OtherAdapter otherAdapter; // 适配器
-    ArrayList<ChannelItem> otherChannelList = new ArrayList<ChannelItem>(); // 数据源
+    private UncheckedGridView mUncheckedGridView; // GridView
+    UncheckedAdapter mUncheckedAdapter; // 适配器
+    ArrayList<ChannelItem> mUncheckedModules = new ArrayList<>(); // 数据源
 
     /**
      * 是否在移动，由于是动画结束后才进行的数据更替，设置这个限制为了避免操作太频繁造成的数据错乱。
@@ -51,7 +44,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.channel);
+        setContentView(R.layout.ac_modules);
         initView();
         initData();
     }
@@ -60,23 +53,23 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 初始化数据
      */
     private void initData() {
-        userChannelList = (ArrayList<ChannelItem>) OMLInitializer.available();
-        otherChannelList = (ArrayList<ChannelItem>) OMLInitializer.unavailable();
-        userAdapter = new DragAdapter(this, userChannelList);
-        userGridView.setAdapter(userAdapter);
-        otherAdapter = new OtherAdapter(this, otherChannelList);
-        otherGridView.setAdapter(otherAdapter);
+        mCheckedModules = (ArrayList<ChannelItem>) OMLInitializer.available();
+        mUncheckedModules = (ArrayList<ChannelItem>) OMLInitializer.unavailable();
+        mCheckedAdapter = new CheckedAdapter(this, mCheckedModules);
+        mCheckedGridView.setAdapter(mCheckedAdapter);
+        mUncheckedAdapter = new UncheckedAdapter(this, mUncheckedModules);
+        mUncheckedGridView.setAdapter(mUncheckedAdapter);
         //设置GRIDVIEW的ITEM的点击监听
-        otherGridView.setOnItemClickListener(this);
-        userGridView.setOnItemClickListener(this);
+        mUncheckedGridView.setOnItemClickListener(this);
+        mCheckedGridView.setOnItemClickListener(this);
     }
 
     /**
      * 初始化布局
      */
     private void initView() {
-        userGridView = (DragGrid) findViewById(R.id.userGridView);
-        otherGridView = (OtherGridView) findViewById(R.id.otherGridView);
+        mCheckedGridView = (CheckedGridView) findViewById(R.id.userGridView);
+        mUncheckedGridView = (UncheckedGridView) findViewById(R.id.otherGridView);
     }
 
     /**
@@ -89,24 +82,24 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             return;
         }
         if (parent.getId() == R.id.userGridView) {
-            final ChannelItem channel = ((DragAdapter) parent.getAdapter()).getItem(position);
+            final ChannelItem channel = ((CheckedAdapter) parent.getAdapter()).getItem(position);
             if (!channel.deletable) return;
             final ImageView moveImageView = getView(view);
             if (moveImageView != null) {
                 TextView newTextView = (TextView) view.findViewById(R.id.text_item);
                 final int[] startLocation = new int[2];
                 newTextView.getLocationInWindow(startLocation);
-                otherAdapter.setVisible(false);
+                mUncheckedAdapter.setVisible(false);
                 //添加到最后一个
-                otherAdapter.addItem(channel);
+                mUncheckedAdapter.addItem(channel);
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         try {
                             int[] endLocation = new int[2];
                             //获取终点的坐标
-                            otherGridView.getChildAt(otherGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                            MoveAnim(moveImageView, startLocation, endLocation, channel, userGridView);
-                            userAdapter.setRemove(position);
+                            mUncheckedGridView.getChildAt(mUncheckedGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
+                            MoveAnim(moveImageView, startLocation, endLocation, channel, mCheckedGridView);
+                            mCheckedAdapter.setRemove(position);
                         } catch (Exception localException) {
                         }
                     }
@@ -119,18 +112,18 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                 TextView newTextView = (TextView) view.findViewById(R.id.text_item);
                 final int[] startLocation = new int[2];
                 newTextView.getLocationInWindow(startLocation);
-                final ChannelItem channel = ((OtherAdapter) parent.getAdapter()).getItem(position);
-                userAdapter.setVisible(false);
+                final ChannelItem channel = ((UncheckedAdapter) parent.getAdapter()).getItem(position);
+                mCheckedAdapter.setVisible(false);
                 //添加到最后一个
-                userAdapter.addItem(channel);
+                mCheckedAdapter.addItem(channel);
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         try {
                             int[] endLocation = new int[2];
                             //获取终点的坐标
-                            userGridView.getChildAt(userGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                            MoveAnim(moveImageView, startLocation, endLocation, channel, otherGridView);
-                            otherAdapter.setRemove(position);
+                            mCheckedGridView.getChildAt(mCheckedGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
+                            MoveAnim(moveImageView, startLocation, endLocation, channel, mUncheckedGridView);
+                            mUncheckedAdapter.setRemove(position);
                         } catch (Exception localException) {
                         }
                     }
@@ -181,14 +174,14 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             public void onAnimationEnd(Animation animation) {
                 moveViewGroup.removeView(mMoveView);
                 // instanceof 方法判断2边实例是不是一样，判断点击的是DragGrid还是OtherGridView
-                if (clickGridView instanceof DragGrid) {
-                    otherAdapter.setVisible(true);
-                    otherAdapter.notifyDataSetChanged();
-                    userAdapter.remove();
+                if (clickGridView instanceof CheckedGridView) {
+                    mUncheckedAdapter.setVisible(true);
+                    mUncheckedAdapter.notifyDataSetChanged();
+                    mCheckedAdapter.remove();
                 } else {
-                    userAdapter.setVisible(true);
-                    userAdapter.notifyDataSetChanged();
-                    otherAdapter.remove();
+                    mCheckedAdapter.setVisible(true);
+                    mCheckedAdapter.notifyDataSetChanged();
+                    mUncheckedAdapter.remove();
                 }
                 isMove = false;
             }
@@ -246,13 +239,13 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      */
     private void saveChannel() {
         OMLInitializer.manager().deleteAllChannel();
-        OMLInitializer.manager().saveUserChannel(userAdapter.getChannnelLst());
-        OMLInitializer.manager().saveOtherChannel(otherAdapter.getChannnelLst());
+        OMLInitializer.manager().saveUserChannel(mCheckedAdapter.getChannnelLst());
+        OMLInitializer.manager().saveOtherChannel(mUncheckedAdapter.getChannnelLst());
     }
 
     @Override
     public void onBackPressed() {
-        if (userAdapter.isListChanged()) {
+        if (mCheckedAdapter.isListChanged()) {
             saveChannel();
             setResult(CODE_RESULT_CHANNEL);
             finish();

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
-public class OtherGridView extends GridView {
+public class UncheckedGridView extends GridView {
 
-    public OtherGridView(Context paramContext, AttributeSet paramAttributeSet) {
+    public UncheckedGridView(Context paramContext, AttributeSet paramAttributeSet) {
         super(paramContext, paramAttributeSet);
     }
 

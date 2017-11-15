@@ -3,7 +3,7 @@ package com.kzax1l.oml.dao;
 import android.database.SQLException;
 
 import com.kzax1l.oml.OMLDataProvider;
-import com.kzax1l.oml.db.SQLHelper;
+import com.kzax1l.oml.db.OMLSqlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class ChannelManager {
      */
     private boolean userExist = false;
 
-    private ChannelManager(SQLHelper paramDBHelper, OMLDataProvider provider) throws SQLException {
+    private ChannelManager(OMLSqlHelper paramDBHelper, OMLDataProvider provider) throws SQLException {
         if (provider == null)
             throw new NullPointerException("OMLDataProvider can not be null!");
         if (channelDao == null)
@@ -48,7 +48,7 @@ public class ChannelManager {
     /**
      * 初始化频道管理类
      */
-    public static ChannelManager getManager(SQLHelper dbHelper, OMLDataProvider provider) throws SQLException {
+    public static ChannelManager getManager(OMLSqlHelper dbHelper, OMLDataProvider provider) throws SQLException {
         if (channelManager == null)
             channelManager = new ChannelManager(dbHelper, provider);
         return channelManager;
@@ -67,7 +67,7 @@ public class ChannelManager {
      * @return 数据库存在用户配置 ? 数据库内的用户选择频道 : 默认用户选择频道 ;
      */
     public List<ChannelItem> getUserChannel() {
-        Object cacheList = channelDao.listCache(SQLHelper.SELECTED + "= ?", new String[]{"1"});
+        Object cacheList = channelDao.listCache(OMLSqlHelper.OML_MODULE_CHECK_STATE + "= ?", new String[]{"1"});
         List<ChannelItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             userExist = true;
@@ -75,12 +75,12 @@ public class ChannelManager {
             int count = maplist.size();
             for (int i = 0; i < count; i++) {
                 ChannelItem navigate = new ChannelItem();
-                navigate.setId(Integer.valueOf(maplist.get(i).get(SQLHelper.ID)));
-                navigate.setName(maplist.get(i).get(SQLHelper.NAME));
-                navigate.setOrderId(Integer.valueOf(maplist.get(i).get(SQLHelper.ORDERID)));
-                navigate.setSelected(Integer.valueOf(maplist.get(i).get(SQLHelper.SELECTED)));
+                navigate.setId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ID)));
+                navigate.setName(maplist.get(i).get(OMLSqlHelper.OML_MODULE_NAME));
+                navigate.setOrderId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ORDER_ID)));
+                navigate.setSelected(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_CHECK_STATE)));
                 // 由于SQLite中获取到的Boolean对象是一个数字，1表示true
-                navigate.setDeletable(maplist.get(i).get(SQLHelper.DELETABLE).equals("1"));
+                navigate.setDeletable(maplist.get(i).get(OMLSqlHelper.OML_MODULE_OPERABLE).equals("1"));
                 list.add(navigate);
             }
             return list;
@@ -98,19 +98,19 @@ public class ChannelManager {
      * @return 数据库存在用户配置 ? 数据库内的其它频道 : 默认其它频道 ;
      */
     public List<ChannelItem> getOtherChannel() {
-        Object cacheList = channelDao.listCache(SQLHelper.SELECTED + "= ?", new String[]{"0"});
+        Object cacheList = channelDao.listCache(OMLSqlHelper.OML_MODULE_CHECK_STATE + "= ?", new String[]{"0"});
         List<ChannelItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             List<Map<String, String>> maplist = (List) cacheList;
             int count = maplist.size();
             for (int i = 0; i < count; i++) {
                 ChannelItem navigate = new ChannelItem();
-                navigate.setId(Integer.valueOf(maplist.get(i).get(SQLHelper.ID)));
-                navigate.setName(maplist.get(i).get(SQLHelper.NAME));
-                navigate.setOrderId(Integer.valueOf(maplist.get(i).get(SQLHelper.ORDERID)));
-                navigate.setSelected(Integer.valueOf(maplist.get(i).get(SQLHelper.SELECTED)));
+                navigate.setId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ID)));
+                navigate.setName(maplist.get(i).get(OMLSqlHelper.OML_MODULE_NAME));
+                navigate.setOrderId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ORDER_ID)));
+                navigate.setSelected(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_CHECK_STATE)));
                 // 由于SQLite中获取到的Boolean对象是一个数字，1表示true
-                navigate.setDeletable(maplist.get(i).get(SQLHelper.DELETABLE).equals("1"));
+                navigate.setDeletable(maplist.get(i).get(OMLSqlHelper.OML_MODULE_OPERABLE).equals("1"));
                 list.add(navigate);
             }
             return list;

@@ -1,7 +1,7 @@
 package com.kzax1l.oml;
 
 import com.kzax1l.oml.dao.ChannelManager;
-import com.kzax1l.oml.db.SQLHelper;
+import com.kzax1l.oml.db.OMLSqlHelper;
 
 /**
  * Created by Zsago on 2017/7/16.
@@ -10,9 +10,9 @@ import com.kzax1l.oml.db.SQLHelper;
  * @author Zsago
  */
 public interface OMLInitialization {
-    SQLHelper getSQLHelper();
+    OMLSqlHelper getSQLHelper();
 
-    void onTerminate(SQLHelper sqlHelper);
+    void onTerminate(OMLSqlHelper sqlHelper);
 
     ChannelManager getChannelManage();
 }

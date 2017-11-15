@@ -21,9 +21,9 @@ import android.widget.TextView;
 
 import com.kzax1l.oml.R;
 import com.kzax1l.oml.Utils;
-import com.kzax1l.oml.adapter.DragAdapter;
+import com.kzax1l.oml.adapter.CheckedAdapter;
 
-public class DragGrid extends GridView {
+public class CheckedGridView extends GridView {
 
     /**
      * 点击时候的X位置
@@ -132,17 +132,17 @@ public class DragGrid extends GridView {
     /* 移动时候最后个动画的ID */
     private String LastAnimationID;
 
-    public DragGrid(Context context) {
+    public CheckedGridView(Context context) {
         super(context);
         init(context);
     }
 
-    public DragGrid(Context context, AttributeSet attrs, int defStyle) {
+    public CheckedGridView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
 
-    public DragGrid(Context context, AttributeSet attrs) {
+    public CheckedGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
@@ -227,7 +227,7 @@ public class DragGrid extends GridView {
         int tempPostion = pointToPosition(x, y);
 //		if (tempPostion != AdapterView.INVALID_POSITION) {
         dropPosition = tempPostion;
-        DragAdapter mDragAdapter = (DragAdapter) getAdapter();
+        CheckedAdapter mDragAdapter = (CheckedAdapter) getAdapter();
         //显示刚拖动的ITEM
         mDragAdapter.setShowDropItem(true);
         //刷新适配器，让对应的ITEM显示
@@ -260,7 +260,7 @@ public class DragGrid extends GridView {
                 dragTextView.setEnabled(false);
                 itemHeight = dragViewGroup.getHeight();
                 itemWidth = dragViewGroup.getWidth();
-                itemTotalCount = DragGrid.this.getCount();
+                itemTotalCount = CheckedGridView.this.getCount();
                 int row = itemTotalCount / nColumns;// 算出行数
                 Remainder = (itemTotalCount % nColumns);// 算出最后一行多余的数量
                 if (Remainder != 0) {
@@ -344,7 +344,7 @@ public class DragGrid extends GridView {
      * 隐藏 放下 的ITEM
      */
     private void hideDropItem() {
-        ((DragAdapter) getAdapter()).setShowDropItem(false);
+        ((CheckedAdapter) getAdapter()).setShowDropItem(false);
     }
 
     /**
@@ -457,7 +457,7 @@ public class DragGrid extends GridView {
                         public void onAnimationEnd(Animation animation) {
                             // 如果为最后个动画结束，那执行下面的方法
                             if (animation.toString().equalsIgnoreCase(LastAnimationID)) {
-                                DragAdapter mDragAdapter = (DragAdapter) getAdapter();
+                                CheckedAdapter mDragAdapter = (CheckedAdapter) getAdapter();
                                 mDragAdapter.exchange(startPosition, dropPosition);
                                 startPosition = dropPosition;
                                 dragPosition = dropPosition;
