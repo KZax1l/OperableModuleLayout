@@ -15,7 +15,7 @@ import java.util.List;
 public class UncheckedAdapter extends BaseAdapter {
 
     private Context context;
-    public List<ModuleItem> channelList;
+    public List<ModuleItem> moduleList;
     private TextView item_text;
     /**
      * 是否可见
@@ -26,20 +26,20 @@ public class UncheckedAdapter extends BaseAdapter {
      */
     public int remove_position = -1;
 
-    public UncheckedAdapter(Context context, List<ModuleItem> channelList) {
+    public UncheckedAdapter(Context context, List<ModuleItem> moduleList) {
         this.context = context;
-        this.channelList = channelList;
+        this.moduleList = moduleList;
     }
 
     @Override
     public int getCount() {
-        return channelList == null ? 0 : channelList.size();
+        return moduleList == null ? 0 : moduleList.size();
     }
 
     @Override
     public ModuleItem getItem(int position) {
-        if (channelList != null && channelList.size() != 0) {
-            return channelList.get(position);
+        if (moduleList != null && moduleList.size() != 0) {
+            return moduleList.get(position);
         }
         return null;
     }
@@ -55,7 +55,7 @@ public class UncheckedAdapter extends BaseAdapter {
         item_text = (TextView) view.findViewById(R.id.text_item);
         ModuleItem channel = getItem(position);
         item_text.setText(channel.name);
-        if (!isVisible && (position == -1 + channelList.size())) {
+        if (!isVisible && (position == -1 + moduleList.size())) {
             item_text.setText("");
         }
         if (remove_position == position) {
@@ -68,14 +68,14 @@ public class UncheckedAdapter extends BaseAdapter {
      * 获取频道列表
      */
     public List<ModuleItem> getChannnelLst() {
-        return channelList;
+        return moduleList;
     }
 
     /**
      * 添加频道列表
      */
     public void addItem(ModuleItem channel) {
-        channelList.add(channel);
+        moduleList.add(channel);
         notifyDataSetChanged();
     }
 
@@ -92,7 +92,7 @@ public class UncheckedAdapter extends BaseAdapter {
      * 删除频道列表
      */
     public void remove() {
-        channelList.remove(remove_position);
+        moduleList.remove(remove_position);
         remove_position = -1;
         notifyDataSetChanged();
     }
@@ -101,7 +101,7 @@ public class UncheckedAdapter extends BaseAdapter {
      * 设置频道列表
      */
     public void setListDate(List<ModuleItem> list) {
-        channelList = list;
+        moduleList = list;
     }
 
     /**

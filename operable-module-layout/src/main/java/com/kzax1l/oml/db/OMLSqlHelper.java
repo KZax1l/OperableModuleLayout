@@ -17,15 +17,15 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
      */
     public static final String OML_MODULE_OPERABLE = "oml_module_operable";
     public static final String OML_MODULE_CHECK_STATE = "oml_module_check_state";
-    private Context context;
+    private Context mContext;
 
     public OMLSqlHelper(Context context) {
         super(context, OML_DB_NAME, null, OML_DB_VERSION);
-        this.context = context;
+        this.mContext = context;
     }
 
     public Context getContext() {
-        return context;
+        return mContext;
     }
 
     @Override

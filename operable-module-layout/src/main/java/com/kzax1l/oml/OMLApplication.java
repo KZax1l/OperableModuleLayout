@@ -11,7 +11,7 @@ import java.util.List;
 
 @Deprecated
 public class OMLApplication extends Application implements OMLInitialization, OMLDataProvider {
-    private OMLSqlHelper sqlHelper;
+    private OMLSqlHelper mSqlHelper;
 
     @Override
     public void onCreate() {
@@ -24,9 +24,9 @@ public class OMLApplication extends Application implements OMLInitialization, OM
      */
     @Override
     public OMLSqlHelper getSQLHelper() {
-        if (sqlHelper == null)
-            sqlHelper = new OMLSqlHelper(this);
-        return sqlHelper;
+        if (mSqlHelper == null)
+            mSqlHelper = new OMLSqlHelper(this);
+        return mSqlHelper;
     }
 
     @Override
@@ -45,32 +45,32 @@ public class OMLApplication extends Application implements OMLInitialization, OM
 
     @Override
     public List<ModuleItem> available() {
-        List<ModuleItem> defaultUserChannels = new ArrayList<>();
-        defaultUserChannels.add(new ModuleItem(1, "推荐", 1, 1));
-        defaultUserChannels.add(new ModuleItem(2, "热点", 2, 1));
-        defaultUserChannels.add(new ModuleItem(3, "杭州", 3, 1));
-        defaultUserChannels.add(new ModuleItem(4, "时尚", 4, 1));
-        defaultUserChannels.add(new ModuleItem(5, "科技", 5, 1));
-        defaultUserChannels.add(new ModuleItem(6, "体育", 6, 1));
-        defaultUserChannels.add(new ModuleItem(7, "军事", 7, 1));
-        defaultUserChannels.add(new ModuleItem(19, "娱乐", 12, 0));
-        return defaultUserChannels;
+        List<ModuleItem> defaultModules = new ArrayList<>();
+        defaultModules.add(new ModuleItem(1, "推荐", 1, 1));
+        defaultModules.add(new ModuleItem(2, "热点", 2, 1));
+        defaultModules.add(new ModuleItem(3, "杭州", 3, 1));
+        defaultModules.add(new ModuleItem(4, "时尚", 4, 1));
+        defaultModules.add(new ModuleItem(5, "科技", 5, 1));
+        defaultModules.add(new ModuleItem(6, "体育", 6, 1));
+        defaultModules.add(new ModuleItem(7, "军事", 7, 1));
+        defaultModules.add(new ModuleItem(19, "娱乐", 12, 0));
+        return defaultModules;
     }
 
     @Override
     public List<ModuleItem> unavailable() {
-        List<ModuleItem> defaultOtherChannels = new ArrayList<>();
-        defaultOtherChannels.add(new ModuleItem(8, "财经", 1, 0));
-        defaultOtherChannels.add(new ModuleItem(9, "汽车", 2, 0));
-        defaultOtherChannels.add(new ModuleItem(10, "房产", 3, 0));
-        defaultOtherChannels.add(new ModuleItem(11, "社会", 4, 0));
-        defaultOtherChannels.add(new ModuleItem(12, "情感", 5, 0));
-        defaultOtherChannels.add(new ModuleItem(13, "女人", 6, 0));
-        defaultOtherChannels.add(new ModuleItem(14, "旅游", 7, 0));
-        defaultOtherChannels.add(new ModuleItem(15, "健康", 8, 0));
-        defaultOtherChannels.add(new ModuleItem(16, "美女", 9, 0));
-        defaultOtherChannels.add(new ModuleItem(17, "游戏", 10, 0));
-        defaultOtherChannels.add(new ModuleItem(18, "数码", 11, 0));
-        return defaultOtherChannels;
+        List<ModuleItem> defaultModules = new ArrayList<>();
+        defaultModules.add(new ModuleItem(8, "财经", 1, 0));
+        defaultModules.add(new ModuleItem(9, "汽车", 2, 0));
+        defaultModules.add(new ModuleItem(10, "房产", 3, 0));
+        defaultModules.add(new ModuleItem(11, "社会", 4, 0));
+        defaultModules.add(new ModuleItem(12, "情感", 5, 0));
+        defaultModules.add(new ModuleItem(13, "女人", 6, 0));
+        defaultModules.add(new ModuleItem(14, "旅游", 7, 0));
+        defaultModules.add(new ModuleItem(15, "健康", 8, 0));
+        defaultModules.add(new ModuleItem(16, "美女", 9, 0));
+        defaultModules.add(new ModuleItem(17, "游戏", 10, 0));
+        defaultModules.add(new ModuleItem(18, "数码", 11, 0));
+        return defaultModules;
     }
 }

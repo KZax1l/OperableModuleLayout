@@ -36,7 +36,7 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
     /**
      * 是否在移动，由于是动画结束后才进行的数据更替，设置这个限制为了避免操作太频繁造成的数据错乱。
      */
-    boolean isMove = false;
+    boolean mIsMove = false;
 
     public final static int CODE_REQUEST_CHANNEL = 0x98; // 请求码
     public final static int CODE_RESULT_CHANNEL = 0x99; // 返回码
@@ -78,7 +78,7 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
         //如果点击的时候，之前动画还没结束，那么就让点击事件无效
-        if (isMove) {
+        if (mIsMove) {
             return;
         }
         if (parent.getId() == R.id.userGridView) {
@@ -163,7 +163,7 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
 
             @Override
             public void onAnimationStart(Animation animation) {
-                isMove = true;
+                mIsMove = true;
             }
 
             @Override
@@ -183,7 +183,7 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
                     mCheckedAdapter.notifyDataSetChanged();
                     mUncheckedAdapter.remove();
                 }
-                isMove = false;
+                mIsMove = false;
             }
         });
     }

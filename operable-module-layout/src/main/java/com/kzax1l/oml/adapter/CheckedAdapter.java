@@ -37,7 +37,7 @@ public class CheckedAdapter extends BaseAdapter {
     /**
      * 可以拖动的列表（即用户选择的频道列表）
      */
-    public List<ModuleItem> channelList;
+    public List<ModuleItem> moduleList;
     /**
      * TextView 频道内容
      */
@@ -47,20 +47,20 @@ public class CheckedAdapter extends BaseAdapter {
      */
     public int remove_position = -1;
 
-    public CheckedAdapter(Context context, List<ModuleItem> channelList) {
+    public CheckedAdapter(Context context, List<ModuleItem> moduleList) {
         this.context = context;
-        this.channelList = channelList;
+        this.moduleList = moduleList;
     }
 
     @Override
     public int getCount() {
-        return channelList == null ? 0 : channelList.size();
+        return moduleList == null ? 0 : moduleList.size();
     }
 
     @Override
     public ModuleItem getItem(int position) {
-        if (channelList != null && channelList.size() != 0) {
-            return channelList.get(position);
+        if (moduleList != null && moduleList.size() != 0) {
+            return moduleList.get(position);
         }
         return null;
     }
@@ -85,7 +85,7 @@ public class CheckedAdapter extends BaseAdapter {
             item_text.setEnabled(true);
             isChanged = false;
         }
-        if (!isVisible && (position == -1 + channelList.size())) {
+        if (!isVisible && (position == -1 + moduleList.size())) {
             item_text.setText("");
             item_text.setSelected(true);
             item_text.setEnabled(true);
@@ -100,7 +100,7 @@ public class CheckedAdapter extends BaseAdapter {
      * 添加频道列表
      */
     public void addItem(ModuleItem channel) {
-        channelList.add(channel);
+        moduleList.add(channel);
         isListChanged = true;
         notifyDataSetChanged();
     }
@@ -112,11 +112,11 @@ public class CheckedAdapter extends BaseAdapter {
         holdPosition = dropPostion;
         ModuleItem dragItem = getItem(dragPostion);
         if (dragPostion < dropPostion) {
-            channelList.add(dropPostion + 1, dragItem);
-            channelList.remove(dragPostion);
+            moduleList.add(dropPostion + 1, dragItem);
+            moduleList.remove(dragPostion);
         } else {
-            channelList.add(dropPostion, dragItem);
-            channelList.remove(dragPostion + 1);
+            moduleList.add(dropPostion, dragItem);
+            moduleList.remove(dragPostion + 1);
         }
         isChanged = true;
         isListChanged = true;
@@ -127,7 +127,7 @@ public class CheckedAdapter extends BaseAdapter {
      * 获取频道列表
      */
     public List<ModuleItem> getChannnelLst() {
-        return channelList;
+        return moduleList;
     }
 
     /**
@@ -142,7 +142,7 @@ public class CheckedAdapter extends BaseAdapter {
      * 删除频道列表
      */
     public void remove() {
-        channelList.remove(remove_position);
+        moduleList.remove(remove_position);
         remove_position = -1;
         isListChanged = true;
         notifyDataSetChanged();
@@ -152,7 +152,7 @@ public class CheckedAdapter extends BaseAdapter {
      * 设置频道列表
      */
     public void setListDate(List<ModuleItem> list) {
-        channelList = list;
+        moduleList = list;
     }
 
     /**

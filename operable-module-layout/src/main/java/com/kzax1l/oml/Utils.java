@@ -5,9 +5,10 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 
 public class Utils {
-
-    /** 获取屏幕的宽度 */
-    public final static int getWindowsWidth(Activity activity) {
+    /**
+     * 获取屏幕的宽度
+     */
+    public static int getWindowsWidth(Activity activity) {
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         return dm.widthPixels;
@@ -22,7 +23,7 @@ public class Utils {
     }
 
     /**
-     *  px 转为 dip
+     * px 转为 dip
      */
     public static int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;

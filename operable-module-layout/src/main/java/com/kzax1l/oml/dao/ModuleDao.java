@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ModuleDao implements ModuleDaoInface {
+class ModuleDao implements ModuleDaoInterface {
 
     private OMLSqlHelper helper = null;
 
@@ -31,7 +31,7 @@ class ModuleDao implements ModuleDaoInface {
             values.put(OMLSqlHelper.OML_MODULE_ID, item.id);
             values.put(OMLSqlHelper.OML_MODULE_NAME, item.name);
             values.put(OMLSqlHelper.OML_MODULE_ORDER_ID, item.orderId);
-            values.put(OMLSqlHelper.OML_MODULE_CHECK_STATE, item.selected);
+            values.put(OMLSqlHelper.OML_MODULE_CHECK_STATE, item.check_state);
             values.put(OMLSqlHelper.OML_MODULE_OPERABLE, item.deletable);
             id = database.insert(OMLSqlHelper.OML_MODULE_TABLE_NAME, null, values);
             flag = id != -1;
