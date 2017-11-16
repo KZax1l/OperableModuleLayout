@@ -98,7 +98,7 @@
 
     <include
         android:id="@+id/category_layout"
-        layout="@layout/channel_item"
+        layout="@layout/module_item"
         android:visibility="gone" />
 
 </RelativeLayout>

@@ -18,20 +18,20 @@ import com.kzax1l.oml.OMLInitializer;
 import com.kzax1l.oml.R;
 import com.kzax1l.oml.adapter.CheckedAdapter;
 import com.kzax1l.oml.adapter.UncheckedAdapter;
-import com.kzax1l.oml.dao.ChannelItem;
+import com.kzax1l.oml.dao.ModuleItem;
 import com.kzax1l.oml.view.CheckedGridView;
 import com.kzax1l.oml.view.UncheckedGridView;
 
 import java.util.ArrayList;
 
-public class ChannelActivity extends GestureDetectorActivity implements AdapterView.OnItemClickListener {
+public class ModuleActivity extends GestureDetectorActivity implements AdapterView.OnItemClickListener {
     private CheckedGridView mCheckedGridView; // GridView
     CheckedAdapter mCheckedAdapter; // 适配器
-    ArrayList<ChannelItem> mCheckedModules = new ArrayList<>();
+    ArrayList<ModuleItem> mCheckedModules = new ArrayList<>();
 
     private UncheckedGridView mUncheckedGridView; // GridView
     UncheckedAdapter mUncheckedAdapter; // 适配器
-    ArrayList<ChannelItem> mUncheckedModules = new ArrayList<>(); // 数据源
+    ArrayList<ModuleItem> mUncheckedModules = new ArrayList<>(); // 数据源
 
     /**
      * 是否在移动，由于是动画结束后才进行的数据更替，设置这个限制为了避免操作太频繁造成的数据错乱。
@@ -53,8 +53,8 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * 初始化数据
      */
     private void initData() {
-        mCheckedModules = (ArrayList<ChannelItem>) OMLInitializer.available();
-        mUncheckedModules = (ArrayList<ChannelItem>) OMLInitializer.unavailable();
+        mCheckedModules = (ArrayList<ModuleItem>) OMLInitializer.available();
+        mUncheckedModules = (ArrayList<ModuleItem>) OMLInitializer.unavailable();
         mCheckedAdapter = new CheckedAdapter(this, mCheckedModules);
         mCheckedGridView.setAdapter(mCheckedAdapter);
         mUncheckedAdapter = new UncheckedAdapter(this, mUncheckedModules);
@@ -82,7 +82,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
             return;
         }
         if (parent.getId() == R.id.userGridView) {
-            final ChannelItem channel = ((CheckedAdapter) parent.getAdapter()).getItem(position);
+            final ModuleItem channel = ((CheckedAdapter) parent.getAdapter()).getItem(position);
             if (!channel.deletable) return;
             final ImageView moveImageView = getView(view);
             if (moveImageView != null) {
@@ -112,7 +112,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
                 TextView newTextView = (TextView) view.findViewById(R.id.text_item);
                 final int[] startLocation = new int[2];
                 newTextView.getLocationInWindow(startLocation);
-                final ChannelItem channel = ((UncheckedAdapter) parent.getAdapter()).getItem(position);
+                final ModuleItem channel = ((UncheckedAdapter) parent.getAdapter()).getItem(position);
                 mCheckedAdapter.setVisible(false);
                 //添加到最后一个
                 mCheckedAdapter.addItem(channel);
@@ -141,7 +141,7 @@ public class ChannelActivity extends GestureDetectorActivity implements AdapterV
      * @param moveChannel
      * @param clickGridView
      */
-    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final ChannelItem moveChannel,
+    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final ModuleItem moveChannel,
                           final GridView clickGridView) {
         int[] initLocation = new int[2];
         //获取传递过来的VIEW的坐标

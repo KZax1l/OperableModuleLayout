@@ -9,30 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ChannelManager {
+public class ModuleManager {
 
-    private static ChannelManager channelManager;
+    private static ModuleManager channelManager;
     /**
      * 默认的用户选择频道列表
      */
-    private final List<ChannelItem> defaultUserChannels;
+    private final List<ModuleItem> defaultUserChannels;
     /**
      * 默认的其他频道列表
      */
-    private final List<ChannelItem> defaultOtherChannels;
+    private final List<ModuleItem> defaultOtherChannels;
 
-    private ChannelDao channelDao;
+    private ModuleDao channelDao;
 
     /**
      * 判断数据库中是否存在用户数据
      */
     private boolean userExist = false;
 
-    private ChannelManager(OMLSqlHelper paramDBHelper, OMLDataProvider provider) throws SQLException {
+    private ModuleManager(OMLSqlHelper paramDBHelper, OMLDataProvider provider) throws SQLException {
         if (provider == null)
             throw new NullPointerException("OMLDataProvider can not be null!");
         if (channelDao == null)
-            channelDao = new ChannelDao(paramDBHelper.getContext());
+            channelDao = new ModuleDao(paramDBHelper.getContext());
         if (provider.available() != null) {
             defaultUserChannels = provider.available();
         } else {
@@ -48,9 +48,9 @@ public class ChannelManager {
     /**
      * 初始化频道管理类
      */
-    public static ChannelManager getManager(OMLSqlHelper dbHelper, OMLDataProvider provider) throws SQLException {
+    public static ModuleManager getManager(OMLSqlHelper dbHelper, OMLDataProvider provider) throws SQLException {
         if (channelManager == null)
-            channelManager = new ChannelManager(dbHelper, provider);
+            channelManager = new ModuleManager(dbHelper, provider);
         return channelManager;
     }
 
@@ -66,15 +66,15 @@ public class ChannelManager {
      *
      * @return 数据库存在用户配置 ? 数据库内的用户选择频道 : 默认用户选择频道 ;
      */
-    public List<ChannelItem> getUserChannel() {
+    public List<ModuleItem> getUserChannel() {
         Object cacheList = channelDao.listCache(OMLSqlHelper.OML_MODULE_CHECK_STATE + "= ?", new String[]{"1"});
-        List<ChannelItem> list = new ArrayList<>();
+        List<ModuleItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             userExist = true;
             List<Map<String, String>> maplist = (List) cacheList;
             int count = maplist.size();
             for (int i = 0; i < count; i++) {
-                ChannelItem navigate = new ChannelItem();
+                ModuleItem navigate = new ModuleItem();
                 navigate.setId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ID)));
                 navigate.setName(maplist.get(i).get(OMLSqlHelper.OML_MODULE_NAME));
                 navigate.setOrderId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ORDER_ID)));
@@ -97,14 +97,14 @@ public class ChannelManager {
      *
      * @return 数据库存在用户配置 ? 数据库内的其它频道 : 默认其它频道 ;
      */
-    public List<ChannelItem> getOtherChannel() {
+    public List<ModuleItem> getOtherChannel() {
         Object cacheList = channelDao.listCache(OMLSqlHelper.OML_MODULE_CHECK_STATE + "= ?", new String[]{"0"});
-        List<ChannelItem> list = new ArrayList<>();
+        List<ModuleItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             List<Map<String, String>> maplist = (List) cacheList;
             int count = maplist.size();
             for (int i = 0; i < count; i++) {
-                ChannelItem navigate = new ChannelItem();
+                ModuleItem navigate = new ModuleItem();
                 navigate.setId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ID)));
                 navigate.setName(maplist.get(i).get(OMLSqlHelper.OML_MODULE_NAME));
                 navigate.setOrderId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ORDER_ID)));
@@ -119,15 +119,15 @@ public class ChannelManager {
             return list;
         }
         cacheList = defaultOtherChannels;
-        return (List<ChannelItem>) cacheList;
+        return (List<ModuleItem>) cacheList;
     }
 
     /**
      * 保存用户频道到数据库
      */
-    public void saveUserChannel(List<ChannelItem> userList) {
+    public void saveUserChannel(List<ModuleItem> userList) {
         for (int i = 0; i < userList.size(); i++) {
-            ChannelItem channelItem = userList.get(i);
+            ModuleItem channelItem = userList.get(i);
             channelItem.setOrderId(i);
             channelItem.setSelected(1);
             channelDao.addCache(channelItem);
@@ -137,9 +137,9 @@ public class ChannelManager {
     /**
      * 保存其他频道到数据库
      */
-    public void saveOtherChannel(List<ChannelItem> otherList) {
+    public void saveOtherChannel(List<ModuleItem> otherList) {
         for (int i = 0; i < otherList.size(); i++) {
-            ChannelItem channelItem = otherList.get(i);
+            ModuleItem channelItem = otherList.get(i);
             channelItem.setOrderId(i);
             channelItem.setSelected(0);
             channelDao.addCache(channelItem);

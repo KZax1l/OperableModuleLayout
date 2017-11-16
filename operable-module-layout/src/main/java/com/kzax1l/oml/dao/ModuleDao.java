@@ -12,16 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ChannelDao implements ChannelDaoInface {
+class ModuleDao implements ModuleDaoInface {
 
     private OMLSqlHelper helper = null;
 
-    ChannelDao(Context context) {
+    ModuleDao(Context context) {
         helper = new OMLSqlHelper(context);
     }
 
     @Override
-    public boolean addCache(ChannelItem item) {
+    public boolean addCache(ModuleItem item) {
         boolean flag = false;
         SQLiteDatabase database = null;
         long id;

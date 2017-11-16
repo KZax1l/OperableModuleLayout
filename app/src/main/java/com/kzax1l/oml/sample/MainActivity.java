@@ -16,15 +16,15 @@ import android.widget.Toast;
 
 import com.kzax1l.oml.OMLInitializer;
 import com.kzax1l.oml.Utils;
-import com.kzax1l.oml.dao.ChannelItem;
-import com.kzax1l.oml.edit.ChannelActivity;
+import com.kzax1l.oml.dao.ModuleItem;
+import com.kzax1l.oml.edit.ModuleActivity;
 import com.kzax1l.oml.sample.fragment.NewsFragment;
 import com.kzax1l.oml.sample.fragment.NewsFragmentPagerAdapter;
 
 import java.util.ArrayList;
 
-import static com.kzax1l.oml.edit.ChannelActivity.CODE_REQUEST_CHANNEL;
-import static com.kzax1l.oml.edit.ChannelActivity.CODE_RESULT_CHANNEL;
+import static com.kzax1l.oml.edit.ModuleActivity.CODE_REQUEST_CHANNEL;
+import static com.kzax1l.oml.edit.ModuleActivity.CODE_RESULT_CHANNEL;
 
 /**
  * Description：仿今日头条首页tab动态添加和删除
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private int mScreenWidth = 0; // 屏幕宽度
 
     // tab集合：HorizontalScrollView的数据源
-    private ArrayList<ChannelItem> userChannelList = new ArrayList<ChannelItem>();
+    private ArrayList<ModuleItem> userChannelList = new ArrayList<ModuleItem>();
 
     private ViewPager mViewPager;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent_channel = new Intent(getApplicationContext(), ChannelActivity.class);
+                Intent intent_channel = new Intent(getApplicationContext(), ModuleActivity.class);
                 startActivityForResult(intent_channel, CODE_REQUEST_CHANNEL);
             }
         });
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
      * 获取Column栏目 数据
      */
     private void initColumnData() {
-        userChannelList = ((ArrayList<ChannelItem>) OMLInitializer.available());
+        userChannelList = ((ArrayList<ModuleItem>) OMLInitializer.available());
     }
 
     /**

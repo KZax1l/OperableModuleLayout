@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 后续可换成{@link android.os.Parcelable}
  */
-public class ChannelItem implements Serializable {
+public class ModuleItem implements Serializable {
     private static final long serialVersionUID = -6465237897027410019L;
     /**
      * 栏目对应ID
@@ -28,14 +28,14 @@ public class ChannelItem implements Serializable {
      */
     public boolean deletable;
 
-    public ChannelItem() {
+    public ModuleItem() {
     }
 
-    public ChannelItem(int id, String name, int orderId, int selected) {
+    public ModuleItem(int id, String name, int orderId, int selected) {
         this(id, name, orderId, selected, true);
     }
 
-    public ChannelItem(int id, String name, int orderId, int selected, boolean deletable) {
+    public ModuleItem(int id, String name, int orderId, int selected, boolean deletable) {
         this.id = id;
         this.name = name;
         this.orderId = orderId;

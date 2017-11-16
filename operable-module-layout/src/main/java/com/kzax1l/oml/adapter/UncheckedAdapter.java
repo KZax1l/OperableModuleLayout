@@ -8,14 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.kzax1l.oml.R;
-import com.kzax1l.oml.dao.ChannelItem;
+import com.kzax1l.oml.dao.ModuleItem;
 
 import java.util.List;
 
 public class UncheckedAdapter extends BaseAdapter {
 
     private Context context;
-    public List<ChannelItem> channelList;
+    public List<ModuleItem> channelList;
     private TextView item_text;
     /**
      * 是否可见
@@ -26,7 +26,7 @@ public class UncheckedAdapter extends BaseAdapter {
      */
     public int remove_position = -1;
 
-    public UncheckedAdapter(Context context, List<ChannelItem> channelList) {
+    public UncheckedAdapter(Context context, List<ModuleItem> channelList) {
         this.context = context;
         this.channelList = channelList;
     }
@@ -37,7 +37,7 @@ public class UncheckedAdapter extends BaseAdapter {
     }
 
     @Override
-    public ChannelItem getItem(int position) {
+    public ModuleItem getItem(int position) {
         if (channelList != null && channelList.size() != 0) {
             return channelList.get(position);
         }
@@ -51,9 +51,9 @@ public class UncheckedAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.channel_item, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.module_item, null);
         item_text = (TextView) view.findViewById(R.id.text_item);
-        ChannelItem channel = getItem(position);
+        ModuleItem channel = getItem(position);
         item_text.setText(channel.name);
         if (!isVisible && (position == -1 + channelList.size())) {
             item_text.setText("");
@@ -67,14 +67,14 @@ public class UncheckedAdapter extends BaseAdapter {
     /**
      * 获取频道列表
      */
-    public List<ChannelItem> getChannnelLst() {
+    public List<ModuleItem> getChannnelLst() {
         return channelList;
     }
 
     /**
      * 添加频道列表
      */
-    public void addItem(ChannelItem channel) {
+    public void addItem(ModuleItem channel) {
         channelList.add(channel);
         notifyDataSetChanged();
     }
@@ -100,7 +100,7 @@ public class UncheckedAdapter extends BaseAdapter {
     /**
      * 设置频道列表
      */
-    public void setListDate(List<ChannelItem> list) {
+    public void setListDate(List<ModuleItem> list) {
         channelList = list;
     }
 

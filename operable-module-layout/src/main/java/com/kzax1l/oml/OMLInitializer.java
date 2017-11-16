@@ -2,8 +2,8 @@ package com.kzax1l.oml;
 
 import android.support.annotation.NonNull;
 
-import com.kzax1l.oml.dao.ChannelItem;
-import com.kzax1l.oml.dao.ChannelManager;
+import com.kzax1l.oml.dao.ModuleItem;
+import com.kzax1l.oml.dao.ModuleManager;
 
 import java.util.List;
 
@@ -24,21 +24,21 @@ public class OMLInitializer {
         return sInitialization;
     }
 
-    public static ChannelManager manager() {
+    public static ModuleManager manager() {
         return sInitialization.getChannelManage();
     }
 
     /**
      * 获取未添加的模块集
      */
-    public static List<ChannelItem> unavailable() {
+    public static List<ModuleItem> unavailable() {
         return sInitialization.getChannelManage().getOtherChannel();
     }
 
     /**
      * 获取已添加的模块集
      */
-    public static List<ChannelItem> available() {
+    public static List<ModuleItem> available() {
         return sInitialization.getChannelManage().getUserChannel();
     }
 }

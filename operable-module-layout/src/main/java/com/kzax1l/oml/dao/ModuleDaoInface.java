@@ -5,9 +5,9 @@ import android.content.ContentValues;
 import java.util.List;
 import java.util.Map;
 
-public interface ChannelDaoInface {
+public interface ModuleDaoInface {
 
-	public boolean addCache(ChannelItem item);
+	public boolean addCache(ModuleItem item);
 
 	public boolean deleteCache(String whereClause, String[] whereArgs);
 

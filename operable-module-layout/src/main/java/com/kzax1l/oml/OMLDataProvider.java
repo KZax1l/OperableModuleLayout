@@ -1,6 +1,6 @@
 package com.kzax1l.oml;
 
-import com.kzax1l.oml.dao.ChannelItem;
+import com.kzax1l.oml.dao.ModuleItem;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author Zsago
  */
 public interface OMLDataProvider {
-    List<ChannelItem> available();
+    List<ModuleItem> available();
 
-    List<ChannelItem> unavailable();
+    List<ModuleItem> unavailable();
 }
