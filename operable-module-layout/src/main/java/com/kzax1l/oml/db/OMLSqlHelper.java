@@ -17,7 +17,7 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
     /**
      * 是否可进行操作
      */
-    public static final String OML_MODULE_OPERABLE = "oml_module_operable";
+    public static final String OML_MODULE_DELETABLE = "oml_module_deletable";
     public static final String OML_MODULE_CHECK_STATE = "oml_module_check_state";
     public static final String OML_MODULE_CHECK_STATE_CHECKED = "1";
     public static final String OML_MODULE_CHECK_STATE_UNCHECKED = "0";
@@ -39,14 +39,21 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
                 + OML_MODULE_ID + " INTEGER,"
                 + OML_MODULE_NAME + " TEXT,"
                 + OML_MODULE_ORDER_ID + " INTEGER,"
-                + OML_MODULE_CHECK_STATE + " SELECTED,"
-                + OML_MODULE_OPERABLE + " BOOLEAN)";
+                + OML_MODULE_CHECK_STATE + " INTEGER,"
+                + OML_MODULE_DELETABLE + " BOOLEAN)";
         db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO 更改数据库版本的操作
+        db.execSQL("DROP TABLE IF EXISTS " + OML_DB_TABLE_NAME);
+        onCreate(db);
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + OML_DB_TABLE_NAME);
         onCreate(db);
     }
 }

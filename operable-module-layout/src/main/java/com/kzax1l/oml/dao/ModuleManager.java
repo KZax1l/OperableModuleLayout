@@ -14,7 +14,7 @@ import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_CHECKED;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_UNCHECKED;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ID;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_NAME;
-import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_OPERABLE;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_DELETABLE;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
 
 public class ModuleManager {
@@ -87,7 +87,7 @@ public class ModuleManager {
                 navigate.setOrderId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ORDER_ID)));
                 navigate.setCheckState(Integer.valueOf(mapList.get(i).get(OML_MODULE_CHECK_STATE)));
                 // 由于SQLite中获取到的Boolean对象是一个数字，1表示true
-                navigate.setDeletable(mapList.get(i).get(OML_MODULE_OPERABLE).equals("1"));
+                navigate.setDeletable(mapList.get(i).get(OML_MODULE_DELETABLE).equals("1"));
                 list.add(navigate);
             }
             return list;
@@ -117,7 +117,7 @@ public class ModuleManager {
                 navigate.setOrderId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ORDER_ID)));
                 navigate.setCheckState(Integer.valueOf(mapList.get(i).get(OML_MODULE_CHECK_STATE)));
                 // 由于SQLite中获取到的Boolean对象是一个数字，1表示true
-                navigate.setDeletable(mapList.get(i).get(OML_MODULE_OPERABLE).equals("1"));
+                navigate.setDeletable(mapList.get(i).get(OML_MODULE_DELETABLE).equals("1"));
                 list.add(navigate);
             }
             return list;
