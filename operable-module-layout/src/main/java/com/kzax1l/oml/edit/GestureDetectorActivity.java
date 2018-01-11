@@ -6,6 +6,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+/**
+ * @deprecated Use {@link ModuleActivityAgent} instead
+ */
 public class GestureDetectorActivity extends AppCompatActivity {
     /**
      * 手势监听

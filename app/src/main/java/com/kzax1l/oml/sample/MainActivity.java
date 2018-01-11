@@ -17,21 +17,20 @@ import android.widget.Toast;
 import com.kzax1l.oml.OMLInitializer;
 import com.kzax1l.oml.Utils;
 import com.kzax1l.oml.dao.ModuleItem;
-import com.kzax1l.oml.edit.ModuleActivity;
+import com.kzax1l.oml.edit.SampleModuleActivity;
 import com.kzax1l.oml.sample.fragment.NewsFragment;
 import com.kzax1l.oml.sample.fragment.NewsFragmentPagerAdapter;
 
 import java.util.ArrayList;
 
-import static com.kzax1l.oml.edit.ModuleActivity.CODE_REQUEST_OML;
-import static com.kzax1l.oml.edit.ModuleActivity.CODE_RESULT_OML;
+import static com.kzax1l.oml.edit.ModuleActivityAgent.OML_CODE_REQUEST;
+import static com.kzax1l.oml.edit.ModuleActivityAgent.OML_CODE_RESULT;
 
 /**
  * Description：仿今日头条首页tab动态添加和删除
  * <p>
  * Created by Mjj on 2016/11/18.
  */
-
 public class MainActivity extends AppCompatActivity {
 
     private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
@@ -82,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent_channel = new Intent(getApplicationContext(), ModuleActivity.class);
-                startActivityForResult(intent_channel, CODE_REQUEST_OML);
+                Intent intent_channel = new Intent(getApplicationContext(), SampleModuleActivity.class);
+                startActivityForResult(intent_channel, OML_CODE_REQUEST);
             }
         });
 
@@ -211,12 +210,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case CODE_REQUEST_OML:
-                if (resultCode == CODE_RESULT_OML) {
+            case OML_CODE_REQUEST:
+                if (resultCode == OML_CODE_RESULT) {
                     setChangelView();
                 }
                 break;
-
             default:
                 break;
         }

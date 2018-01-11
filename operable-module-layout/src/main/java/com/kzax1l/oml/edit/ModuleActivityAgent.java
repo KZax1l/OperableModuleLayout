@@ -1,8 +1,11 @@
 package com.kzax1l.oml.edit;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -23,61 +26,85 @@ import com.kzax1l.oml.view.CheckedGridView;
 import com.kzax1l.oml.view.UncheckedGridView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @deprecated Use {@link ModuleActivityAgent} instead
+ * Created by Administrator on 2018-01-11.
+ *
+ * @author kzaxil
+ * @since 1.0.1
  */
-public class ModuleActivity extends GestureDetectorActivity implements AdapterView.OnItemClickListener {
-    private CheckedGridView mCheckedGridView; // GridView
-    CheckedAdapter mCheckedAdapter; // 适配器
-    ArrayList<ModuleItem> mCheckedModules = new ArrayList<>();
+public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
+    private Activity mActivity;
+    /**
+     * 是否需要监听手势关闭功能
+     */
+    private boolean mNeedBackGesture = false;
+    /**
+     * 手势监听
+     */
+    private GestureDetector mGestureDetector;
 
+    private CheckedAdapter mCheckedAdapter; // 适配器
+    private CheckedGridView mCheckedGridView; // GridView
+    private List<ModuleItem> mCheckedModules = new ArrayList<>();
+
+    private UncheckedAdapter mUncheckedAdapter; // 适配器
     private UncheckedGridView mUncheckedGridView; // GridView
-    UncheckedAdapter mUncheckedAdapter; // 适配器
-    ArrayList<ModuleItem> mUncheckedModules = new ArrayList<>(); // 数据源
+    private List<ModuleItem> mUncheckedModules = new ArrayList<>(); // 数据源
 
     /**
      * 是否在移动，由于是动画结束后才进行的数据更替，设置这个限制为了避免操作太频繁造成的数据错乱。
      */
-    boolean mIsMove = false;
+    private boolean mIsMove = false;
 
-    public final static int CODE_REQUEST_OML = 0x98; // 请求码
-    public final static int CODE_RESULT_OML = 0x99; // 返回码
+    public final static int OML_CODE_REQUEST = 0x98; // 请求码
+    public final static int OML_CODE_RESULT = 0x99; // 返回码
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.ac_modules);
-        initView();
-        initData();
+    public ModuleActivityAgent(@NonNull Activity activity,
+                               @NonNull CheckedGridView checked,
+                               @NonNull UncheckedGridView unchecked) {
+        mActivity = activity;
+        mCheckedGridView = checked;
+        mUncheckedGridView = unchecked;
     }
 
-    /**
-     * 初始化数据
-     */
-    private void initData() {
-        mCheckedModules = (ArrayList<ModuleItem>) OMLInitializer.available();
-        mUncheckedModules = (ArrayList<ModuleItem>) OMLInitializer.unavailable();
-        mCheckedAdapter = new CheckedAdapter(this, mCheckedModules);
+    public void onCreate() {
+        if (mGestureDetector == null) {
+            mGestureDetector = new GestureDetector(mActivity.getApplicationContext(), new BackGestureListener(mActivity));
+        }
+
+        mCheckedModules = OMLInitializer.available();
+        mUncheckedModules = OMLInitializer.unavailable();
+        mCheckedAdapter = new CheckedAdapter(mActivity, mCheckedModules);
         mCheckedGridView.setAdapter(mCheckedAdapter);
-        mUncheckedAdapter = new UncheckedAdapter(this, mUncheckedModules);
+        mUncheckedAdapter = new UncheckedAdapter(mActivity, mUncheckedModules);
         mUncheckedGridView.setAdapter(mUncheckedAdapter);
-        //设置GRIDVIEW的ITEM的点击监听
         mUncheckedGridView.setOnItemClickListener(this);
         mCheckedGridView.setOnItemClickListener(this);
     }
 
-    /**
-     * 初始化布局
-     */
-    private void initView() {
-        mCheckedGridView = (CheckedGridView) findViewById(R.id.userGridView);
-        mUncheckedGridView = (UncheckedGridView) findViewById(R.id.otherGridView);
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (mNeedBackGesture) {
+            return mGestureDetector.onTouchEvent(ev) || mActivity.dispatchTouchEvent(ev);
+        }
+        return mActivity.dispatchTouchEvent(ev);
     }
 
     /**
-     * GRIDVIEW对应的ITEM点击监听接口
+     * 设置是否进行手势监听
      */
+    public void setNeedBackGesture(boolean mNeedBackGesture) {
+        this.mNeedBackGesture = mNeedBackGesture;
+    }
+
+    /**
+     * 返回
+     */
+    public void doBack() {
+        mActivity.onBackPressed();
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
         //如果点击的时候，之前动画还没结束，那么就让点击事件无效
@@ -101,9 +128,10 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
                             int[] endLocation = new int[2];
                             //获取终点的坐标
                             mUncheckedGridView.getChildAt(mUncheckedGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                            MoveAnim(moveImageView, startLocation, endLocation, item, mCheckedGridView);
+                            MoveAnim(moveImageView, startLocation, endLocation, mCheckedGridView);
                             mCheckedAdapter.setRemove(position);
-                        } catch (Exception localException) {
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }, 50L);
@@ -125,9 +153,10 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
                             int[] endLocation = new int[2];
                             //获取终点的坐标
                             mCheckedGridView.getChildAt(mCheckedGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                            MoveAnim(moveImageView, startLocation, endLocation, item, mUncheckedGridView);
+                            MoveAnim(moveImageView, startLocation, endLocation, mUncheckedGridView);
                             mUncheckedAdapter.setRemove(position);
-                        } catch (Exception localException) {
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }, 50L);
@@ -138,8 +167,7 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
     /**
      * 点击ITEM移动动画
      */
-    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final ModuleItem moveItem,
-                          final GridView clickGridView) {
+    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final GridView clickGridView) {
         int[] initLocation = new int[2];
         //获取传递过来的VIEW的坐标
         moveView.getLocationInWindow(initLocation);
@@ -187,11 +215,6 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
 
     /**
      * 获取移动的VIEW，放入对应ViewGroup布局容器
-     *
-     * @param viewGroup
-     * @param view
-     * @param initLocation
-     * @return
      */
     private View getMoveView(ViewGroup viewGroup, View view, int[] initLocation) {
         int x = initLocation[0];
@@ -208,25 +231,22 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
      * 创建移动的ITEM对应的ViewGroup布局容器
      */
     private ViewGroup getMoveViewGroup() {
-        ViewGroup moveViewGroup = (ViewGroup) getWindow().getDecorView();
-        LinearLayout moveLinearLayout = new LinearLayout(this);
+        ViewGroup moveViewGroup = (ViewGroup) mActivity.getWindow().getDecorView();
+        LinearLayout moveLinearLayout = new LinearLayout(mActivity);
         moveLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         moveViewGroup.addView(moveLinearLayout);
         return moveLinearLayout;
     }
 
     /**
-     * 获取点击的Item的对应View，
-     *
-     * @param view
-     * @return
+     * 获取点击的Item的对应View
      */
     private ImageView getView(View view) {
         view.destroyDrawingCache();
         view.setDrawingCacheEnabled(true);
         Bitmap cache = Bitmap.createBitmap(view.getDrawingCache());
         view.setDrawingCacheEnabled(false);
-        ImageView iv = new ImageView(this);
+        ImageView iv = new ImageView(view.getContext());
         iv.setImageBitmap(cache);
         return iv;
     }
@@ -240,14 +260,13 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
         OMLInitializer.manager().saveUncheckedModules(mUncheckedAdapter.getModules());
     }
 
-    @Override
     public void onBackPressed() {
         if (mCheckedAdapter.IsDataSetChanged()) {
             saveModules();
-            setResult(CODE_RESULT_OML);
-            finish();
+            mActivity.setResult(OML_CODE_RESULT);
+            mActivity.finish();
         } else {
-            super.onBackPressed();
+            mActivity.onBackPressed();
         }
     }
 }
