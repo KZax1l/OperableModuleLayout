@@ -105,6 +105,10 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
         mActivity.onBackPressed();
     }
 
+    public boolean isDataSetChanged() {
+        return mCheckedAdapter != null && mCheckedAdapter.isDataSetChanged();
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
         //如果点击的时候，之前动画还没结束，那么就让点击事件无效
@@ -261,7 +265,7 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
     }
 
     public void onBackPressed() {
-        if (mCheckedAdapter.IsDataSetChanged()) {
+        if (mCheckedAdapter.isDataSetChanged()) {
             saveModules();
             mActivity.setResult(OML_CODE_RESULT);
             mActivity.finish();

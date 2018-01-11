@@ -165,7 +165,7 @@ public class CheckedAdapter extends BaseAdapter {
     /**
      * 排序是否发生改变
      */
-    public boolean IsDataSetChanged() {
+    public boolean isDataSetChanged() {
         return mIsDataSetChanged;
     }
 

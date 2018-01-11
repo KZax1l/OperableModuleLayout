@@ -29,7 +29,7 @@ public class SampleModuleActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mAgent != null) {
+        if (mAgent != null && mAgent.isDataSetChanged()) {
             mAgent.onBackPressed();
             return;
         }

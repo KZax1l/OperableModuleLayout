@@ -242,7 +242,7 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
 
     @Override
     public void onBackPressed() {
-        if (mCheckedAdapter.IsDataSetChanged()) {
+        if (mCheckedAdapter.isDataSetChanged()) {
             saveModules();
             setResult(CODE_RESULT_OML);
             finish();
