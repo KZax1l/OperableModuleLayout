@@ -13,14 +13,14 @@ import java.util.List;
  * @author Zsago
  */
 public class OMLInitializer {
-    private static OMLInitialization sInitialization;
+    private static OMLManager sInitialization;
 
-    public static void initialize(@NonNull OMLInitialization initialization) {
+    public static void initialize(@NonNull OMLManager initialization) {
         sInitialization = initialization;
     }
 
     @NonNull
-    public static OMLInitialization initialization() {
+    public static OMLManager initialization() {
         return sInitialization;
     }
 

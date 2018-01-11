@@ -9,10 +9,10 @@ import com.kzax1l.oml.db.OMLSqlHelper;
  *
  * @author Zsago
  */
-public interface OMLInitialization {
+public interface OMLManager {
     OMLSqlHelper getSQLHelper();
 
-    void onTerminate(OMLSqlHelper sqlHelper);
-
     ModuleManager getModuleManager();
+
+    void onTerminate(OMLSqlHelper sqlHelper);
 }

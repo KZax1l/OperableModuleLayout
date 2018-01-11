@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Deprecated
-public class OMLApplication extends Application implements OMLInitialization, OMLDataProvider {
+public class OMLApplication extends Application implements OMLManager, OMLDataProvider {
     private OMLSqlHelper mSqlHelper;
 
     @Override
