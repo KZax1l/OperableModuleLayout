@@ -35,8 +35,8 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // TODO 创建数据库后，对数据库的操作
         String sql = "create table if not exists "
-                + OML_DB_TABLE_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + OML_MODULE_ID + " INTEGER,"
+                + OML_DB_TABLE_NAME + "("
+                + OML_MODULE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + OML_MODULE_NAME + " TEXT,"
                 + OML_MODULE_ORDER_ID + " INTEGER,"
                 + OML_MODULE_CHECK_STATE + " INTEGER,"

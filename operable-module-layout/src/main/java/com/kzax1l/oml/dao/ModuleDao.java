@@ -12,12 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_DB_TABLE_NAME;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE;
-import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ID;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_NAME;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_OPERABLE;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
-import static com.kzax1l.oml.db.OMLSqlHelper.OML_DB_TABLE_NAME;
 
 class ModuleDao implements ModuleDaoInterface {
     private OMLSqlHelper mHelper = null;
@@ -34,7 +33,6 @@ class ModuleDao implements ModuleDaoInterface {
         try {
             database = mHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(OML_MODULE_ID, item.id);
             values.put(OML_MODULE_NAME, item.name);
             values.put(OML_MODULE_ORDER_ID, item.orderId);
             values.put(OML_MODULE_CHECK_STATE, item.checkState);

@@ -8,10 +8,6 @@ import java.io.Serializable;
 public class ModuleItem implements Serializable {
     private static final long serialVersionUID = -6465237897027410019L;
     /**
-     * 栏目对应ID
-     */
-    public int id;
-    /**
      * 栏目对应name
      */
     public String name;
@@ -31,20 +27,15 @@ public class ModuleItem implements Serializable {
     public ModuleItem() {
     }
 
-    public ModuleItem(int id, String name, int orderId, int checkState) {
-        this(id, name, orderId, checkState, true);
+    public ModuleItem(String name, int orderId, int checkState) {
+        this(name, orderId, checkState, true);
     }
 
-    public ModuleItem(int id, String name, int orderId, int checkState, boolean operable) {
-        this.id = id;
+    public ModuleItem(String name, int orderId, int checkState, boolean operable) {
         this.name = name;
         this.orderId = orderId;
         this.checkState = checkState;
         this.operable = operable;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setName(String name) {

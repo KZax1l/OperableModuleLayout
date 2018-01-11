@@ -12,7 +12,6 @@ import java.util.Map;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_CHECKED;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_UNCHECKED;
-import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ID;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_NAME;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_OPERABLE;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
@@ -82,7 +81,6 @@ public class ModuleManager {
             int count = mapList.size();
             for (int i = 0; i < count; i++) {
                 ModuleItem navigate = new ModuleItem();
-                navigate.setId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ID)));
                 navigate.setName(mapList.get(i).get(OML_MODULE_NAME));
                 navigate.setOrderId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ORDER_ID)));
                 navigate.setCheckState(Integer.valueOf(mapList.get(i).get(OML_MODULE_CHECK_STATE)));
@@ -112,7 +110,6 @@ public class ModuleManager {
             int count = mapList.size();
             for (int i = 0; i < count; i++) {
                 ModuleItem navigate = new ModuleItem();
-                navigate.setId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ID)));
                 navigate.setName(mapList.get(i).get(OML_MODULE_NAME));
                 navigate.setOrderId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ORDER_ID)));
                 navigate.setCheckState(Integer.valueOf(mapList.get(i).get(OML_MODULE_CHECK_STATE)));
