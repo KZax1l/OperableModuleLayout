@@ -9,6 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_CHECKED;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_UNCHECKED;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ID;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_NAME;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_OPERABLE;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
+
 public class ModuleManager {
     private static ModuleManager sModuleManager;
     /**
@@ -56,7 +64,7 @@ public class ModuleManager {
     /**
      * 清除所有的频道
      */
-    public void deleteAllChannel() {
+    public void deleteAllModules() {
         mModuleDao.clearFeedTable();
     }
 
@@ -65,21 +73,21 @@ public class ModuleManager {
      *
      * @return 数据库存在用户配置 ? 数据库内的用户选择频道 : 默认用户选择频道 ;
      */
-    public List<ModuleItem> getUserChannel() {
-        Object cacheList = mModuleDao.listCache(OMLSqlHelper.OML_MODULE_CHECK_STATE + "= ?", new String[]{"1"});
+    public List<ModuleItem> getCheckedModules() {
+        Object cacheList = mModuleDao.listCache(OML_MODULE_CHECK_STATE + "= ?", new String[]{OML_MODULE_CHECK_STATE_CHECKED});
         List<ModuleItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             mIsExist = true;
-            List<Map<String, String>> maplist = (List) cacheList;
-            int count = maplist.size();
+            List<Map<String, String>> mapList = (List) cacheList;
+            int count = mapList.size();
             for (int i = 0; i < count; i++) {
                 ModuleItem navigate = new ModuleItem();
-                navigate.setId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ID)));
-                navigate.setName(maplist.get(i).get(OMLSqlHelper.OML_MODULE_NAME));
-                navigate.setOrderId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ORDER_ID)));
-                navigate.setCheck_state(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_CHECK_STATE)));
+                navigate.setId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ID)));
+                navigate.setName(mapList.get(i).get(OML_MODULE_NAME));
+                navigate.setOrderId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ORDER_ID)));
+                navigate.setCheckState(Integer.valueOf(mapList.get(i).get(OML_MODULE_CHECK_STATE)));
                 // 由于SQLite中获取到的Boolean对象是一个数字，1表示true
-                navigate.setDeletable(maplist.get(i).get(OMLSqlHelper.OML_MODULE_OPERABLE).equals("1"));
+                navigate.setDeletable(mapList.get(i).get(OML_MODULE_OPERABLE).equals("1"));
                 list.add(navigate);
             }
             return list;
@@ -87,7 +95,7 @@ public class ModuleManager {
         if (mIsExist) {
             return list;
         }
-        initDefaultChannel();
+        initDefaultModules();
         return mDefaultCheckedModules;
     }
 
@@ -96,20 +104,20 @@ public class ModuleManager {
      *
      * @return 数据库存在用户配置 ? 数据库内的其它频道 : 默认其它频道 ;
      */
-    public List<ModuleItem> getOtherChannel() {
-        Object cacheList = mModuleDao.listCache(OMLSqlHelper.OML_MODULE_CHECK_STATE + "= ?", new String[]{"0"});
+    public List<ModuleItem> getUncheckedModules() {
+        Object cacheList = mModuleDao.listCache(OML_MODULE_CHECK_STATE + "= ?", new String[]{OML_MODULE_CHECK_STATE_UNCHECKED});
         List<ModuleItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
-            List<Map<String, String>> maplist = (List) cacheList;
-            int count = maplist.size();
+            List<Map<String, String>> mapList = (List) cacheList;
+            int count = mapList.size();
             for (int i = 0; i < count; i++) {
                 ModuleItem navigate = new ModuleItem();
-                navigate.setId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ID)));
-                navigate.setName(maplist.get(i).get(OMLSqlHelper.OML_MODULE_NAME));
-                navigate.setOrderId(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_ORDER_ID)));
-                navigate.setCheck_state(Integer.valueOf(maplist.get(i).get(OMLSqlHelper.OML_MODULE_CHECK_STATE)));
+                navigate.setId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ID)));
+                navigate.setName(mapList.get(i).get(OML_MODULE_NAME));
+                navigate.setOrderId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ORDER_ID)));
+                navigate.setCheckState(Integer.valueOf(mapList.get(i).get(OML_MODULE_CHECK_STATE)));
                 // 由于SQLite中获取到的Boolean对象是一个数字，1表示true
-                navigate.setDeletable(maplist.get(i).get(OMLSqlHelper.OML_MODULE_OPERABLE).equals("1"));
+                navigate.setDeletable(mapList.get(i).get(OML_MODULE_OPERABLE).equals("1"));
                 list.add(navigate);
             }
             return list;
@@ -124,33 +132,33 @@ public class ModuleManager {
     /**
      * 保存用户频道到数据库
      */
-    public void saveUserChannel(List<ModuleItem> userList) {
-        for (int i = 0; i < userList.size(); i++) {
-            ModuleItem channelItem = userList.get(i);
-            channelItem.setOrderId(i);
-            channelItem.setCheck_state(1);
-            mModuleDao.addCache(channelItem);
+    public void saveCheckedModules(List<ModuleItem> modules) {
+        for (int i = 0; i < modules.size(); i++) {
+            ModuleItem item = modules.get(i);
+            item.setOrderId(i);
+            item.setCheckState(1);
+            mModuleDao.addCache(item);
         }
     }
 
     /**
      * 保存其他频道到数据库
      */
-    public void saveOtherChannel(List<ModuleItem> otherList) {
-        for (int i = 0; i < otherList.size(); i++) {
-            ModuleItem channelItem = otherList.get(i);
-            channelItem.setOrderId(i);
-            channelItem.setCheck_state(0);
-            mModuleDao.addCache(channelItem);
+    public void saveUncheckedModules(List<ModuleItem> modules) {
+        for (int i = 0; i < modules.size(); i++) {
+            ModuleItem item = modules.get(i);
+            item.setOrderId(i);
+            item.setCheckState(0);
+            mModuleDao.addCache(item);
         }
     }
 
     /**
      * 初始化数据库内的频道数据
      */
-    private void initDefaultChannel() {
-        deleteAllChannel();
-        saveUserChannel(mDefaultCheckedModules);
-        saveOtherChannel(mDefaultUncheckedModules);
+    private void initDefaultModules() {
+        deleteAllModules();
+        saveCheckedModules(mDefaultCheckedModules);
+        saveUncheckedModules(mDefaultUncheckedModules);
     }
 }

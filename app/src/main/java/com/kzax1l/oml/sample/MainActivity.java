@@ -23,8 +23,8 @@ import com.kzax1l.oml.sample.fragment.NewsFragmentPagerAdapter;
 
 import java.util.ArrayList;
 
-import static com.kzax1l.oml.edit.ModuleActivity.CODE_REQUEST_CHANNEL;
-import static com.kzax1l.oml.edit.ModuleActivity.CODE_RESULT_CHANNEL;
+import static com.kzax1l.oml.edit.ModuleActivity.CODE_REQUEST_OML;
+import static com.kzax1l.oml.edit.ModuleActivity.CODE_RESULT_OML;
 
 /**
  * Description：仿今日头条首页tab动态添加和删除
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent_channel = new Intent(getApplicationContext(), ModuleActivity.class);
-                startActivityForResult(intent_channel, CODE_REQUEST_CHANNEL);
+                startActivityForResult(intent_channel, CODE_REQUEST_OML);
             }
         });
 
@@ -211,8 +211,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case CODE_REQUEST_CHANNEL:
-                if (resultCode == CODE_RESULT_CHANNEL) {
+            case CODE_REQUEST_OML:
+                if (resultCode == CODE_RESULT_OML) {
                     setChangelView();
                 }
                 break;

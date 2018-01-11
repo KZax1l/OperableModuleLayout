@@ -1,16 +1,16 @@
 package com.kzax1l.oml.edit;
 
+import android.app.Activity;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 
 /**
  * 返回手势监听接口
  */
-public class BackGestureListener implements OnGestureListener {
+class BackGestureListener implements OnGestureListener {
+    private Activity mActivity;
 
-    private GestureDetectorActivity mActivity;
-
-    public BackGestureListener(GestureDetectorActivity activity) {
+    BackGestureListener(Activity activity) {
         this.mActivity = activity;
     }
 
@@ -26,7 +26,6 @@ public class BackGestureListener implements OnGestureListener {
 
     @Override
     public void onLongPress(MotionEvent e) {
-
     }
 
     @Override

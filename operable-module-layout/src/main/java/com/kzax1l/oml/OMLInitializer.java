@@ -25,20 +25,20 @@ public class OMLInitializer {
     }
 
     public static ModuleManager manager() {
-        return sInitialization.getChannelManage();
+        return sInitialization.getModuleManager();
     }
 
     /**
      * 获取未添加的模块集
      */
     public static List<ModuleItem> unavailable() {
-        return sInitialization.getChannelManage().getOtherChannel();
+        return sInitialization.getModuleManager().getUncheckedModules();
     }
 
     /**
      * 获取已添加的模块集
      */
     public static List<ModuleItem> available() {
-        return sInitialization.getChannelManage().getUserChannel();
+        return sInitialization.getModuleManager().getCheckedModules();
     }
 }

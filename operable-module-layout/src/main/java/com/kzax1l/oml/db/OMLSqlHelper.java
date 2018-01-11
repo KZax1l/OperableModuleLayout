@@ -5,9 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class OMLSqlHelper extends SQLiteOpenHelper {
-    public static final int OML_DB_VERSION = 1;
-    public static final String OML_DB_NAME = "oml.db";// 数据库名称
-    public static final String OML_MODULE_TABLE_NAME = "oml_module";//数据表
+    private Context mContext;
+
+    private static final int OML_DB_VERSION = 1;
+    private static final String OML_DB_NAME = "oml.db";// 数据库名称
+    public static final String OML_DB_TABLE_NAME = "oml_module";//数据表
 
     public static final String OML_MODULE_ID = "oml_module_id";
     public static final String OML_MODULE_NAME = "oml_module_name";
@@ -17,7 +19,8 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
      */
     public static final String OML_MODULE_OPERABLE = "oml_module_operable";
     public static final String OML_MODULE_CHECK_STATE = "oml_module_check_state";
-    private Context mContext;
+    public static final String OML_MODULE_CHECK_STATE_CHECKED = "1";
+    public static final String OML_MODULE_CHECK_STATE_UNCHECKED = "0";
 
     public OMLSqlHelper(Context context) {
         super(context, OML_DB_NAME, null, OML_DB_VERSION);
@@ -32,7 +35,7 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // TODO 创建数据库后，对数据库的操作
         String sql = "create table if not exists "
-                + OML_MODULE_TABLE_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + OML_DB_TABLE_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + OML_MODULE_ID + " INTEGER,"
                 + OML_MODULE_NAME + " TEXT,"
                 + OML_MODULE_ORDER_ID + " INTEGER,"
@@ -46,5 +49,4 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
         // TODO 更改数据库版本的操作
         onCreate(db);
     }
-
 }

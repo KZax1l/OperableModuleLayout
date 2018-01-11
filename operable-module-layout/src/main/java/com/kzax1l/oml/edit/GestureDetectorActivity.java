@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class GestureDetectorActivity extends AppCompatActivity {
-
     /**
      * 手势监听
      */
@@ -25,8 +24,7 @@ public class GestureDetectorActivity extends AppCompatActivity {
 
     private void initGestureDetector() {
         if (mGestureDetector == null) {
-            mGestureDetector = new GestureDetector(getApplicationContext(),
-                    new BackGestureListener(this));
+            mGestureDetector = new GestureDetector(getApplicationContext(), new BackGestureListener(this));
         }
     }
 
@@ -51,5 +49,4 @@ public class GestureDetectorActivity extends AppCompatActivity {
     public void doBack(View view) {
         onBackPressed();
     }
-
 }

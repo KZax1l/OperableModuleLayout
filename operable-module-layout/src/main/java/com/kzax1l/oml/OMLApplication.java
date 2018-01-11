@@ -39,7 +39,7 @@ public class OMLApplication extends Application implements OMLInitialization, OM
     }
 
     @Override
-    public ModuleManager getChannelManage() {
+    public ModuleManager getModuleManager() {
         return ModuleManager.getManager(getSQLHelper(), this);
     }
 

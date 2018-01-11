@@ -13,33 +13,32 @@ import com.kzax1l.oml.dao.ModuleItem;
 import java.util.List;
 
 public class UncheckedAdapter extends BaseAdapter {
-
-    private Context context;
-    public List<ModuleItem> moduleList;
-    private TextView item_text;
+    private Context mContext;
+    private List<ModuleItem> mModules;
     /**
      * 是否可见
      */
-    boolean isVisible = true;
+    private boolean mIsVisible = true;
     /**
      * 要删除的position
      */
-    public int remove_position = -1;
+    private int mRemovePosition = -1;
+    private TextView item_text;
 
-    public UncheckedAdapter(Context context, List<ModuleItem> moduleList) {
-        this.context = context;
-        this.moduleList = moduleList;
+    public UncheckedAdapter(Context context, List<ModuleItem> modules) {
+        this.mContext = context;
+        this.mModules = modules;
     }
 
     @Override
     public int getCount() {
-        return moduleList == null ? 0 : moduleList.size();
+        return mModules == null ? 0 : mModules.size();
     }
 
     @Override
     public ModuleItem getItem(int position) {
-        if (moduleList != null && moduleList.size() != 0) {
-            return moduleList.get(position);
+        if (mModules != null && mModules.size() != 0) {
+            return mModules.get(position);
         }
         return null;
     }
@@ -51,14 +50,14 @@ public class UncheckedAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.module_item, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.module_item, null);
         item_text = (TextView) view.findViewById(R.id.text_item);
-        ModuleItem channel = getItem(position);
-        item_text.setText(channel.name);
-        if (!isVisible && (position == -1 + moduleList.size())) {
+        ModuleItem item = getItem(position);
+        item_text.setText(item.name);
+        if (!mIsVisible && (position == -1 + mModules.size())) {
             item_text.setText("");
         }
-        if (remove_position == position) {
+        if (mRemovePosition == position) {
             item_text.setText("");
         }
         return view;
@@ -67,15 +66,15 @@ public class UncheckedAdapter extends BaseAdapter {
     /**
      * 获取频道列表
      */
-    public List<ModuleItem> getChannnelLst() {
-        return moduleList;
+    public List<ModuleItem> getModules() {
+        return mModules;
     }
 
     /**
      * 添加频道列表
      */
-    public void addItem(ModuleItem channel) {
-        moduleList.add(channel);
+    public void addItem(ModuleItem module) {
+        mModules.add(module);
         notifyDataSetChanged();
     }
 
@@ -83,39 +82,37 @@ public class UncheckedAdapter extends BaseAdapter {
      * 设置删除的position
      */
     public void setRemove(int position) {
-        remove_position = position;
+        mRemovePosition = position;
         notifyDataSetChanged();
-        // notifyDataSetChanged();
     }
 
     /**
      * 删除频道列表
      */
     public void remove() {
-        moduleList.remove(remove_position);
-        remove_position = -1;
+        mModules.remove(mRemovePosition);
+        mRemovePosition = -1;
         notifyDataSetChanged();
     }
 
     /**
      * 设置频道列表
      */
-    public void setListDate(List<ModuleItem> list) {
-        moduleList = list;
+    public void setModules(List<ModuleItem> list) {
+        mModules = list;
     }
 
     /**
      * 获取是否可见
      */
     public boolean isVisible() {
-        return isVisible;
+        return mIsVisible;
     }
 
     /**
      * 设置是否可见
      */
     public void setVisible(boolean visible) {
-        isVisible = visible;
+        mIsVisible = visible;
     }
-
 }

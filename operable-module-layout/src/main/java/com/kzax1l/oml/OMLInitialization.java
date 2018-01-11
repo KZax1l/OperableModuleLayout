@@ -14,5 +14,5 @@ public interface OMLInitialization {
 
     void onTerminate(OMLSqlHelper sqlHelper);
 
-    ModuleManager getChannelManage();
+    ModuleManager getModuleManager();
 }

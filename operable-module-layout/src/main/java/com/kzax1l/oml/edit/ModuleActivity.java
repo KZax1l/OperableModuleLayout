@@ -38,8 +38,8 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
      */
     boolean mIsMove = false;
 
-    public final static int CODE_REQUEST_CHANNEL = 0x98; // 请求码
-    public final static int CODE_RESULT_CHANNEL = 0x99; // 返回码
+    public final static int CODE_REQUEST_OML = 0x98; // 请求码
+    public final static int CODE_RESULT_OML = 0x99; // 返回码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +82,8 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
             return;
         }
         if (parent.getId() == R.id.userGridView) {
-            final ModuleItem channel = ((CheckedAdapter) parent.getAdapter()).getItem(position);
-            if (!channel.deletable) return;
+            final ModuleItem item = ((CheckedAdapter) parent.getAdapter()).getItem(position);
+            if (!item.deletable) return;
             final ImageView moveImageView = getView(view);
             if (moveImageView != null) {
                 TextView newTextView = (TextView) view.findViewById(R.id.text_item);
@@ -91,14 +91,14 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
                 newTextView.getLocationInWindow(startLocation);
                 mUncheckedAdapter.setVisible(false);
                 //添加到最后一个
-                mUncheckedAdapter.addItem(channel);
+                mUncheckedAdapter.addItem(item);
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         try {
                             int[] endLocation = new int[2];
                             //获取终点的坐标
                             mUncheckedGridView.getChildAt(mUncheckedGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                            MoveAnim(moveImageView, startLocation, endLocation, channel, mCheckedGridView);
+                            MoveAnim(moveImageView, startLocation, endLocation, item, mCheckedGridView);
                             mCheckedAdapter.setRemove(position);
                         } catch (Exception localException) {
                         }
@@ -112,17 +112,17 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
                 TextView newTextView = (TextView) view.findViewById(R.id.text_item);
                 final int[] startLocation = new int[2];
                 newTextView.getLocationInWindow(startLocation);
-                final ModuleItem channel = ((UncheckedAdapter) parent.getAdapter()).getItem(position);
+                final ModuleItem item = ((UncheckedAdapter) parent.getAdapter()).getItem(position);
                 mCheckedAdapter.setVisible(false);
                 //添加到最后一个
-                mCheckedAdapter.addItem(channel);
+                mCheckedAdapter.addItem(item);
                 new Handler().postDelayed(new Runnable() {
                     public void run() {
                         try {
                             int[] endLocation = new int[2];
                             //获取终点的坐标
                             mCheckedGridView.getChildAt(mCheckedGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                            MoveAnim(moveImageView, startLocation, endLocation, channel, mUncheckedGridView);
+                            MoveAnim(moveImageView, startLocation, endLocation, item, mUncheckedGridView);
                             mUncheckedAdapter.setRemove(position);
                         } catch (Exception localException) {
                         }
@@ -134,14 +134,8 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
 
     /**
      * 点击ITEM移动动画
-     *
-     * @param moveView
-     * @param startLocation
-     * @param endLocation
-     * @param moveChannel
-     * @param clickGridView
      */
-    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final ModuleItem moveChannel,
+    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final ModuleItem moveItem,
                           final GridView clickGridView) {
         int[] initLocation = new int[2];
         //获取传递过来的VIEW的坐标
@@ -237,17 +231,17 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
     /**
      * 退出时候保存选择后数据库的设置
      */
-    private void saveChannel() {
-        OMLInitializer.manager().deleteAllChannel();
-        OMLInitializer.manager().saveUserChannel(mCheckedAdapter.getChannnelLst());
-        OMLInitializer.manager().saveOtherChannel(mUncheckedAdapter.getChannnelLst());
+    private void saveModules() {
+        OMLInitializer.manager().deleteAllModules();
+        OMLInitializer.manager().saveCheckedModules(mCheckedAdapter.getModules());
+        OMLInitializer.manager().saveUncheckedModules(mUncheckedAdapter.getModules());
     }
 
     @Override
     public void onBackPressed() {
-        if (mCheckedAdapter.isListChanged()) {
-            saveChannel();
-            setResult(CODE_RESULT_CHANNEL);
+        if (mCheckedAdapter.IsDataSetChanged()) {
+            saveModules();
+            setResult(CODE_RESULT_OML);
             finish();
         } else {
             super.onBackPressed();

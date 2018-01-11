@@ -24,99 +24,98 @@ import com.kzax1l.oml.Utils;
 import com.kzax1l.oml.adapter.CheckedAdapter;
 
 public class CheckedGridView extends GridView {
-
     /**
      * 点击时候的X位置
      */
-    public int downX;
+    private int mDownX;
     /**
      * 点击时候的Y位置
      */
-    public int downY;
+    private int mDownY;
     /**
      * 点击时候对应整个界面的X位置
      */
-    public int windowX;
+    private int mWindowX;
     /**
      * 点击时候对应整个界面的Y位置
      */
-    public int windowY;
+    private int mWindowY;
     /**
      * 屏幕上的X
      */
-    private int win_view_x;
+    private int mRawX;
     /**
      * 屏幕上的Y
      */
-    private int win_view_y;
+    private int mRawY;
     /**
-     * 拖动的里x的距离
+     * 拖动的里X的距离
      */
-    int dragOffsetX;
+    private int mDragOffsetX;
     /**
      * 拖动的里Y的距离
      */
-    int dragOffsetY;
+    private int mDragOffsetY;
     /**
-     * 长按时候对应postion
+     * 长按时候对应position
      */
-    public int dragPosition;
+    private int mDragPosition;
     /**
      * Up后对应的ITEM的Position
      */
-    private int dropPosition;
+    private int mDropPosition;
     /**
      * 开始拖动的ITEM的Position
      */
-    private int startPosition;
+    private int mStartPosition;
     /**
      * item高
      */
-    private int itemHeight;
+    private int mItemHeight;
     /**
      * item宽
      */
-    private int itemWidth;
+    private int mItemWidth;
     /**
      * 拖动的时候对应ITEM的VIEW
      */
-    private View dragImageView = null;
+    private View mDragImageView = null;
     /**
      * 长按的时候ITEM的VIEW
      */
-    private ViewGroup dragItemView = null;
+    private ViewGroup mDragItemView = null;
     /**
      * WindowManager管理器
      */
-    private WindowManager windowManager = null;
+    private WindowManager mWindowManager = null;
     /** */
-    private WindowManager.LayoutParams windowParams = null;
+    private WindowManager.LayoutParams mWindowParams = null;
     /**
      * item总量
      */
-    private int itemTotalCount;
+    private int mItemTotalCount;
     /**
-     * 一行的ITEM数量
+     * 列数
      */
-    private int nColumns = 4;
+    private int mColumns = 4;
     /**
      * 行数
      */
-    private int nRows;
+    private int mRows;
     /**
-     * 剩余部分
+     * 最后一行剩余的数量
      */
-    private int Remainder;
+    private int mRemainder;
     /**
-     * 是否在移动
+     * 是否正在移动
      */
-    private boolean isMoving = false;
+    private boolean mIsMoving = false;
     /** */
-    private int holdPosition;
+    private int mHoldPosition;
     /**
      * 拖动的时候放大的倍数
      */
-    private double dragScale = 1.2D;
+    private double mDragScale = 1.2D;
     /**
      * 震动器
      */
@@ -129,8 +128,10 @@ public class CheckedGridView extends GridView {
      * 每个ITEM之间的竖直间距
      */
     private int mVerticalSpacing = 15;
-    /* 移动时候最后个动画的ID */
-    private String LastAnimationID;
+    /**
+     * 移动时候最后个动画的ID
+     */
+    private String mLastAnimationID;
 
     public CheckedGridView(Context context) {
         super(context);
@@ -156,10 +157,10 @@ public class CheckedGridView extends GridView {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            downX = (int) ev.getX();
-            downY = (int) ev.getY();
-            windowX = (int) ev.getX();
-            windowY = (int) ev.getY();
+            mDownX = (int) ev.getX();
+            mDownY = (int) ev.getY();
+            mWindowX = (int) ev.getX();
+            mWindowY = (int) ev.getY();
             setOnItemClickListener(ev);
         }
         return super.onInterceptTouchEvent(ev);
@@ -169,21 +170,21 @@ public class CheckedGridView extends GridView {
     public boolean onTouchEvent(MotionEvent ev) {
         // TODO Auto-generated method stub
         boolean bool = true;
-        if (dragImageView != null && dragPosition != AdapterView.INVALID_POSITION) {
+        if (mDragImageView != null && mDragPosition != AdapterView.INVALID_POSITION) {
             // 移动时候的对应x,y位置
             bool = super.onTouchEvent(ev);
             int x = (int) ev.getX();
             int y = (int) ev.getY();
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    downX = (int) ev.getX();
-                    windowX = (int) ev.getX();
-                    downY = (int) ev.getY();
-                    windowY = (int) ev.getY();
+                    mDownX = (int) ev.getX();
+                    mWindowX = (int) ev.getX();
+                    mDownY = (int) ev.getY();
+                    mWindowY = (int) ev.getY();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     onDrag(x, y, (int) ev.getRawX(), (int) ev.getRawY());
-                    if (!isMoving) {
+                    if (!mIsMoving) {
                         OnMove(x, y);
                     }
                     if (pointToPosition(x, y) != AdapterView.INVALID_POSITION) {
@@ -207,15 +208,15 @@ public class CheckedGridView extends GridView {
      * 在拖动的情况
      */
     private void onDrag(int x, int y, int rawx, int rawy) {
-        if (dragImageView != null) {
-            windowParams.alpha = 0.6f;
+        if (mDragImageView != null) {
+            mWindowParams.alpha = 0.6f;
 //			windowParams.x = x - win_view_x + viewX;
 //			windowParams.y = y +  win_view_y + viewY;
 //			windowParams.x = rawx - itemWidth / 2;
 //			windowParams.y = rawy - itemHeight / 2;
-            windowParams.x = rawx - win_view_x;
-            windowParams.y = rawy - win_view_y;
-            windowManager.updateViewLayout(dragImageView, windowParams);
+            mWindowParams.x = rawx - mRawX;
+            mWindowParams.y = rawy - mRawY;
+            mWindowManager.updateViewLayout(mDragImageView, mWindowParams);
         }
     }
 
@@ -226,7 +227,7 @@ public class CheckedGridView extends GridView {
         // 根据拖动到的x,y坐标获取拖动位置下方的ITEM对应的POSTION
         int tempPostion = pointToPosition(x, y);
 //		if (tempPostion != AdapterView.INVALID_POSITION) {
-        dropPosition = tempPostion;
+        mDropPosition = tempPostion;
         CheckedAdapter mDragAdapter = (CheckedAdapter) getAdapter();
         //显示刚拖动的ITEM
         mDragAdapter.setShowDropItem(true);
@@ -249,33 +250,33 @@ public class CheckedGridView extends GridView {
                 int x = (int) ev.getX();// 长安事件的X位置
                 int y = (int) ev.getY();// 长安事件的y位置
 
-                startPosition = position;// 第一次点击的postion
-                dragPosition = position;
-                if (startPosition < 0) {
+                mStartPosition = position;// 第一次点击的postion
+                mDragPosition = position;
+                if (mStartPosition < 0) {
                     return false;
                 }
-                ViewGroup dragViewGroup = (ViewGroup) getChildAt(dragPosition - getFirstVisiblePosition());
+                ViewGroup dragViewGroup = (ViewGroup) getChildAt(mDragPosition - getFirstVisiblePosition());
                 TextView dragTextView = (TextView) dragViewGroup.findViewById(R.id.text_item);
                 dragTextView.setSelected(true);
                 dragTextView.setEnabled(false);
-                itemHeight = dragViewGroup.getHeight();
-                itemWidth = dragViewGroup.getWidth();
-                itemTotalCount = CheckedGridView.this.getCount();
-                int row = itemTotalCount / nColumns;// 算出行数
-                Remainder = (itemTotalCount % nColumns);// 算出最后一行多余的数量
-                if (Remainder != 0) {
-                    nRows = row + 1;
+                mItemHeight = dragViewGroup.getHeight();
+                mItemWidth = dragViewGroup.getWidth();
+                mItemTotalCount = CheckedGridView.this.getCount();
+                int row = mItemTotalCount / mColumns;// 算出行数
+                mRemainder = (mItemTotalCount % mColumns);// 算出最后一行多余的数量
+                if (mRemainder != 0) {
+                    mRows = row + 1;
                 } else {
-                    nRows = row;
+                    mRows = row;
                 }
                 // 如果特殊的这个不等于拖动的那个,并且不等于-1
-                if (dragPosition != AdapterView.INVALID_POSITION) {
+                if (mDragPosition != AdapterView.INVALID_POSITION) {
                     // 释放的资源使用的绘图缓存。如果你调用buildDrawingCache()手动没有调用setDrawingCacheEnabled(真正的),你应该清理缓存使用这种方法。
-                    win_view_x = windowX - dragViewGroup.getLeft();//VIEW相对自己的X，半斤
-                    win_view_y = windowY - dragViewGroup.getTop();//VIEW相对自己的y，半斤
-                    dragOffsetX = (int) (ev.getRawX() - x);//手指在屏幕的上X位置-手指在控件中的位置就是距离最左边的距离
-                    dragOffsetY = (int) (ev.getRawY() - y);//手指在屏幕的上y位置-手指在控件中的位置就是距离最上边的距离
-                    dragItemView = dragViewGroup;
+                    mRawX = mWindowX - dragViewGroup.getLeft();//VIEW相对自己的X，半斤
+                    mRawY = mWindowY - dragViewGroup.getTop();//VIEW相对自己的y，半斤
+                    mDragOffsetX = (int) (ev.getRawX() - x);//手指在屏幕的上X位置-手指在控件中的位置就是距离最左边的距离
+                    mDragOffsetY = (int) (ev.getRawY() - y);//手指在屏幕的上y位置-手指在控件中的位置就是距离最上边的距离
+                    mDragItemView = dragViewGroup;
                     dragViewGroup.destroyDrawingCache();
                     dragViewGroup.setDrawingCacheEnabled(true);
                     Bitmap dragBitmap = Bitmap.createBitmap(dragViewGroup.getDrawingCache());
@@ -283,7 +284,7 @@ public class CheckedGridView extends GridView {
                     startDrag(dragBitmap, (int) ev.getRawX(), (int) ev.getRawY());
                     hideDropItem();
                     dragViewGroup.setVisibility(View.INVISIBLE);
-                    isMoving = false;
+                    mIsMoving = false;
                     requestDisallowInterceptTouchEvent(true);
                     return true;
                 }
@@ -294,40 +295,40 @@ public class CheckedGridView extends GridView {
 
     public void startDrag(Bitmap dragBitmap, int x, int y) {
         stopDrag();
-        windowParams = new WindowManager.LayoutParams();// 获取WINDOW界面的
+        mWindowParams = new WindowManager.LayoutParams();// 获取WINDOW界面的
         //Gravity.TOP|Gravity.LEFT;这个必须加
-        windowParams.gravity = Gravity.TOP | Gravity.LEFT;
+        mWindowParams.gravity = Gravity.TOP | Gravity.LEFT;
         // 计算当前项Left离窗体的距离
 //		windowParams.x = x - (int)((itemWidth / 2) * dragScale);
 //		windowParams.y = y - (int) ((itemHeight / 2) * dragScale);
         //得到preview左上角相对于屏幕的坐标
-        windowParams.x = x - win_view_x;
-        windowParams.y = y - win_view_y;
+        mWindowParams.x = x - mRawX;
+        mWindowParams.y = y - mRawY;
 //		this.windowParams.x = (x - this.win_view_x + this.viewX);//位置的x值
 //		this.windowParams.y = (y - this.win_view_y + this.viewY);//位置的y值
         //设置拖拽item的宽和高
-        windowParams.width = (int) (dragScale * dragBitmap.getWidth());// 放大dragScale倍，可以设置拖动后的倍数
-        windowParams.height = (int) (dragScale * dragBitmap.getHeight());// 放大dragScale倍，可以设置拖动后的倍数
-        this.windowParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        mWindowParams.width = (int) (mDragScale * dragBitmap.getWidth());// 放大dragScale倍，可以设置拖动后的倍数
+        mWindowParams.height = (int) (mDragScale * dragBitmap.getHeight());// 放大dragScale倍，可以设置拖动后的倍数
+        this.mWindowParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
-        this.windowParams.format = PixelFormat.TRANSLUCENT;
-        this.windowParams.windowAnimations = 0;
+        this.mWindowParams.format = PixelFormat.TRANSLUCENT;
+        this.mWindowParams.windowAnimations = 0;
         ImageView iv = new ImageView(getContext());
         iv.setImageBitmap(dragBitmap);
-        windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);// "window"
-        windowManager.addView(iv, windowParams);
-        dragImageView = iv;
+        mWindowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);// "window"
+        mWindowManager.addView(iv, mWindowParams);
+        mDragImageView = iv;
     }
 
     /**
      * 停止拖动 ，释放并初始化
      */
     private void stopDrag() {
-        if (dragImageView != null) {
-            windowManager.removeView(dragImageView);
-            dragImageView = null;
+        if (mDragImageView != null) {
+            mWindowManager.removeView(mDragImageView);
+            mDragImageView = null;
         }
     }
 
@@ -369,18 +370,18 @@ public class CheckedGridView extends GridView {
         int dPosition = pointToPosition(x, y);
         // 判断是从第几个索引开始可以拖拽移动
         if (dPosition >= 0) {
-            if ((dPosition == -1) || (dPosition == dragPosition)) {
+            if ((dPosition == -1) || (dPosition == mDragPosition)) {
                 return;
             }
-            dropPosition = dPosition;
-            if (dragPosition != startPosition) {
-                dragPosition = startPosition;
+            mDropPosition = dPosition;
+            if (mDragPosition != mStartPosition) {
+                mDragPosition = mStartPosition;
             }
             int movecount;
             //拖动的=开始拖的，并且 拖动的 不等于放下的
-            if ((dragPosition == startPosition) || (dragPosition != dropPosition)) {
+            if ((mDragPosition == mStartPosition) || (mDragPosition != mDropPosition)) {
                 //移需要移动的动ITEM数量
-                movecount = dropPosition - dragPosition;
+                movecount = mDropPosition - mDragPosition;
             } else {
                 //移需要移动的动ITEM数量为0
                 movecount = 0;
@@ -391,17 +392,17 @@ public class CheckedGridView extends GridView {
 
             int movecount_abs = Math.abs(movecount);
 
-            if (dPosition != dragPosition) {
+            if (dPosition != mDragPosition) {
                 //dragGroup设置为不可见
-                ViewGroup dragGroup = (ViewGroup) getChildAt(dragPosition);
+                ViewGroup dragGroup = (ViewGroup) getChildAt(mDragPosition);
                 dragGroup.setVisibility(View.INVISIBLE);
 
                 float to_x = 1;// 当前下方positon
                 float to_y;// 当前下方右边positon
                 //x_vlaue移动的距离百分比（相对于自己长度的百分比）
-                float x_vlaue = ((float) mHorizontalSpacing / (float) itemWidth) + 1.0f;
+                float x_vlaue = ((float) mHorizontalSpacing / (float) mItemWidth) + 1.0f;
                 //y_vlaue移动的距离百分比（相对于自己宽度的百分比）
-                float y_vlaue = ((float) mVerticalSpacing / (float) itemHeight) + 1.0f;
+                float y_vlaue = ((float) mVerticalSpacing / (float) mItemHeight) + 1.0f;
                 Log.d("x_vlaue", "x_vlaue = " + x_vlaue);
                 for (int i = 0; i < movecount_abs; i++) {
                     to_x = x_vlaue;
@@ -409,11 +410,11 @@ public class CheckedGridView extends GridView {
                     //像左
                     if (movecount > 0) {
                         // 判断是不是同一行的
-                        holdPosition = dragPosition + i + 1;
-                        if (dragPosition / nColumns == holdPosition / nColumns) {
+                        mHoldPosition = mDragPosition + i + 1;
+                        if (mDragPosition / mColumns == mHoldPosition / mColumns) {
                             to_x = -x_vlaue;
                             to_y = 0;
-                        } else if (holdPosition % 4 == 0) {
+                        } else if (mHoldPosition % 4 == 0) {
                             to_x = 3 * x_vlaue;
                             to_y = -y_vlaue;
                         } else {
@@ -422,11 +423,11 @@ public class CheckedGridView extends GridView {
                         }
                     } else {
                         //向右,下移到上，右移到左
-                        holdPosition = dragPosition - i - 1;
-                        if (dragPosition / nColumns == holdPosition / nColumns) {
+                        mHoldPosition = mDragPosition - i - 1;
+                        if (mDragPosition / mColumns == mHoldPosition / mColumns) {
                             to_x = x_vlaue;
                             to_y = 0;
-                        } else if ((holdPosition + 1) % 4 == 0) {
+                        } else if ((mHoldPosition + 1) % 4 == 0) {
                             to_x = -3 * x_vlaue;
                             to_y = y_vlaue;
                         } else {
@@ -434,18 +435,18 @@ public class CheckedGridView extends GridView {
                             to_y = 0;
                         }
                     }
-                    ViewGroup moveViewGroup = (ViewGroup) getChildAt(holdPosition);
+                    ViewGroup moveViewGroup = (ViewGroup) getChildAt(mHoldPosition);
                     Animation moveAnimation = getMoveAnimation(to_x, to_y);
                     moveViewGroup.startAnimation(moveAnimation);
                     //如果是最后一个移动的，那么设置他的最后个动画ID为LastAnimationID
-                    if (holdPosition == dropPosition) {
-                        LastAnimationID = moveAnimation.toString();
+                    if (mHoldPosition == mDropPosition) {
+                        mLastAnimationID = moveAnimation.toString();
                     }
                     moveAnimation.setAnimationListener(new AnimationListener() {
 
                         @Override
                         public void onAnimationStart(Animation animation) {
-                            isMoving = true;
+                            mIsMoving = true;
                         }
 
                         @Override
@@ -456,12 +457,12 @@ public class CheckedGridView extends GridView {
                         @Override
                         public void onAnimationEnd(Animation animation) {
                             // 如果为最后个动画结束，那执行下面的方法
-                            if (animation.toString().equalsIgnoreCase(LastAnimationID)) {
+                            if (animation.toString().equalsIgnoreCase(mLastAnimationID)) {
                                 CheckedAdapter mDragAdapter = (CheckedAdapter) getAdapter();
-                                mDragAdapter.exchange(startPosition, dropPosition);
-                                startPosition = dropPosition;
-                                dragPosition = dropPosition;
-                                isMoving = false;
+                                mDragAdapter.exchange(mStartPosition, mDropPosition);
+                                mStartPosition = mDropPosition;
+                                mDragPosition = mDropPosition;
+                                mIsMoving = false;
                             }
                         }
                     });

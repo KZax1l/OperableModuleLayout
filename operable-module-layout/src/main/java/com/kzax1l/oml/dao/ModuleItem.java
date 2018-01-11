@@ -22,7 +22,7 @@ public class ModuleItem implements Serializable {
     /**
      * 栏目是否选中
      */
-    public int check_state;
+    public int checkState;
     /**
      * 是否是可删除的项
      */
@@ -31,15 +31,15 @@ public class ModuleItem implements Serializable {
     public ModuleItem() {
     }
 
-    public ModuleItem(int id, String name, int orderId, int check_state) {
-        this(id, name, orderId, check_state, true);
+    public ModuleItem(int id, String name, int orderId, int checkState) {
+        this(id, name, orderId, checkState, true);
     }
 
-    public ModuleItem(int id, String name, int orderId, int check_state, boolean deletable) {
+    public ModuleItem(int id, String name, int orderId, int checkState, boolean deletable) {
         this.id = id;
         this.name = name;
         this.orderId = orderId;
-        this.check_state = check_state;
+        this.checkState = checkState;
         this.deletable = deletable;
     }
 
@@ -55,8 +55,8 @@ public class ModuleItem implements Serializable {
         this.orderId = orderId;
     }
 
-    public void setCheck_state(int check_state) {
-        this.check_state = check_state;
+    public void setCheckState(int checkState) {
+        this.checkState = checkState;
     }
 
     public void setDeletable(boolean deletable) {

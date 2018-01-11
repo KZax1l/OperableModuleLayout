@@ -12,12 +12,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ModuleDao implements ModuleDaoInterface {
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ID;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_NAME;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_OPERABLE;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_DB_TABLE_NAME;
 
-    private OMLSqlHelper helper = null;
+class ModuleDao implements ModuleDaoInterface {
+    private OMLSqlHelper mHelper = null;
 
     ModuleDao(Context context) {
-        helper = new OMLSqlHelper(context);
+        mHelper = new OMLSqlHelper(context);
     }
 
     @Override
@@ -26,14 +32,14 @@ class ModuleDao implements ModuleDaoInterface {
         SQLiteDatabase database = null;
         long id;
         try {
-            database = helper.getWritableDatabase();
+            database = mHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(OMLSqlHelper.OML_MODULE_ID, item.id);
-            values.put(OMLSqlHelper.OML_MODULE_NAME, item.name);
-            values.put(OMLSqlHelper.OML_MODULE_ORDER_ID, item.orderId);
-            values.put(OMLSqlHelper.OML_MODULE_CHECK_STATE, item.check_state);
-            values.put(OMLSqlHelper.OML_MODULE_OPERABLE, item.deletable);
-            id = database.insert(OMLSqlHelper.OML_MODULE_TABLE_NAME, null, values);
+            values.put(OML_MODULE_ID, item.id);
+            values.put(OML_MODULE_NAME, item.name);
+            values.put(OML_MODULE_ORDER_ID, item.orderId);
+            values.put(OML_MODULE_CHECK_STATE, item.checkState);
+            values.put(OML_MODULE_OPERABLE, item.deletable);
+            id = database.insert(OML_DB_TABLE_NAME, null, values);
             flag = id != -1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,8 +57,8 @@ class ModuleDao implements ModuleDaoInterface {
         SQLiteDatabase database = null;
         int count;
         try {
-            database = helper.getWritableDatabase();
-            count = database.delete(OMLSqlHelper.OML_MODULE_TABLE_NAME, whereClause, whereArgs);
+            database = mHelper.getWritableDatabase();
+            count = database.delete(OML_DB_TABLE_NAME, whereClause, whereArgs);
             flag = count > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,14 +71,13 @@ class ModuleDao implements ModuleDaoInterface {
     }
 
     @Override
-    public boolean updateCache(ContentValues values, String whereClause,
-                               String[] whereArgs) {
+    public boolean updateCache(ContentValues values, String whereClause, String[] whereArgs) {
         boolean flag = false;
         SQLiteDatabase database = null;
         int count;
         try {
-            database = helper.getWritableDatabase();
-            count = database.update(OMLSqlHelper.OML_MODULE_TABLE_NAME, values, whereClause, whereArgs);
+            database = mHelper.getWritableDatabase();
+            count = database.update(OML_DB_TABLE_NAME, values, whereClause, whereArgs);
             flag = count > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,15 +95,14 @@ class ModuleDao implements ModuleDaoInterface {
         Cursor cursor = null;
         Map<String, String> map = new HashMap<>();
         try {
-            database = helper.getReadableDatabase();
-            cursor = database.query(true, OMLSqlHelper.OML_MODULE_TABLE_NAME, null, selection,
+            database = mHelper.getReadableDatabase();
+            cursor = database.query(true, OML_DB_TABLE_NAME, null, selection,
                     selectionArgs, null, null, null, null);
             int cols_len = cursor.getColumnCount();
             while (cursor.moveToNext()) {
                 for (int i = 0; i < cols_len; i++) {
                     String cols_name = cursor.getColumnName(i);
-                    String cols_values = cursor.getString(cursor
-                            .getColumnIndex(cols_name));
+                    String cols_values = cursor.getString(cursor.getColumnIndex(cols_name));
                     if (cols_values == null) {
                         cols_values = "";
                     }
@@ -124,8 +128,8 @@ class ModuleDao implements ModuleDaoInterface {
         SQLiteDatabase database = null;
         Cursor cursor = null;
         try {
-            database = helper.getReadableDatabase();
-            cursor = database.query(false, OMLSqlHelper.OML_MODULE_TABLE_NAME, null, selection, selectionArgs, null, null, null, null);
+            database = mHelper.getReadableDatabase();
+            cursor = database.query(false, OML_DB_TABLE_NAME, null, selection, selectionArgs, null, null, null, null);
             int cols_len = cursor.getColumnCount();
             while (cursor.moveToNext()) {
                 Map<String, String> map = new HashMap<>();
@@ -139,7 +143,6 @@ class ModuleDao implements ModuleDaoInterface {
                 }
                 list.add(map);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -154,17 +157,15 @@ class ModuleDao implements ModuleDaoInterface {
     }
 
     public void clearFeedTable() {
-        String sql = "DELETE FROM " + OMLSqlHelper.OML_MODULE_TABLE_NAME + ";";
-        SQLiteDatabase db = helper.getWritableDatabase();
+        String sql = "DELETE FROM " + OML_DB_TABLE_NAME + ";";
+        SQLiteDatabase db = mHelper.getWritableDatabase();
         db.execSQL(sql);
         revertSeq();
     }
 
     private void revertSeq() {
-        String sql = "update sqlite_sequence set seq=0 where name='"
-                + OMLSqlHelper.OML_MODULE_TABLE_NAME + "'";
-        SQLiteDatabase db = helper.getWritableDatabase();
+        String sql = "update sqlite_sequence set seq=0 where name='" + OML_DB_TABLE_NAME + "'";
+        SQLiteDatabase db = mHelper.getWritableDatabase();
         db.execSQL(sql);
     }
-
 }
