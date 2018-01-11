@@ -76,7 +76,7 @@ public class CheckedAdapter extends BaseAdapter {
         item_text = (TextView) view.findViewById(R.id.text_item);
         ModuleItem item = getItem(position);
         item_text.setText(item.name);
-        if (!item.deletable) {
+        if (!item.operable) {
             item_text.setEnabled(false);
         }
         if (mIsChanged && (position == mHoldPosition) && !mIsItemShow) {

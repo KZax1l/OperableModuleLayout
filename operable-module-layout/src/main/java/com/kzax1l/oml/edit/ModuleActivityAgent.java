@@ -117,7 +117,7 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
         }
         if (parent.getId() == R.id.userGridView) {
             final ModuleItem item = ((CheckedAdapter) parent.getAdapter()).getItem(position);
-            if (!item.deletable) return;
+            if (!item.operable) return;
             final ImageView moveImageView = getView(view);
             if (moveImageView != null) {
                 TextView newTextView = (TextView) view.findViewById(R.id.text_item);
