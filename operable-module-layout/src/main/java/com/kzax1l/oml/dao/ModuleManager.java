@@ -12,6 +12,7 @@ import java.util.Map;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_CHECKED;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_UNCHECKED;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_FLAG;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_NAME;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_OPERABLE;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
@@ -82,6 +83,7 @@ public class ModuleManager {
             for (int i = 0; i < count; i++) {
                 ModuleItem navigate = new ModuleItem();
                 navigate.setName(mapList.get(i).get(OML_MODULE_NAME));
+                navigate.setFlag(mapList.get(i).get(OML_MODULE_FLAG));
                 navigate.setOrderId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ORDER_ID)));
                 navigate.setCheckState(Integer.valueOf(mapList.get(i).get(OML_MODULE_CHECK_STATE)));
                 // 由于SQLite中获取到的Boolean对象是一个数字，1表示true
@@ -111,6 +113,7 @@ public class ModuleManager {
             for (int i = 0; i < count; i++) {
                 ModuleItem navigate = new ModuleItem();
                 navigate.setName(mapList.get(i).get(OML_MODULE_NAME));
+                navigate.setFlag(mapList.get(i).get(OML_MODULE_FLAG));
                 navigate.setOrderId(Integer.valueOf(mapList.get(i).get(OML_MODULE_ORDER_ID)));
                 navigate.setCheckState(Integer.valueOf(mapList.get(i).get(OML_MODULE_CHECK_STATE)));
                 // 由于SQLite中获取到的Boolean对象是一个数字，1表示true

@@ -13,6 +13,7 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
 
     public static final String OML_MODULE_ID = "oml_module_id";
     public static final String OML_MODULE_NAME = "oml_module_name";
+    public static final String OML_MODULE_FLAG = "oml_module_flag";
     public static final String OML_MODULE_ORDER_ID = "oml_module_order_id";
     /**
      * 是否可进行操作
@@ -38,6 +39,7 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
                 + OML_DB_TABLE_NAME + "("
                 + OML_MODULE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + OML_MODULE_NAME + " TEXT,"
+                + OML_MODULE_FLAG + " TEXT,"
                 + OML_MODULE_ORDER_ID + " INTEGER,"
                 + OML_MODULE_CHECK_STATE + " INTEGER,"
                 + OML_MODULE_OPERABLE + " BOOLEAN)";

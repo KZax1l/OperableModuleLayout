@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_DB_TABLE_NAME;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_FLAG;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_NAME;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_OPERABLE;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
@@ -34,6 +35,7 @@ class ModuleDao implements ModuleDaoInterface {
             database = mHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(OML_MODULE_NAME, item.name);
+            values.put(OML_MODULE_FLAG, item.flag);
             values.put(OML_MODULE_ORDER_ID, item.orderId);
             values.put(OML_MODULE_CHECK_STATE, item.checkState);
             values.put(OML_MODULE_OPERABLE, item.operable);

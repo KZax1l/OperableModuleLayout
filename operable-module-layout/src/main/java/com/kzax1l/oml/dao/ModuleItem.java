@@ -12,6 +12,10 @@ public class ModuleItem implements Serializable {
      */
     public String name;
     /**
+     * 栏目对应的flag
+     */
+    public String flag;
+    /**
      * 栏目在整体中的排序顺序  rank
      */
     public int orderId;
@@ -27,12 +31,13 @@ public class ModuleItem implements Serializable {
     public ModuleItem() {
     }
 
-    public ModuleItem(String name, int orderId, int checkState) {
-        this(name, orderId, checkState, true);
+    public ModuleItem(String name, String flag, int orderId, int checkState) {
+        this(name, flag, orderId, checkState, true);
     }
 
-    public ModuleItem(String name, int orderId, int checkState, boolean operable) {
+    public ModuleItem(String name, String flag, int orderId, int checkState, boolean operable) {
         this.name = name;
+        this.flag = flag;
         this.orderId = orderId;
         this.checkState = checkState;
         this.operable = operable;
@@ -40,6 +45,10 @@ public class ModuleItem implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 
     public void setOrderId(int orderId) {
