@@ -20,8 +20,8 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
      */
     public static final String OML_MODULE_OPERABLE = "oml_module_operable";
     public static final String OML_MODULE_CHECK_STATE = "oml_module_check_state";
-    public static final String OML_MODULE_CHECK_STATE_CHECKED = "1";
-    public static final String OML_MODULE_CHECK_STATE_UNCHECKED = "0";
+    public static final int OML_MODULE_CHECK_STATE_CHECKED = 1;
+    public static final int OML_MODULE_CHECK_STATE_UNCHECKED = 0;
 
     public OMLSqlHelper(Context context) {
         super(context, OML_DB_NAME, null, OML_DB_VERSION);

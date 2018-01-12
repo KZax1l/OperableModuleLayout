@@ -74,7 +74,7 @@ public class ModuleManager {
      * @return 数据库存在用户配置 ? 数据库内的用户选择频道 : 默认用户选择频道 ;
      */
     public List<ModuleItem> getCheckedModules() {
-        Object cacheList = mModuleDao.listCache(OML_MODULE_CHECK_STATE + "= ?", new String[]{OML_MODULE_CHECK_STATE_CHECKED});
+        Object cacheList = mModuleDao.listCache(OML_MODULE_CHECK_STATE + "= ?", new String[]{String.valueOf(OML_MODULE_CHECK_STATE_CHECKED)});
         List<ModuleItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             mIsExist = true;
@@ -105,7 +105,7 @@ public class ModuleManager {
      * @return 数据库存在用户配置 ? 数据库内的其它频道 : 默认其它频道 ;
      */
     public List<ModuleItem> getUncheckedModules() {
-        Object cacheList = mModuleDao.listCache(OML_MODULE_CHECK_STATE + "= ?", new String[]{OML_MODULE_CHECK_STATE_UNCHECKED});
+        Object cacheList = mModuleDao.listCache(OML_MODULE_CHECK_STATE + "= ?", new String[]{String.valueOf(OML_MODULE_CHECK_STATE_UNCHECKED)});
         List<ModuleItem> list = new ArrayList<>();
         if (cacheList != null && !((List) cacheList).isEmpty()) {
             List<Map<String, String>> mapList = (List) cacheList;
@@ -136,7 +136,7 @@ public class ModuleManager {
         for (int i = 0; i < modules.size(); i++) {
             ModuleItem item = modules.get(i);
             item.setOrderId(i);
-            item.setCheckState(1);
+            item.setCheckState(OML_MODULE_CHECK_STATE_CHECKED);
             mModuleDao.addCache(item);
         }
     }
@@ -148,7 +148,7 @@ public class ModuleManager {
         for (int i = 0; i < modules.size(); i++) {
             ModuleItem item = modules.get(i);
             item.setOrderId(i);
-            item.setCheckState(0);
+            item.setCheckState(OML_MODULE_CHECK_STATE_UNCHECKED);
             mModuleDao.addCache(item);
         }
     }
