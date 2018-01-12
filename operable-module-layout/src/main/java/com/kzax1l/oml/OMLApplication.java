@@ -46,31 +46,31 @@ public class OMLApplication extends Application implements OMLManager, OMLDataPr
     @Override
     public List<ModuleItem> available() {
         List<ModuleItem> defaultModules = new ArrayList<>();
-        defaultModules.add(new ModuleItem("推荐", "tj", 1, 1));
-        defaultModules.add(new ModuleItem("热点", "rd", 2, 1));
-        defaultModules.add(new ModuleItem("杭州", "hz", 3, 1));
-        defaultModules.add(new ModuleItem("时尚", "ss", 4, 1));
-        defaultModules.add(new ModuleItem("科技", "kj", 5, 1));
-        defaultModules.add(new ModuleItem("体育", "ty", 6, 1));
-        defaultModules.add(new ModuleItem("军事", "js", 7, 1));
-        defaultModules.add(new ModuleItem("娱乐", "yl", 12, 0));
+        defaultModules.add(new ModuleItem("推荐", "tj"));
+        defaultModules.add(new ModuleItem("热点", "rd"));
+        defaultModules.add(new ModuleItem("杭州", "hz"));
+        defaultModules.add(new ModuleItem("时尚", "ss"));
+        defaultModules.add(new ModuleItem("科技", "kj"));
+        defaultModules.add(new ModuleItem("体育", "ty"));
+        defaultModules.add(new ModuleItem("军事", "js"));
+        defaultModules.add(new ModuleItem("娱乐", "yl"));
         return defaultModules;
     }
 
     @Override
     public List<ModuleItem> unavailable() {
         List<ModuleItem> defaultModules = new ArrayList<>();
-        defaultModules.add(new ModuleItem("财经", "cj", 1, 0));
-        defaultModules.add(new ModuleItem("汽车", "qc", 2, 0));
-        defaultModules.add(new ModuleItem("房产", "fc", 3, 0));
-        defaultModules.add(new ModuleItem("社会", "sh", 4, 0));
-        defaultModules.add(new ModuleItem("情感", "qg", 5, 0));
-        defaultModules.add(new ModuleItem("女人", "nr", 6, 0));
-        defaultModules.add(new ModuleItem("旅游", "ly", 7, 0));
-        defaultModules.add(new ModuleItem("健康", "jk", 8, 0));
-        defaultModules.add(new ModuleItem("美女", "mn", 9, 0));
-        defaultModules.add(new ModuleItem("游戏", "yx", 10, 0));
-        defaultModules.add(new ModuleItem("数码", "sm", 11, 0));
+        defaultModules.add(new ModuleItem("财经", "cj"));
+        defaultModules.add(new ModuleItem("汽车", "qc"));
+        defaultModules.add(new ModuleItem("房产", "fc"));
+        defaultModules.add(new ModuleItem("社会", "sh"));
+        defaultModules.add(new ModuleItem("情感", "qg"));
+        defaultModules.add(new ModuleItem("女人", "nr"));
+        defaultModules.add(new ModuleItem("旅游", "ly"));
+        defaultModules.add(new ModuleItem("健康", "jk"));
+        defaultModules.add(new ModuleItem("美女", "mn"));
+        defaultModules.add(new ModuleItem("游戏", "yx"));
+        defaultModules.add(new ModuleItem("数码", "sm"));
         return defaultModules;
     }
 }

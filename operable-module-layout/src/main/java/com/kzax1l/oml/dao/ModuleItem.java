@@ -31,16 +31,10 @@ public class ModuleItem implements Serializable {
     public ModuleItem() {
     }
 
-    public ModuleItem(String name, String flag, int orderId, int checkState) {
-        this(name, flag, orderId, checkState, true);
-    }
-
-    public ModuleItem(String name, String flag, int orderId, int checkState, boolean operable) {
+    public ModuleItem(String name, String flag) {
         this.name = name;
         this.flag = flag;
-        this.orderId = orderId;
-        this.checkState = checkState;
-        this.operable = operable;
+        this.operable = true;
     }
 
     public void setName(String name) {
