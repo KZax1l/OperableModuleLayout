@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Zsago
  */
-public interface OMLDataProvider {
+public interface OMLModuleProvider {
     List<ModuleItem> available();
 
     List<ModuleItem> unavailable();

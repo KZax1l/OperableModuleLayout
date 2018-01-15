@@ -235,9 +235,9 @@ public class ModuleActivity extends GestureDetectorActivity implements AdapterVi
      * 退出时候保存选择后数据库的设置
      */
     private void saveModules() {
-        OMLInitializer.manager().deleteAllModules();
-        OMLInitializer.manager().saveCheckedModules(mCheckedAdapter.getModules());
-        OMLInitializer.manager().saveUncheckedModules(mUncheckedAdapter.getModules());
+        OMLInitializer.getModuleManager().deleteAllModules();
+        OMLInitializer.getModuleManager().saveCheckedModules(mCheckedAdapter.getModules());
+        OMLInitializer.getModuleManager().saveUncheckedModules(mUncheckedAdapter.getModules());
     }
 
     @Override

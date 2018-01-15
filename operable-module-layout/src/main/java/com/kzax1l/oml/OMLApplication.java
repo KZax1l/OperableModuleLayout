@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Deprecated
-public class OMLApplication extends Application implements OMLManager, OMLDataProvider {
+public class OMLApplication extends Application implements OMLModuleManager, OMLModuleProvider {
     private OMLSqlHelper mSqlHelper;
 
     @Override
@@ -40,7 +40,7 @@ public class OMLApplication extends Application implements OMLManager, OMLDataPr
 
     @Override
     public ModuleManager getModuleManager() {
-        return ModuleManager.getManager(getSQLHelper(), this);
+        return new ModuleManager(getSQLHelper(), this);
     }
 
     @Override

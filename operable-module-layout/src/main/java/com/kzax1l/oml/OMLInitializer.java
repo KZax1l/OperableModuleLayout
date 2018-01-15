@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.kzax1l.oml.dao.ModuleItem;
 import com.kzax1l.oml.dao.ModuleManager;
+import com.kzax1l.oml.db.OMLSqlHelper;
 
 import java.util.List;
 
@@ -13,32 +14,33 @@ import java.util.List;
  * @author Zsago
  */
 public class OMLInitializer {
-    private static OMLManager sInitialization;
+    private static OMLModuleManager sManager;
 
-    public static void initialize(@NonNull OMLManager initialization) {
-        sInitialization = initialization;
+    @SuppressWarnings("WeakerAccess")
+    public static void initialize(@NonNull OMLModuleManager manager) {
+        sManager = manager;
     }
 
     @NonNull
-    public static OMLManager initialization() {
-        return sInitialization;
+    public static OMLSqlHelper getSQLHelper() {
+        return sManager.getSQLHelper();
     }
 
-    public static ModuleManager manager() {
-        return sInitialization.getModuleManager();
+    public static ModuleManager getModuleManager() {
+        return sManager.getModuleManager();
     }
 
     /**
      * 获取未添加的模块集
      */
     public static List<ModuleItem> unavailable() {
-        return sInitialization.getModuleManager().getUncheckedModules();
+        return sManager.getModuleManager().getUncheckedModules();
     }
 
     /**
      * 获取已添加的模块集
      */
     public static List<ModuleItem> available() {
-        return sInitialization.getModuleManager().getCheckedModules();
+        return sManager.getModuleManager().getCheckedModules();
     }
 }

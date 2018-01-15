@@ -2,7 +2,7 @@ package com.kzax1l.oml.dao;
 
 import android.database.SQLException;
 
-import com.kzax1l.oml.OMLDataProvider;
+import com.kzax1l.oml.OMLModuleProvider;
 import com.kzax1l.oml.db.OMLSqlHelper;
 
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_OPERABLE;
 import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
 
 public class ModuleManager {
-    private static ModuleManager sModuleManager;
     /**
      * 默认的用户选择频道列表
      */
@@ -35,9 +34,9 @@ public class ModuleManager {
      */
     private boolean mIsExist = false;
 
-    private ModuleManager(OMLSqlHelper paramDBHelper, OMLDataProvider provider) throws SQLException {
+    public ModuleManager(OMLSqlHelper paramDBHelper, OMLModuleProvider provider) throws SQLException {
         if (provider == null)
-            throw new NullPointerException("OMLDataProvider can not be null!");
+            throw new NullPointerException("OMLModuleProvider can not be null!");
         if (mModuleDao == null)
             mModuleDao = new ModuleDao(paramDBHelper.getContext());
         if (provider.available() != null) {
@@ -50,15 +49,6 @@ public class ModuleManager {
         } else {
             mDefaultUncheckedModules = new ArrayList<>();
         }
-    }
-
-    /**
-     * 初始化频道管理类
-     */
-    public static ModuleManager getManager(OMLSqlHelper dbHelper, OMLDataProvider provider) throws SQLException {
-        if (sModuleManager == null)
-            sModuleManager = new ModuleManager(dbHelper, provider);
-        return sModuleManager;
     }
 
     /**

@@ -9,7 +9,8 @@ import com.kzax1l.oml.db.OMLSqlHelper;
  *
  * @author Zsago
  */
-public interface OMLManager {
+@SuppressWarnings("WeakerAccess")
+public interface OMLModuleManager {
     OMLSqlHelper getSQLHelper();
 
     ModuleManager getModuleManager();
