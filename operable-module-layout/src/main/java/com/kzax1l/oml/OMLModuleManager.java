@@ -14,6 +14,4 @@ public interface OMLModuleManager {
     OMLSqlHelper getSQLHelper();
 
     ModuleManager getModuleManager();
-
-    void onTerminate(OMLSqlHelper sqlHelper);
 }

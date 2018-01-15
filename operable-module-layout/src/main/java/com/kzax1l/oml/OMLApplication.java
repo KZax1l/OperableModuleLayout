@@ -3,44 +3,26 @@ package com.kzax1l.oml;
 import android.app.Application;
 
 import com.kzax1l.oml.dao.ModuleItem;
-import com.kzax1l.oml.dao.ModuleManager;
-import com.kzax1l.oml.db.OMLSqlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Deprecated
-public class OMLApplication extends Application implements OMLModuleManager, OMLModuleProvider {
-    private OMLSqlHelper mSqlHelper;
+/**
+ * @deprecated Use {@link OMLApplicationAgent} instead
+ */
+public class OMLApplication extends Application implements OMLModuleProvider {
+    private OMLApplicationAgent mAgent = new OMLApplicationAgent(this, this);
 
     @Override
     public void onCreate() {
         super.onCreate();
-        OMLInitializer.initialize(this);
-    }
-
-    /**
-     * 获取数据库Helper
-     */
-    @Override
-    public OMLSqlHelper getSQLHelper() {
-        if (mSqlHelper == null)
-            mSqlHelper = new OMLSqlHelper(this);
-        return mSqlHelper;
+        mAgent.onCreate();
     }
 
     @Override
-    public void onTerminate(OMLSqlHelper sqlHelper) {
+    public void onTerminate() {
         super.onTerminate();
-        if (sqlHelper != null) {
-            sqlHelper.close();
-        }
-        //整体摧毁的时候调用这个方法
-    }
-
-    @Override
-    public ModuleManager getModuleManager() {
-        return new ModuleManager(getSQLHelper(), this);
+        mAgent.onTerminate();
     }
 
     @Override

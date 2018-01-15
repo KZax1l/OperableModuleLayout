@@ -1,7 +1,6 @@
 package com.kzax1l.oml.dao;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -22,8 +21,8 @@ import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_ORDER_ID;
 class ModuleDao implements ModuleDaoInterface {
     private OMLSqlHelper mHelper = null;
 
-    ModuleDao(Context context) {
-        mHelper = new OMLSqlHelper(context);
+    ModuleDao(OMLSqlHelper sqlHelper) {
+        mHelper = sqlHelper;
     }
 
     @Override

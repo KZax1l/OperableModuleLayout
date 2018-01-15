@@ -34,11 +34,11 @@ public class ModuleManager {
      */
     private boolean mIsExist = false;
 
-    public ModuleManager(OMLSqlHelper paramDBHelper, OMLModuleProvider provider) throws SQLException {
+    public ModuleManager(OMLSqlHelper sqlHelper, OMLModuleProvider provider) throws SQLException {
         if (provider == null)
             throw new NullPointerException("OMLModuleProvider can not be null!");
         if (mModuleDao == null)
-            mModuleDao = new ModuleDao(paramDBHelper.getContext());
+            mModuleDao = new ModuleDao(sqlHelper);
         if (provider.available() != null) {
             mDefaultCheckedModules = provider.available();
         } else {
