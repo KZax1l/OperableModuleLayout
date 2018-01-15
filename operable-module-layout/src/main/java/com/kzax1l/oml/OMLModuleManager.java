@@ -14,4 +14,6 @@ public interface OMLModuleManager {
     OMLSqlHelper getSQLHelper();
 
     ModuleManager getModuleManager();
+
+    int getVersion();
 }

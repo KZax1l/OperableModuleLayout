@@ -9,6 +9,8 @@ import com.kzax1l.oml.db.OMLSqlHelper;
 
 import java.util.List;
 
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_DB_VERSION;
+
 /**
  * Created by Administrator on 2018-01-15.
  *
@@ -53,12 +55,17 @@ public class OMLApplicationAgent implements OMLModuleManager, OMLModuleProvider 
 
     @Override
     public OMLSqlHelper getSQLHelper() {
-        if (mSqlHelper == null) mSqlHelper = new OMLSqlHelper(mContext);
+        if (mSqlHelper == null) mSqlHelper = new OMLSqlHelper(mContext, getVersion());
         return mSqlHelper;
     }
 
     @Override
     public ModuleManager getModuleManager() {
         return mManager;
+    }
+
+    @Override
+    public int getVersion() {
+        return OML_DB_VERSION;
     }
 }

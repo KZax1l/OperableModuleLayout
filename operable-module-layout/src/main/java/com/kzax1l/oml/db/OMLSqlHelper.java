@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class OMLSqlHelper extends SQLiteOpenHelper {
-    private static final int OML_DB_VERSION = 1;
+    public static final int OML_DB_VERSION = 1;
     private static final String OML_DB_NAME = "oml.db";// 数据库名称
     public static final String OML_DB_TABLE_NAME = "oml_module";//数据表
 
@@ -21,8 +21,8 @@ public class OMLSqlHelper extends SQLiteOpenHelper {
     public static final int OML_MODULE_CHECK_STATE_CHECKED = 1;
     public static final int OML_MODULE_CHECK_STATE_UNCHECKED = 0;
 
-    public OMLSqlHelper(Context context) {
-        super(context, OML_DB_NAME, null, OML_DB_VERSION);
+    public OMLSqlHelper(Context context, int version) {
+        super(context, OML_DB_NAME, null, version > 0 ? version : OML_DB_VERSION);
     }
 
     @Override
