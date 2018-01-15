@@ -37,6 +37,12 @@ public class ModuleItem implements Serializable {
         this.operable = true;
     }
 
+    public ModuleItem(String name, String flag, boolean operable) {
+        this.name = name;
+        this.flag = flag;
+        this.operable = operable;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

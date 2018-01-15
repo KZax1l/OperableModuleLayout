@@ -28,7 +28,7 @@ public class OMLApplication extends Application implements OMLModuleProvider {
     @Override
     public List<ModuleItem> available() {
         List<ModuleItem> defaultModules = new ArrayList<>();
-        defaultModules.add(new ModuleItem("推荐", "tj"));
+        defaultModules.add(new ModuleItem("推荐", "tj", false));
         defaultModules.add(new ModuleItem("热点", "rd"));
         defaultModules.add(new ModuleItem("杭州", "hz"));
         defaultModules.add(new ModuleItem("时尚", "ss"));
