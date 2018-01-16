@@ -42,10 +42,6 @@ public class CheckedAdapter extends BaseAdapter {
      * 要删除的position
      */
     private int mRemovePosition = -1;
-    /**
-     * TextView 频道内容
-     */
-    private TextView item_text;
 
     public CheckedAdapter(Context context, List<ModuleItem> modules) {
         this.mContext = context;
@@ -73,27 +69,37 @@ public class CheckedAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.module_item, parent, false);
-        item_text = (TextView) view.findViewById(R.id.text_item);
         ModuleItem item = getItem(position);
-        item_text.setText(item.name);
-        if (!item.operable) {
-            item_text.setEnabled(false);
-        }
+        fill(view, item);
+        if (!item.operable) disable(view);
         if (mIsChanged && (position == mHoldPosition) && !mIsItemShow) {
-            item_text.setText("");
-            item_text.setSelected(true);
-            item_text.setEnabled(true);
+            view.setVisibility(View.GONE);
             mIsChanged = false;
         }
-        if (!mIsVisible && (position == -1 + mModules.size())) {
-            item_text.setText("");
-            item_text.setSelected(true);
-            item_text.setEnabled(true);
-        }
-        if (mRemovePosition == position) {
-            item_text.setText("");
-        }
+        if (!mIsVisible && (position == -1 + mModules.size())) view.setVisibility(View.GONE);
+        if (mRemovePosition == position) view.setVisibility(View.GONE);
         return view;
+    }
+
+    private void fill(View view, ModuleItem item) {
+        if (view == null) return;
+        if (!(view instanceof ViewGroup)) return;
+        ViewGroup vg = (ViewGroup) view;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+            View v = vg.getChildAt(i);
+            if (v instanceof TextView) {
+                ((TextView) v).setText(item.name);
+            }
+        }
+    }
+
+    private void disable(View view) {
+        if (view == null) return;
+        if (!(view instanceof ViewGroup)) return;
+        ViewGroup vg = (ViewGroup) view;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+            vg.getChildAt(i).setEnabled(false);
+        }
     }
 
     /**

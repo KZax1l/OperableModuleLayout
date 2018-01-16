@@ -17,6 +17,7 @@ import static com.kzax1l.oml.db.OMLSqlHelper.OML_DB_VERSION;
  * @author kzaxil
  * @since 1.0.1
  */
+@SuppressWarnings("WeakerAccess")
 public class OMLApplicationAgent implements OMLModuleManager, OMLModuleProvider {
     private Application mContext;
     private OMLSqlHelper mSqlHelper;

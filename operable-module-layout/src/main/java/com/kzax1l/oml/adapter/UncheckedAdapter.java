@@ -23,7 +23,6 @@ public class UncheckedAdapter extends BaseAdapter {
      * 要删除的position
      */
     private int mRemovePosition = -1;
-    private TextView item_text;
 
     public UncheckedAdapter(Context context, List<ModuleItem> modules) {
         this.mContext = context;
@@ -51,16 +50,23 @@ public class UncheckedAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.module_item, null);
-        item_text = (TextView) view.findViewById(R.id.text_item);
         ModuleItem item = getItem(position);
-        item_text.setText(item.name);
-        if (!mIsVisible && (position == -1 + mModules.size())) {
-            item_text.setText("");
-        }
-        if (mRemovePosition == position) {
-            item_text.setText("");
-        }
+        fill(view, item);
+        if (!mIsVisible && (position == -1 + mModules.size())) view.setVisibility(View.GONE);
+        if (mRemovePosition == position) view.setVisibility(View.GONE);
         return view;
+    }
+
+    private void fill(View view, ModuleItem item) {
+        if (view == null) return;
+        if (!(view instanceof ViewGroup)) return;
+        ViewGroup vg = (ViewGroup) view;
+        for (int i = 0; i < vg.getChildCount(); i++) {
+            View v = vg.getChildAt(i);
+            if (v instanceof TextView) {
+                ((TextView) v).setText(item.name);
+            }
+        }
     }
 
     /**
