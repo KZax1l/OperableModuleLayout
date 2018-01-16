@@ -1,6 +1,10 @@
 package com.kzax1l.oml;
 
 import android.app.Application;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.kzax1l.oml.dao.ModuleItem;
 
@@ -10,8 +14,8 @@ import java.util.List;
 /**
  * @deprecated Use {@link OMLApplicationAgent} instead
  */
-public class OMLApplication extends Application implements OMLModuleProvider {
-    private OMLApplicationAgent mAgent = new OMLApplicationAgent(this, this);
+public class OMLApplication extends Application implements OMLModuleProvider, OMLModuleOptions {
+    private OMLApplicationAgent mAgent = new OMLApplicationAgent(this, this, this);
 
     @Override
     public void onCreate() {
@@ -54,5 +58,10 @@ public class OMLApplication extends Application implements OMLModuleProvider {
         defaultModules.add(new ModuleItem("游戏", "yx"));
         defaultModules.add(new ModuleItem("数码", "sm"));
         return defaultModules;
+    }
+
+    @Override
+    public View moduleLayout(Context context, ViewGroup parent) {
+        return LayoutInflater.from(this).inflate(R.layout.module_item, parent, false);
     }
 }

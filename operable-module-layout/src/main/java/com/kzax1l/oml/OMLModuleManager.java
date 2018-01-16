@@ -15,5 +15,7 @@ public interface OMLModuleManager {
 
     ModuleManager getModuleManager();
 
+    OMLModuleOptions getModuleOptions();
+
     int getVersion();
 }

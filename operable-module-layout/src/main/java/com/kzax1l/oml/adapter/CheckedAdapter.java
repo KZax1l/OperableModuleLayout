@@ -1,13 +1,12 @@
 package com.kzax1l.oml.adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.kzax1l.oml.R;
+import com.kzax1l.oml.OMLInitializer;
 import com.kzax1l.oml.dao.ModuleItem;
 
 import java.util.List;
@@ -68,7 +67,7 @@ public class CheckedAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.module_item, parent, false);
+        View view = OMLInitializer.getModuleOptions().moduleLayout(mContext, parent);
         ModuleItem item = getItem(position);
         fill(view, item);
         if (!item.operable) disable(view);

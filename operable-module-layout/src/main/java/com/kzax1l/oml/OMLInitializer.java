@@ -30,6 +30,10 @@ public class OMLInitializer {
         return sManager.getModuleManager();
     }
 
+    public static OMLModuleOptions getModuleOptions() {
+        return sManager.getModuleOptions();
+    }
+
     /**
      * 获取未添加的模块集
      */

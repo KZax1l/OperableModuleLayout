@@ -1,7 +1,10 @@
 package com.kzax1l.oml;
 
 import android.app.Application;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.kzax1l.oml.dao.ModuleItem;
 import com.kzax1l.oml.dao.ModuleManager;
@@ -18,14 +21,18 @@ import static com.kzax1l.oml.db.OMLSqlHelper.OML_DB_VERSION;
  * @since 1.0.1
  */
 @SuppressWarnings("WeakerAccess")
-public class OMLApplicationAgent implements OMLModuleManager, OMLModuleProvider {
+public class OMLApplicationAgent implements OMLModuleManager, OMLModuleProvider, OMLModuleOptions {
     private Application mContext;
     private OMLSqlHelper mSqlHelper;
     private ModuleManager mManager;
+    private OMLModuleOptions mOptions;
     private OMLModuleProvider mProvider;
 
-    public OMLApplicationAgent(@NonNull Application cxt, @NonNull OMLModuleProvider provider) {
+    public OMLApplicationAgent(@NonNull Application cxt,
+                               @NonNull OMLModuleOptions options,
+                               @NonNull OMLModuleProvider provider) {
         mContext = cxt;
+        mOptions = options;
         mProvider = provider;
         mManager = new ModuleManager(getSQLHelper(), provider);
     }
@@ -66,7 +73,17 @@ public class OMLApplicationAgent implements OMLModuleManager, OMLModuleProvider 
     }
 
     @Override
+    public OMLModuleOptions getModuleOptions() {
+        return mOptions;
+    }
+
+    @Override
     public int getVersion() {
         return OML_DB_VERSION;
+    }
+
+    @Override
+    public View moduleLayout(Context context, ViewGroup parent) {
+        return mOptions.moduleLayout(context, parent);
     }
 }
