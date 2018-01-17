@@ -15,18 +15,13 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.kzax1l.oml.OMLInitializer;
-import com.kzax1l.oml.R;
 import com.kzax1l.oml.adapter.CheckedAdapter;
 import com.kzax1l.oml.adapter.UncheckedAdapter;
 import com.kzax1l.oml.dao.ModuleItem;
 import com.kzax1l.oml.view.CheckedGridView;
 import com.kzax1l.oml.view.UncheckedGridView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2018-01-11.
@@ -47,20 +42,80 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
 
     private CheckedAdapter mCheckedAdapter; // 适配器
     private CheckedGridView mCheckedGridView; // GridView
-    private List<ModuleItem> mCheckedModules = new ArrayList<>();
-
     private UncheckedAdapter mUncheckedAdapter; // 适配器
     private UncheckedGridView mUncheckedGridView; // GridView
-    private List<ModuleItem> mUncheckedModules = new ArrayList<>(); // 数据源
 
     /**
      * 是否在移动，由于是动画结束后才进行的数据更替，设置这个限制为了避免操作太频繁造成的数据错乱。
      */
     private boolean mIsMove = false;
+    private int mClickPosition;
+    private Bitmap mViewCacheBitmap;
+    private GridView mClickGridView;
+    private ImageView mMoveImageView;
+    private LinearLayout mMoveGroupView;
+    private Handler mHandler = new Handler();
+    private int[] mStartLocation = new int[2];
+    private int[] mEndLocation = new int[2];
 
     public final static int OML_CODE_REQUEST = 0x98; // 请求码
     public final static int OML_CODE_RESULT = 0x99; // 返回码
 
+    private Runnable mMoveToCheckedRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                mClickGridView = mUncheckedGridView;
+                // 获取终点的坐标
+                mCheckedGridView.getChildAt(mCheckedGridView.getLastVisiblePosition()).getLocationInWindow(mEndLocation);
+                moveAnim();
+                mUncheckedAdapter.setRemove(mClickPosition);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    private Runnable mMoveToUncheckedRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                mClickGridView = mCheckedGridView;
+                // 获取终点的坐标
+                mUncheckedGridView.getChildAt(mUncheckedGridView.getLastVisiblePosition()).getLocationInWindow(mEndLocation);
+                moveAnim();
+                mCheckedAdapter.setRemove(mClickPosition);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    private Animation.AnimationListener mAnimListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+            mIsMove = true;
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            removeMoveImageView();
+            if (mClickGridView instanceof CheckedGridView) {
+                mUncheckedAdapter.setVisible(true);
+                mUncheckedAdapter.notifyDataSetChanged();
+                mCheckedAdapter.remove();
+            } else {
+                mCheckedAdapter.setVisible(true);
+                mCheckedAdapter.notifyDataSetChanged();
+                mUncheckedAdapter.remove();
+            }
+            mIsMove = false;
+        }
+    };
+
+    @SuppressWarnings("WeakerAccess")
     public ModuleActivityAgent(@NonNull Activity activity,
                                @NonNull CheckedGridView checked,
                                @NonNull UncheckedGridView unchecked) {
@@ -74,11 +129,9 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
             mGestureDetector = new GestureDetector(mActivity.getApplicationContext(), new BackGestureListener(mActivity));
         }
 
-        mCheckedModules = OMLInitializer.available();
-        mUncheckedModules = OMLInitializer.unavailable();
-        mCheckedAdapter = new CheckedAdapter(mActivity, mCheckedModules);
+        mCheckedAdapter = new CheckedAdapter(mActivity, OMLInitializer.available());
         mCheckedGridView.setAdapter(mCheckedAdapter);
-        mUncheckedAdapter = new UncheckedAdapter(mActivity, mUncheckedModules);
+        mUncheckedAdapter = new UncheckedAdapter(mActivity, OMLInitializer.unavailable());
         mUncheckedGridView.setAdapter(mUncheckedAdapter);
         mUncheckedGridView.setOnItemClickListener(this);
         mCheckedGridView.setOnItemClickListener(this);
@@ -105,154 +158,105 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
         mActivity.onBackPressed();
     }
 
+    @SuppressWarnings("WeakerAccess")
     public boolean isDataSetChanged() {
         return mCheckedAdapter != null && mCheckedAdapter.isDataSetChanged();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
-        //如果点击的时候，之前动画还没结束，那么就让点击事件无效
-        if (mIsMove) {
-            return;
-        }
-        if (parent.getId() == R.id.userGridView) {
-            final ModuleItem item = ((CheckedAdapter) parent.getAdapter()).getItem(position);
+        // 如果点击的时候，之前动画还没结束，那么就让点击事件无效
+        if (mIsMove) return;
+        initMoveImageViewBitmap(view);
+        if (mMoveImageView == null) return;
+        mClickPosition = position;
+        view.getLocationInWindow(mStartLocation);
+        if (parent == mCheckedGridView) {
+            ModuleItem item = ((CheckedAdapter) parent.getAdapter()).getItem(position);
             if (!item.operable) return;
-            final ImageView moveImageView = getView(view);
-            if (moveImageView != null) {
-                TextView newTextView = (TextView) view.findViewById(R.id.text_item);
-                final int[] startLocation = new int[2];
-                newTextView.getLocationInWindow(startLocation);
-                mUncheckedAdapter.setVisible(false);
-                //添加到最后一个
-                mUncheckedAdapter.addItem(item);
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        try {
-                            int[] endLocation = new int[2];
-                            //获取终点的坐标
-                            mUncheckedGridView.getChildAt(mUncheckedGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                            MoveAnim(moveImageView, startLocation, endLocation, mCheckedGridView);
-                            mCheckedAdapter.setRemove(position);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 50L);
-            }
-        } else if (parent.getId() == R.id.otherGridView) {
-            // 其它GridView
-            final ImageView moveImageView = getView(view);
-            if (moveImageView != null) {
-                TextView newTextView = (TextView) view.findViewById(R.id.text_item);
-                final int[] startLocation = new int[2];
-                newTextView.getLocationInWindow(startLocation);
-                final ModuleItem item = ((UncheckedAdapter) parent.getAdapter()).getItem(position);
-                mCheckedAdapter.setVisible(false);
-                //添加到最后一个
-                mCheckedAdapter.addItem(item);
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        try {
-                            int[] endLocation = new int[2];
-                            //获取终点的坐标
-                            mCheckedGridView.getChildAt(mCheckedGridView.getLastVisiblePosition()).getLocationInWindow(endLocation);
-                            MoveAnim(moveImageView, startLocation, endLocation, mUncheckedGridView);
-                            mUncheckedAdapter.setRemove(position);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 50L);
-            }
+            mUncheckedAdapter.setVisible(false);
+            // 添加到最后一个
+            mUncheckedAdapter.addItem(item);
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler.postDelayed(mMoveToUncheckedRunnable, 50L);
+        } else if (parent == mUncheckedGridView) {
+            ModuleItem item = ((UncheckedAdapter) parent.getAdapter()).getItem(position);
+            mCheckedAdapter.setVisible(false);
+            // 添加到最后一个
+            mCheckedAdapter.addItem(item);
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler.postDelayed(mMoveToCheckedRunnable, 50L);
         }
     }
 
     /**
      * 点击ITEM移动动画
      */
-    private void MoveAnim(View moveView, int[] startLocation, int[] endLocation, final GridView clickGridView) {
+    private void moveAnim() {
+        if (mMoveImageView == null) return;
         int[] initLocation = new int[2];
-        //获取传递过来的VIEW的坐标
-        moveView.getLocationInWindow(initLocation);
-        //得到要移动的VIEW,并放入对应的容器中
-        final ViewGroup moveViewGroup = getMoveViewGroup();
-        final View mMoveView = getMoveView(moveViewGroup, moveView, initLocation);
-        //创建移动动画
-        TranslateAnimation moveAnimation = new TranslateAnimation(
-                startLocation[0], endLocation[0], startLocation[1],
-                endLocation[1]);
-        moveAnimation.setDuration(300L);//动画时间
-        //动画配置
+        mMoveImageView.getLocationInWindow(initLocation);
+        addMoveImageView(initLocation);
+        // 创建移动动画
+        TranslateAnimation animation = new TranslateAnimation(
+                mStartLocation[0], mEndLocation[0],
+                mStartLocation[1], mEndLocation[1]);
+        animation.setDuration(300L);// 动画时间
+        // 动画配置
         AnimationSet moveAnimationSet = new AnimationSet(true);
-        moveAnimationSet.setFillAfter(false);//动画效果执行完毕后，View对象不保留在终止的位置
-        moveAnimationSet.addAnimation(moveAnimation);
-        mMoveView.startAnimation(moveAnimationSet);
-        moveAnimationSet.setAnimationListener(new Animation.AnimationListener() {
-
-            @Override
-            public void onAnimationStart(Animation animation) {
-                mIsMove = true;
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                moveViewGroup.removeView(mMoveView);
-                // instanceof 方法判断2边实例是不是一样，判断点击的是DragGrid还是OtherGridView
-                if (clickGridView instanceof CheckedGridView) {
-                    mUncheckedAdapter.setVisible(true);
-                    mUncheckedAdapter.notifyDataSetChanged();
-                    mCheckedAdapter.remove();
-                } else {
-                    mCheckedAdapter.setVisible(true);
-                    mCheckedAdapter.notifyDataSetChanged();
-                    mUncheckedAdapter.remove();
-                }
-                mIsMove = false;
-            }
-        });
+        moveAnimationSet.setFillAfter(false);// 动画效果执行完毕后，View对象不保留在终止的位置
+        moveAnimationSet.addAnimation(animation);
+        mMoveImageView.startAnimation(moveAnimationSet);
+        moveAnimationSet.setAnimationListener(mAnimListener);
     }
 
     /**
      * 获取移动的VIEW，放入对应ViewGroup布局容器
      */
-    private View getMoveView(ViewGroup viewGroup, View view, int[] initLocation) {
+    private void addMoveImageView(int[] initLocation) {
+        if (mMoveImageView == null) return;
         int x = initLocation[0];
         int y = initLocation[1];
-        viewGroup.addView(view);
-        LinearLayout.LayoutParams mLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mLayoutParams.leftMargin = x;
-        mLayoutParams.topMargin = y;
-        view.setLayoutParams(mLayoutParams);
-        return view;
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.leftMargin = x;
+        lp.topMargin = y;
+        mMoveImageView.setLayoutParams(lp);
+        getMoveViewGroup().addView(mMoveImageView);
+    }
+
+    private void removeMoveImageView() {
+        getMoveViewGroup().removeView(mMoveImageView);
+        if (mViewCacheBitmap != null && !mViewCacheBitmap.isRecycled()) mViewCacheBitmap.recycle();
     }
 
     /**
      * 创建移动的ITEM对应的ViewGroup布局容器
      */
     private ViewGroup getMoveViewGroup() {
+        if (mMoveGroupView != null) return mMoveGroupView;
         ViewGroup moveViewGroup = (ViewGroup) mActivity.getWindow().getDecorView();
-        LinearLayout moveLinearLayout = new LinearLayout(mActivity);
-        moveLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        moveViewGroup.addView(moveLinearLayout);
-        return moveLinearLayout;
+        mMoveGroupView = new LinearLayout(mActivity);
+        mMoveGroupView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        moveViewGroup.addView(mMoveGroupView);
+        return mMoveGroupView;
     }
 
     /**
      * 获取点击的Item的对应View
      */
-    private ImageView getView(View view) {
+    private void initMoveImageViewBitmap(View view) {
+        if (view == null) return;
         view.destroyDrawingCache();
         view.setDrawingCacheEnabled(true);
-        Bitmap cache = Bitmap.createBitmap(view.getDrawingCache());
+        if (mViewCacheBitmap != null && !mViewCacheBitmap.isRecycled()) mViewCacheBitmap.recycle();
+        mViewCacheBitmap = Bitmap.createBitmap(view.getDrawingCache());
         view.setDrawingCacheEnabled(false);
-        ImageView iv = new ImageView(view.getContext());
-        iv.setImageBitmap(cache);
-        return iv;
+        if (mMoveImageView == null) mMoveImageView = new ImageView(view.getContext());
+        mMoveImageView.setImageBitmap(mViewCacheBitmap);
     }
 
     /**
@@ -264,6 +268,7 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
         OMLInitializer.getModuleManager().saveUncheckedModules(mUncheckedAdapter.getModules());
     }
 
+    @SuppressWarnings("WeakerAccess")
     public void onBackPressed() {
         if (mCheckedAdapter.isDataSetChanged()) {
             saveModules();

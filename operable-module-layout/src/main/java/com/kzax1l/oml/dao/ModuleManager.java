@@ -115,8 +115,7 @@ public class ModuleManager {
         if (mIsExist) {
             return list;
         }
-        cacheList = mDefaultUncheckedModules;
-        return (List<ModuleItem>) cacheList;
+        return mDefaultUncheckedModules;
     }
 
     /**
