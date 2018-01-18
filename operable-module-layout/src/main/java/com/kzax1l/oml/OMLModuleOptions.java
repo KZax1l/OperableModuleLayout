@@ -13,4 +13,6 @@ import android.view.ViewGroup;
 @SuppressWarnings("WeakerAccess")
 public interface OMLModuleOptions {
     View moduleLayout(Context context, ViewGroup parent);
+
+    int version();
 }

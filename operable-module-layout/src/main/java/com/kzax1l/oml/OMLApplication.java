@@ -64,4 +64,9 @@ public class OMLApplication extends Application implements OMLModuleProvider, OM
     public View moduleLayout(Context context, ViewGroup parent) {
         return LayoutInflater.from(this).inflate(R.layout.module_item, parent, false);
     }
+
+    @Override
+    public int version() {
+        return 0;
+    }
 }
