@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     public ImageView shade_right; // 右阴影部分
 
     private int columnSelectIndex = 0; // 当前选中的栏目索引
-    private int mItemWidth = 0; // Item宽度：每个标题的宽度
 
     private int mScreenWidth = 0; // 屏幕宽度
 
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mScreenWidth = Utils.getWindowsWidth(this);
-        mItemWidth = mScreenWidth / 7; // 一个Item宽度为屏幕的1/7
         initView();
     }
 
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         int count = userChannelList.size();
         mColumnHorizontalScrollView.setParam(this, mScreenWidth, mRadioGroup_content, shade_left, shade_right, ll_more_columns, rl_column);
         for (int i = 0; i < count; i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mItemWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.leftMargin = 5;
             params.rightMargin = 5;
             TextView columnTextView = new TextView(this);
