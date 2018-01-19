@@ -50,6 +50,7 @@ public class UncheckedAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = OMLInitializer.getModuleOptions().moduleLayout(mContext, parent);
         ModuleItem item = getItem(position);
+        item.setChecked(false);
         if (!OMLInitializer.getModuleOptions().moduleAdapter(view, item)) fill(view, item);
         if (!mIsVisible && (position == -1 + mModules.size())) view.setVisibility(View.GONE);
         if (mRemovePosition == position) view.setVisibility(View.GONE);
@@ -95,6 +96,7 @@ public class UncheckedAdapter extends BaseAdapter {
      * 删除频道列表
      */
     public void remove() {
+        mModules.get(mRemovePosition).setChecked(true);
         mModules.remove(mRemovePosition);
         mRemovePosition = -1;
         notifyDataSetChanged();

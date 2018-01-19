@@ -18,9 +18,6 @@ import com.squareup.leakcanary.RefWatcher;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_CHECKED;
-import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_UNCHECKED;
-
 /**
  * Created by Administrator on 2018-01-11.
  *
@@ -126,13 +123,10 @@ public class WorkApplication extends Application implements OMLModuleProvider, O
                 ivIcon.setImageResource(R.mipmap.ic_module_hotel);
                 break;
         }
-        switch (item.checkState) {
-            case OML_MODULE_CHECK_STATE_CHECKED:
-                ivType.setImageResource(R.mipmap.ic_delete);
-                break;
-            case OML_MODULE_CHECK_STATE_UNCHECKED:
-                ivType.setImageResource(R.mipmap.ic_add);
-                break;
+        if (item.isChecked()) {
+            ivType.setImageResource(R.mipmap.ic_delete);
+        } else {
+            ivType.setImageResource(R.mipmap.ic_add);
         }
         return true;
     }

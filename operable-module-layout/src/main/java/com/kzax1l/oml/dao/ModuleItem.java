@@ -28,6 +28,8 @@ public class ModuleItem implements Serializable {
      */
     public boolean operable;
 
+    private boolean isChecked;
+
     public ModuleItem() {
     }
 
@@ -61,5 +63,13 @@ public class ModuleItem implements Serializable {
 
     public void setOperable(boolean operable) {
         this.operable = operable;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

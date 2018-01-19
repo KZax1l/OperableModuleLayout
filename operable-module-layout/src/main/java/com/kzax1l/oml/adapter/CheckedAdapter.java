@@ -69,6 +69,7 @@ public class CheckedAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = OMLInitializer.getModuleOptions().moduleLayout(mContext, parent);
         ModuleItem item = getItem(position);
+        item.setChecked(true);
         if (!OMLInitializer.getModuleOptions().moduleAdapter(view, item)) fill(view, item);
         if (!item.operable) disable(view);
         if (mIsChanged && (position == mHoldPosition) && !mIsItemShow) {
@@ -147,6 +148,7 @@ public class CheckedAdapter extends BaseAdapter {
      * 删除频道列表
      */
     public void remove() {
+        mModules.get(mRemovePosition).setChecked(false);
         mModules.remove(mRemovePosition);
         mRemovePosition = -1;
         mIsDataSetChanged = true;
