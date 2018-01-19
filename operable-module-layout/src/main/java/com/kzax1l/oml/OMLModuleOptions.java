@@ -21,6 +21,8 @@ public interface OMLModuleOptions {
 
     /**
      * 自定义模块适配器
+     *
+     * @return 若自定义适配器，则返回true，否则，返回false
      */
     boolean moduleAdapter(View parent, ModuleItem item);
 

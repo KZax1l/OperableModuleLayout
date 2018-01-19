@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.kzax1l.oml.OMLApplicationAgent;
 import com.kzax1l.oml.OMLModuleOptions;
@@ -15,6 +17,9 @@ import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_CHECKED;
+import static com.kzax1l.oml.db.OMLSqlHelper.OML_MODULE_CHECK_STATE_UNCHECKED;
 
 /**
  * Created by Administrator on 2018-01-11.
@@ -85,7 +90,51 @@ public class WorkApplication extends Application implements OMLModuleProvider, O
 
     @Override
     public boolean moduleAdapter(View parent, ModuleItem item) {
-        return false;
+        TextView tvName = parent.findViewById(R.id.tv_module_name);
+        ImageView ivIcon = parent.findViewById(R.id.iv_module_icon);
+        ImageView ivType = parent.findViewById(R.id.iv_module_type);
+        tvName.setText(item.name);
+        switch (item.flag) {
+            case "module_place":
+                ivIcon.setImageResource(R.mipmap.ic_module_place);
+                break;
+            case "module_identification":
+                ivIcon.setImageResource(R.mipmap.ic_module_identification);
+                break;
+            case "module_enterprise":
+                ivIcon.setImageResource(R.mipmap.ic_module_enterprise);
+                break;
+            case "module_spot":
+                ivIcon.setImageResource(R.mipmap.ic_module_spot);
+                break;
+            case "module_annual_survey":
+                ivIcon.setImageResource(R.mipmap.ic_module_annual_survey);
+                break;
+            case "module_deliver":
+                ivIcon.setImageResource(R.mipmap.ic_module_deliver);
+                break;
+            case "module_ring":
+                ivIcon.setImageResource(R.mipmap.ic_module_ring);
+                break;
+            case "module_law":
+                ivIcon.setImageResource(R.mipmap.ic_module_law);
+                break;
+            case "module_dangerous":
+                ivIcon.setImageResource(R.mipmap.ic_module_dangerous);
+                break;
+            case "module_hotel":
+                ivIcon.setImageResource(R.mipmap.ic_module_hotel);
+                break;
+        }
+        switch (item.checkState) {
+            case OML_MODULE_CHECK_STATE_CHECKED:
+                ivType.setImageResource(R.mipmap.ic_delete);
+                break;
+            case OML_MODULE_CHECK_STATE_UNCHECKED:
+                ivType.setImageResource(R.mipmap.ic_add);
+                break;
+        }
+        return true;
     }
 
     @Override
