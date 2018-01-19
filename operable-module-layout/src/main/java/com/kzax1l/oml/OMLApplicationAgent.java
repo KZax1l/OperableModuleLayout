@@ -81,6 +81,11 @@ public class OMLApplicationAgent implements OMLModuleManager, OMLModuleProvider,
     }
 
     @Override
+    public boolean moduleAdapter(View parent, ModuleItem item) {
+        return mOptions.moduleAdapter(parent, item);
+    }
+
+    @Override
     public int version() {
         return mOptions.version();
     }

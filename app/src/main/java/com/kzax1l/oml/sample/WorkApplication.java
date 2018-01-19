@@ -84,6 +84,11 @@ public class WorkApplication extends Application implements OMLModuleProvider, O
     }
 
     @Override
+    public boolean moduleAdapter(View parent, ModuleItem item) {
+        return false;
+    }
+
+    @Override
     public int version() {
         return 0;
     }

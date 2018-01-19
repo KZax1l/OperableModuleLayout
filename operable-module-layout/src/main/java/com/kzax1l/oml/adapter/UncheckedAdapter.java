@@ -50,7 +50,7 @@ public class UncheckedAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = OMLInitializer.getModuleOptions().moduleLayout(mContext, parent);
         ModuleItem item = getItem(position);
-        fill(view, item);
+        if (!OMLInitializer.getModuleOptions().moduleAdapter(view, item)) fill(view, item);
         if (!mIsVisible && (position == -1 + mModules.size())) view.setVisibility(View.GONE);
         if (mRemovePosition == position) view.setVisibility(View.GONE);
         return view;

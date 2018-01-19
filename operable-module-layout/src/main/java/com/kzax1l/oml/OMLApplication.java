@@ -66,6 +66,11 @@ public class OMLApplication extends Application implements OMLModuleProvider, OM
     }
 
     @Override
+    public boolean moduleAdapter(View parent, ModuleItem item) {
+        return false;
+    }
+
+    @Override
     public int version() {
         return 0;
     }

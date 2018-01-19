@@ -69,7 +69,7 @@ public class CheckedAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = OMLInitializer.getModuleOptions().moduleLayout(mContext, parent);
         ModuleItem item = getItem(position);
-        fill(view, item);
+        if (!OMLInitializer.getModuleOptions().moduleAdapter(view, item)) fill(view, item);
         if (!item.operable) disable(view);
         if (mIsChanged && (position == mHoldPosition) && !mIsItemShow) {
             view.setVisibility(View.GONE);
