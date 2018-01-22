@@ -1,6 +1,7 @@
 package com.kzax1l.oml.dao;
 
 import android.database.SQLException;
+import android.support.annotation.NonNull;
 
 import com.kzax1l.oml.OMLModuleProvider;
 import com.kzax1l.oml.db.OMLSqlHelper;
@@ -21,11 +22,11 @@ public class ModuleManager {
     /**
      * 默认的用户选择频道列表
      */
-    private final List<ModuleItem> mDefaultCheckedModules;
+    private List<ModuleItem> mDefaultCheckedModules;
     /**
      * 默认的其他频道列表
      */
-    private final List<ModuleItem> mDefaultUncheckedModules;
+    private List<ModuleItem> mDefaultUncheckedModules;
 
     private ModuleDao mModuleDao;
 
@@ -34,11 +35,13 @@ public class ModuleManager {
      */
     private boolean mIsExist = false;
 
-    public ModuleManager(OMLSqlHelper sqlHelper, OMLModuleProvider provider) throws SQLException {
-        if (provider == null)
-            throw new NullPointerException("OMLModuleProvider can not be null!");
-        if (mModuleDao == null)
-            mModuleDao = new ModuleDao(sqlHelper);
+    public ModuleManager(@NonNull OMLSqlHelper sqlHelper, @NonNull OMLModuleProvider provider) throws SQLException {
+        setModuleProvider(provider);
+        if (mModuleDao == null) mModuleDao = new ModuleDao(sqlHelper);
+    }
+
+    public void setModuleProvider(@NonNull OMLModuleProvider provider) {
+        if (mDefaultCheckedModules != null) deleteAllModules();
         if (provider.available() != null) {
             mDefaultCheckedModules = provider.available();
         } else {

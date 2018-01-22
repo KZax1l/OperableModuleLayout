@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kzax1l.oml.OMLInitializer;
+import com.kzax1l.oml.OMLModuleProvider;
 import com.kzax1l.oml.Utils;
 import com.kzax1l.oml.dao.ModuleItem;
 import com.kzax1l.oml.edit.SampleModuleActivity;
@@ -22,6 +23,7 @@ import com.kzax1l.oml.sample.fragment.NewsFragment;
 import com.kzax1l.oml.sample.fragment.NewsFragmentPagerAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.kzax1l.oml.edit.ModuleActivityAgent.OML_CODE_REQUEST;
 import static com.kzax1l.oml.edit.ModuleActivityAgent.OML_CODE_RESULT;
@@ -31,7 +33,7 @@ import static com.kzax1l.oml.edit.ModuleActivityAgent.OML_CODE_RESULT;
  * <p>
  * Created by Mjj on 2016/11/18.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OMLModuleProvider {
 
     private ColumnHorizontalScrollView mColumnHorizontalScrollView; // 自定义HorizontalScrollView
     private LinearLayout mRadioGroup_content; // 每个标题
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mScreenWidth = Utils.getWindowsWidth(this);
         initView();
+        OMLInitializer.getModuleManager().setModuleProvider(this);
     }
 
     private void initView() {
@@ -217,4 +220,34 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public List<ModuleItem> available() {
+        List<ModuleItem> defaultModules = new ArrayList<>();
+        defaultModules.add(new ModuleItem("推荐", "tj", false));
+        defaultModules.add(new ModuleItem("热点", "rd"));
+        defaultModules.add(new ModuleItem("杭州", "hz"));
+        defaultModules.add(new ModuleItem("时尚", "ss"));
+        defaultModules.add(new ModuleItem("科技", "kj"));
+        defaultModules.add(new ModuleItem("体育", "ty"));
+        defaultModules.add(new ModuleItem("军事", "js"));
+        defaultModules.add(new ModuleItem("娱乐", "yl"));
+        return defaultModules;
+    }
+
+    @Override
+    public List<ModuleItem> unavailable() {
+        List<ModuleItem> defaultModules = new ArrayList<>();
+        defaultModules.add(new ModuleItem("财经", "cj"));
+        defaultModules.add(new ModuleItem("汽车", "qc"));
+        defaultModules.add(new ModuleItem("房产", "fc"));
+        defaultModules.add(new ModuleItem("社会", "sh"));
+        defaultModules.add(new ModuleItem("情感", "qg"));
+        defaultModules.add(new ModuleItem("女人", "nr"));
+        defaultModules.add(new ModuleItem("旅游", "ly"));
+        defaultModules.add(new ModuleItem("健康", "jk"));
+        defaultModules.add(new ModuleItem("美女", "mn"));
+        defaultModules.add(new ModuleItem("游戏", "yx"));
+        defaultModules.add(new ModuleItem("数码", "sm"));
+        return defaultModules;
+    }
 }
