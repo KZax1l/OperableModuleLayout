@@ -1,4 +1,4 @@
-package com.kzax1l.oml;
+package com.andova.oml;
 
 import org.junit.Test;
 

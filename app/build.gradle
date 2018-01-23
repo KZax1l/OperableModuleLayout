@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.kzax1l.oml.sample"
+        applicationId "com.andova.oml.sample"
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 1

@@ -15,7 +15,7 @@
             android:layout_height="40.0dip"
             android:layout_weight="1.0">
 
-            <com.kzax1l.oml.sample.ColumnHorizontalScrollView
+            <com.andova.oml.sample.ColumnHorizontalScrollView
                 android:id="@+id/mColumnHorizontalScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="40.0dip"
@@ -30,7 +30,7 @@
                     android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp" />
-            </com.kzax1l.oml.sample.ColumnHorizontalScrollView>
+            </com.andova.oml.sample.ColumnHorizontalScrollView>
 
             <ImageView
                 android:id="@+id/shade_left"
