@@ -40,18 +40,57 @@ public class ModuleManager {
         if (mModuleDao == null) mModuleDao = new ModuleDao(sqlHelper);
     }
 
-    public void setModuleProvider(@NonNull OMLModuleProvider provider) {
+    public void resetModuleProvider(@NonNull OMLModuleProvider provider) {
         if (mDefaultCheckedModules != null) deleteAllModules();
-        if (provider.available() != null) {
-            mDefaultCheckedModules = provider.available();
-        } else {
-            mDefaultCheckedModules = new ArrayList<>();
+        setModuleProvider(provider);
+    }
+
+    public void updateModuleProvider(@NonNull OMLModuleProvider provider) {
+        List<ModuleItem> add = new ArrayList<>();
+        if (provider.available().size() > 0) {
+            for (ModuleItem module : provider.available()) {
+                module.setCheckState(OML_MODULE_CHECK_STATE_CHECKED);
+                add.add(module);
+            }
         }
-        if (provider.unavailable() != null) {
-            mDefaultUncheckedModules = provider.unavailable();
-        } else {
-            mDefaultUncheckedModules = new ArrayList<>();
+        if (provider.unavailable().size() > 0) {
+            for (ModuleItem module : provider.unavailable()) {
+                module.setCheckState(OML_MODULE_CHECK_STATE_UNCHECKED);
+                add.add(module);
+            }
         }
+        if (add.size() == 0) return;
+        List<ModuleItem> delete = new ArrayList<>();
+        List<ModuleItem> checked = getCheckedModules();
+        List<ModuleItem> unchecked = getUncheckedModules();
+        if (checked.size() > 0) delete.addAll(checked);
+        if (unchecked.size() > 0) delete.addAll(unchecked);
+        int orderId = delete.size();
+        for (int i = add.size() - 1; i >= 0; i--) {
+            ModuleItem item = add.get(i);
+            for (int j = delete.size() - 1; j >= 0; j--) {
+                ModuleItem module = delete.get(j);
+                if (item.name.equals(module.name) && item.flag.equals(module.flag)) {
+                    add.remove(item);
+                    delete.remove(module);
+                }
+            }
+        }
+        for (ModuleItem module : delete) {
+            mModuleDao.deleteCache(OML_MODULE_NAME + "=? AND " + OML_MODULE_FLAG + "=?", new String[]{module.name, module.flag});
+            orderId--;
+        }
+        if (orderId < 0) orderId = 0;
+        for (ModuleItem module : add) {
+            module.setOrderId(orderId);
+            mModuleDao.addCache(module);
+            orderId++;
+        }
+    }
+
+    private void setModuleProvider(@NonNull OMLModuleProvider provider) {
+        mDefaultCheckedModules = provider.available() != null ? provider.available() : new ArrayList<ModuleItem>();
+        mDefaultUncheckedModules = provider.unavailable() != null ? provider.unavailable() : new ArrayList<ModuleItem>();
     }
 
     /**
