@@ -23,3 +23,22 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class com.andova.oml.OMLInitializer{*;}
+-keep class com.andova.oml.OMLModuleOptions{*;}
+-keep class com.andova.oml.OMLModuleProvider{*;}
+-keep class com.andova.oml.dao.ModuleItem{*;}
+-keep class com.andova.oml.Utils{*;}
+
+-keepclasseswithmembers class com.andova.oml.OMLApplicationAgent{
+    <init>(android.app.Application, com.andova.oml.OMLModuleOptions, com.andova.oml.OMLModuleProvider);
+    public void onCreate();
+    public void onTerminate();
+}
+-keepclasseswithmembers class com.andova.oml.edit.ModuleActivityAgent{
+    <init>(android.support.v7.app.AppCompatActivity, int, int);
+    public final static int OML_CODE_REQUEST;
+    public final static int OML_CODE_RESULT;
+}
+-keepclasseswithmembers class com.andova.oml.dao.ModuleManager{
+    public void updateModuleProvider(com.andova.oml.OMLModuleProvider);
+}
