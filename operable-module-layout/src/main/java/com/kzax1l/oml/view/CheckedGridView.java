@@ -368,9 +368,6 @@ public class CheckedGridView extends GridView implements AdapterView.OnItemLongC
         mDragPosition = position;
         if (mStartPosition < 0) return false;
         ViewGroup dragViewGroup = (ViewGroup) getChildAt(mDragPosition - getFirstVisiblePosition());
-        TextView dragTextView = (TextView) dragViewGroup.findViewById(R.id.text_item);
-        dragTextView.setEnabled(false);
-        dragTextView.setSelected(true);
         mItemWidth = dragViewGroup.getWidth();
         mItemHeight = dragViewGroup.getHeight();
 
