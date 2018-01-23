@@ -223,31 +223,23 @@ public class MainActivity extends AppCompatActivity implements OMLModuleProvider
     @Override
     public List<ModuleItem> available() {
         List<ModuleItem> defaultModules = new ArrayList<>();
-        defaultModules.add(new ModuleItem("推荐", "tj", false));
-        defaultModules.add(new ModuleItem("热点", "rd"));
-        defaultModules.add(new ModuleItem("杭州", "hz"));
-        defaultModules.add(new ModuleItem("时尚", "ss"));
-        defaultModules.add(new ModuleItem("科技", "kj"));
-        defaultModules.add(new ModuleItem("体育", "ty"));
-        defaultModules.add(new ModuleItem("军事", "js"));
-        defaultModules.add(new ModuleItem("娱乐", "yl"));
+        defaultModules.add(new ModuleItem("场所档案", "module_place"));
+        defaultModules.add(new ModuleItem("身份验证", "module_identification"));
+        defaultModules.add(new ModuleItem("场所检查", "module_enterprise"));
+        defaultModules.add(new ModuleItem("现场勘查", "module_spot"));
+        defaultModules.add(new ModuleItem("特行年检", "module_annual_survey"));
+        defaultModules.add(new ModuleItem("企业备案", "module_filings"));
+        defaultModules.add(new ModuleItem("快递抽查", "module_deliver"));
+        defaultModules.add(new ModuleItem("报警/预警处理", "module_ring"));
+        defaultModules.add(new ModuleItem("法律法规", "module_law"));
         return defaultModules;
     }
 
     @Override
     public List<ModuleItem> unavailable() {
         List<ModuleItem> defaultModules = new ArrayList<>();
-        defaultModules.add(new ModuleItem("财经", "cj"));
-        defaultModules.add(new ModuleItem("汽车", "qc"));
-        defaultModules.add(new ModuleItem("房产", "fc"));
-        defaultModules.add(new ModuleItem("社会", "sh"));
-        defaultModules.add(new ModuleItem("情感", "qg"));
-        defaultModules.add(new ModuleItem("女人", "nr"));
-        defaultModules.add(new ModuleItem("旅游", "ly"));
-        defaultModules.add(new ModuleItem("健康", "jk"));
-        defaultModules.add(new ModuleItem("美女", "mn"));
-        defaultModules.add(new ModuleItem("游戏", "yx"));
-        defaultModules.add(new ModuleItem("数码", "sm"));
+        defaultModules.add(new ModuleItem("危化盘库异常处理", "module_dangerous"));
+        defaultModules.add(new ModuleItem("旅馆验收", "module_hotel"));
         return defaultModules;
     }
 }

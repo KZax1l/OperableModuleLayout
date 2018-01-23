@@ -107,6 +107,9 @@ public class WorkApplication extends Application implements OMLModuleProvider, O
             case "module_annual_survey":
                 ivIcon.setImageResource(R.mipmap.ic_module_annual_survey);
                 break;
+            case "module_filings":
+                ivIcon.setImageResource(R.mipmap.ic_module_filings);
+                break;
             case "module_deliver":
                 ivIcon.setImageResource(R.mipmap.ic_module_deliver);
                 break;
