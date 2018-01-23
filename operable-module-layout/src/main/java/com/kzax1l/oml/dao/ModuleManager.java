@@ -85,9 +85,7 @@ public class ModuleManager {
             }
             return list;
         }
-        if (mIsExist) {
-            return list;
-        }
+        if (mIsExist && list.size() > 0) return list;
         initDefaultModules();
         return mDefaultCheckedModules;
     }

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements OMLModuleProvider
         super.onCreate(savedInstanceState);
         mScreenWidth = Utils.getWindowsWidth(this);
         initView();
-//        OMLInitializer.getModuleManager().setModuleProvider(this);
+        OMLInitializer.getModuleManager().setModuleProvider(this);
     }
 
     private void initView() {
