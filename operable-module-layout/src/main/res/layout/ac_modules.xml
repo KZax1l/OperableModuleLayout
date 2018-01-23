@@ -50,7 +50,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/colorAccent" />
 
-            <com.kzax1l.oml.view.CheckedGridView
+            <GridView
                 android:id="@+id/userGridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 android:layout_marginLeft="10.0dip"
                 android:textSize="14sp" />
 
-            <com.kzax1l.oml.view.UncheckedGridView
+            <GridView
                 android:id="@+id/otherGridView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

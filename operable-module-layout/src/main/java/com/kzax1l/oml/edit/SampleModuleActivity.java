@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.kzax1l.oml.R;
-import com.kzax1l.oml.view.CheckedGridView;
-import com.kzax1l.oml.view.UncheckedGridView;
 
 /**
  * Created by Administrator on 2018-01-11.
@@ -19,11 +17,10 @@ public class SampleModuleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        // 注意这里实例化一定要放在super.onCreate和setContentView之前
+        mAgent = new ModuleActivityAgent(this, R.id.userGridView, R.id.otherGridView);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_modules);
-        mAgent = new ModuleActivityAgent(this,
-                (CheckedGridView) findViewById(R.id.userGridView),
-                (UncheckedGridView) findViewById(R.id.otherGridView));
         mAgent.onCreate();
     }
 

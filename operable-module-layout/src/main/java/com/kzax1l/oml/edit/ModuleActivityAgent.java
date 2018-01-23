@@ -1,10 +1,16 @@
 package com.kzax1l.oml.edit;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.v4.view.LayoutInflaterCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +36,7 @@ import com.kzax1l.oml.view.UncheckedGridView;
  * @since 1.0.1
  */
 public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
-    private Activity mActivity;
+    private AppCompatActivity mActivity;
     /**
      * 是否需要监听手势关闭功能
      */
@@ -116,12 +122,40 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
     };
 
     @SuppressWarnings("WeakerAccess")
-    public ModuleActivityAgent(@NonNull Activity activity,
-                               @NonNull CheckedGridView checked,
-                               @NonNull UncheckedGridView unchecked) {
+    public ModuleActivityAgent(@NonNull AppCompatActivity activity,
+                               @IdRes final int checkedGridViewId,
+                               @IdRes final int uncheckedGridViewId) {
         mActivity = activity;
-        mCheckedGridView = checked;
-        mUncheckedGridView = unchecked;
+        try {
+            LayoutInflater.Factory2 factory2 = new LayoutInflater.Factory2() {
+                @Override
+                public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+                    if (name.equals("GridView")) {
+                        for (int i = 0; i < attrs.getAttributeCount(); i++) {
+                            if (!attrs.getAttributeName(i).equals("id")) continue;
+                            int value = attrs.getAttributeResourceValue(i, 0);
+                            if (value == checkedGridViewId) {
+                                mCheckedGridView = new CheckedGridView(context, attrs);
+                                return mCheckedGridView;
+                            } else if (value == uncheckedGridViewId) {
+                                mUncheckedGridView = new UncheckedGridView(context, attrs);
+                                return mUncheckedGridView;
+                            }
+                        }
+                    }
+                    AppCompatDelegate delegate = mActivity.getDelegate();
+                    return delegate.createView(parent, name, context, attrs);
+                }
+
+                @Override
+                public View onCreateView(String name, Context context, AttributeSet attrs) {
+                    return null;
+                }
+            };
+            LayoutInflaterCompat.setFactory2(LayoutInflater.from(activity), factory2);
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage() + ",create a ModuleActivityAgent object must before super.onCreate(savedInstanceState)!");
+        }
     }
 
     public void onCreate() {
@@ -129,6 +163,7 @@ public class ModuleActivityAgent implements AdapterView.OnItemClickListener {
             mGestureDetector = new GestureDetector(mActivity.getApplicationContext(), new BackGestureListener(mActivity));
         }
 
+        if (mCheckedGridView == null || mUncheckedGridView == null) return;
         mCheckedAdapter = new CheckedAdapter(mActivity, OMLInitializer.available());
         mCheckedGridView.setAdapter(mCheckedAdapter);
         mUncheckedAdapter = new UncheckedAdapter(mActivity, OMLInitializer.unavailable());
