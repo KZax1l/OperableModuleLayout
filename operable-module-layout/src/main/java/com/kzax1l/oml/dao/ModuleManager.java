@@ -65,7 +65,6 @@ public class ModuleManager {
         List<ModuleItem> unchecked = getUncheckedModules();
         if (checked.size() > 0) delete.addAll(checked);
         if (unchecked.size() > 0) delete.addAll(unchecked);
-        int orderId = delete.size();
         for (int i = add.size() - 1; i >= 0; i--) {
             ModuleItem item = add.get(i);
             for (int j = delete.size() - 1; j >= 0; j--) {
@@ -78,13 +77,25 @@ public class ModuleManager {
         }
         for (ModuleItem module : delete) {
             mModuleDao.deleteCache(OML_MODULE_NAME + "=? AND " + OML_MODULE_FLAG + "=?", new String[]{module.name, module.flag});
-            orderId--;
         }
-        if (orderId < 0) orderId = 0;
+        checked.clear();
+        unchecked.clear();
+        checked = getCheckedModules();
+        unchecked = getUncheckedModules();
+        int checkedOrderId = checked.size() - 1;
+        int uncheckedOrderId = unchecked.size() - 1;
         for (ModuleItem module : add) {
-            module.setOrderId(orderId);
+            switch (module.checkState) {
+                case OML_MODULE_CHECK_STATE_CHECKED:
+                    checkedOrderId++;
+                    module.setOrderId(checkedOrderId);
+                    break;
+                case OML_MODULE_CHECK_STATE_UNCHECKED:
+                    uncheckedOrderId++;
+                    module.setOrderId(uncheckedOrderId);
+                    break;
+            }
             mModuleDao.addCache(module);
-            orderId++;
         }
     }
 
